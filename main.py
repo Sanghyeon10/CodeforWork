@@ -14,7 +14,7 @@ def checkingtime():
     if weekday == 0: # 월요일
         if hour <12:
 
-            X='충전하기?'
+            X='충전하기'
 
         else:
             X='없음'
@@ -22,7 +22,7 @@ def checkingtime():
 
     elif weekday == 2: # 수요일
         if hour <12:
-            X='비입주 문자돌리기, 물건 주문하기, 충전하기?'
+            X='1.비입주 문자돌리기 2. 물건 주문하기 3. 충전하기?'
 
         else:
             X='없음'
@@ -30,13 +30,13 @@ def checkingtime():
 
     elif weekday== 3: #목요일
         if hour <12:
-            X='오래된거 확인하기 그리고 날씨 보고 오토바이 충전 생각'
+            X='1.오래된거 확인하기,2. 오토바이 충전 생각'
         else:
             X= '비입주 전화돌리기'
 
     elif weekday == 4: #금요일
         if hour <12:
-            X='오래된거 문자 보내기 그리고 오토바이 충전'
+            X='1.오래된거 문자 보내기 2. 오토바이 충전'
         else:
             X= '내일꺼 준비하기'
 
@@ -55,9 +55,13 @@ def findingpassword(path, dict):
 
     with open(path, 'r', encoding='utf-8') as f:
         for line in f:
-            fields = line.strip().split()  # 공백을기준으로 분리해 기억
 
-            name, text= fields
+            name= line.split(" ",1)[0]
+
+            text = line.split(" ",1)[1]
+            # fields = line.strip().split()  # 공백을기준으로 분리해 기억
+
+            # name, text= fields
 
             dict[name] = text
 
@@ -76,7 +80,7 @@ afternoon =['17','18','19','20']
 early=['10']
 sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104','103','102','101']
 
-# sunsu= sunsu[::-1] #조절하는 기능
+sunsu= sunsu[::-1] #조절하는 기능
 
 
 df = df[['수거/배달','고객명','요청일자']]
@@ -287,6 +291,7 @@ for l in range(k+1): #모든 리스트 돌리기
                 print(globals()['get'+str(l)][i][0] ,BB,AA)
                 countingnumber= countingnumber + 1
                 BB=''
+                AA=''
 
 
                 if (globals()['get'+str(l)][i][0][1]=='110-1504'):

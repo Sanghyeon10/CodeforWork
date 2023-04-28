@@ -40,7 +40,7 @@ df=df[df['옷장번호']==0]
 df=df[df['비입주']==A]
 
 
-now = datetime.datetime.now() + datetime.timedelta(days=3)
+now = datetime.datetime.now() #+ datetime.timedelta(days=3)
 print('오늘날짜',now)
 
 
@@ -111,7 +111,8 @@ B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
 if B=='0':
     pass
 
-if B=='1':
+
+elif B=='1':
     for i in range(len(numberlist)):
         if numberlist[i][1]==1 and not makejungbok(jungbokcheck,numberlist[i][0]):
             print(numberlist[i][0])
@@ -128,6 +129,9 @@ else:
         if not makejungbok(jungbokcheck,numberlist[i][0]):
             print(numberlist[i][0])
             print()
+
+
+
 
 # print('기존전산기록확인')
 # print('문자기록')
