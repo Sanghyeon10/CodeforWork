@@ -10,6 +10,8 @@ def makejungbok(listt,X):
         listt.append(X)
         return False #값이 없으니까 중복아님
 
+
+
 inputt= input('비입주이면 a입력')
 if inputt == "a":
     A='비입주민'
@@ -62,41 +64,68 @@ df=df[df['완성일자']<=pastSat]
 
 # print(df)
 
-#전화번호 뽑기
+#전화번호,전화여부 뽑기
 dff= pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
 
-dff= dff[['고객명','휴대폰','체류']]
-dff =dff.dropna()
-
-
+dff= dff[['고객명','휴대폰','체류','주소','특이사항']]
 
 dff['고객명']= dff['고객명'].apply(lambda x: x.split('\n')[0])
+dff.fillna('',inplace=True)
+dff['전화여부'] = dff[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
+
+
+
 ####
+
+#배달 리스트 가져오기
+df2= pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
+df2 = df2[['수거/배달','고객명']]
+df2['고객명'] = df2['고객명'].apply(lambda x: x.split(' ')[-1])
+
+# print(df2)
+
 
 numberlist=[]
 remaining=0 #남아있는거 세는 변수
 jungbokcheck=[]
+BB=''
+CC=''
 
 # print(df)
 for i in range(len(df)):
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
     number=df.index[i] #오류방지용 순서넣기
+
     if not makejungbok(jungbokcheck, df.loc[df.index[i],'고객명']): #중복이 아니면실행
-        for j in range(len(dff)):
-            if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것
+        for j in range(len(dff)): #dff고객정보 의미
+            if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
                 number = dff.loc[dff.index[j],'휴대폰']
                 remaining = dff.loc[dff.index[j],'체류']
+
+                for l in range(len(df2)): #df2 배달리스트에서 한 번 확인 (배달여부 체크)
+                    if (df.loc[df.index[i],'고객명'] == df2.loc[df2.index[l],'고객명'])& (df2.loc[df2.index[l],'수거/배달'] =='배달') : #찾는게 있다면
+                        CC='배달리스트 존재'
+
+                if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
+                    BB='전화'
+
 
             else:
                 pass
         #number 값 획득
 
-        print(df.loc[df.index[i], '고객명'], df.loc[df.index[i], '날짜차이'].days, number,'개수:',remaining  )
+        print(df.loc[df.index[i], '고객명'], df.loc[df.index[i], '날짜차이'].days, number,'개수:',remaining ,BB,CC)
+
+
+
         numberlist.append((number,remaining))
         if df.loc[df.index[i],'고객명'] == '107-1304':
             print('평일 늦은 저녁에나 가능')
+        jungbokcheck.append(df.loc[df.index[i],'고객명'])
         number= 'end' #number 초기화
         remaining = 0
+        CC=""
+        BB=''
     else:
         pass
 

@@ -59,6 +59,7 @@ def findingpassword(path, dict):
             name= line.split(" ",1)[0]
 
             text = line.split(" ",1)[1]
+            text = text.rstrip('\n')
             # fields = line.strip().split()  # 공백을기준으로 분리해 기억
 
             # name, text= fields
@@ -266,8 +267,9 @@ findingpassword('data.txt',dict)
 findingpassword('checkpoint.txt',text)
 BB=''
 AA=''
+CC=''
 
-print(checkingtime())
+
 for l in range(k+1): #모든 리스트 돌리기
     # print(globals()['get'+str(l)],l)
     for j in range(len(sunsu)):
@@ -280,6 +282,8 @@ for l in range(k+1): #모든 리스트 돌리기
                     tem=(globals()['get'+str(l)][i][0][1])#동호수 입력
                     # print(tem)
                     BB = (dict.get(tem,'문앞'))
+                if (globals()['get'+str(l)][i][0][2][-2:])=='50':
+                    CC= '늦지말기'
 
                 # print(globals()['get'+str(l)][i][0][1]) # 정확한 이름임
                 # print(text.get(globals()['get'+str(l)][i][0][1],'a'))
@@ -288,10 +292,11 @@ for l in range(k+1): #모든 리스트 돌리기
                     AA=text.get(globals()['get'+str(l)][i][0][1],'')
 
 
-                print(globals()['get'+str(l)][i][0] ,BB,AA)
+                print(globals()['get'+str(l)][i][0] ,BB, AA,CC)
                 countingnumber= countingnumber + 1
                 BB=''
                 AA=''
+                CC=''
 
 
                 if (globals()['get'+str(l)][i][0][1]=='110-1504'):
@@ -306,6 +311,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 # print(l)
     print()
+print(checkingtime())
 
 print(countingnumber,len(df.index))
 
