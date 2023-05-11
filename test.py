@@ -1,6 +1,10 @@
 import pandas as pd
 import datetime
+import re
 
+def contains_korean(text):
+    #한글자라도 한글이 있는가?
+    return re.search("[가-힣]+",text) #맞으면 값이 있고 없으면 NONE
 
 def makejungbok(listt,X):
     if X in listt: #값이 있다.
@@ -12,6 +16,9 @@ def makejungbok(listt,X):
 
 
 
+now = datetime.datetime.now() #+ datetime.timedelta(days=3)
+print('오늘날짜',now)
+
 inputt= input('비입주이면 a입력')
 if inputt == "a":
     A='비입주민'
@@ -20,6 +27,8 @@ if inputt == "a":
 else:
     A='입주민'
     day=2 # 월요일에서 토요일로 2일뒤로
+
+week = now.weekday()+day
 
 df= pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
 
@@ -34,7 +43,7 @@ df['완성일자']= df['완성일자'].apply(lambda x: x.split('\n')[0]).apply(l
 
 df['고객명']= df['고객명'].apply(lambda x: x.split('\n')[0])
 
-df['비입주']=df['고객명'].apply(lambda  x:'비입주민' if x.find('-')==-1 else '입주민')
+df['비입주']=df['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) != None else '입주민')
 
 df=df[df['옷장번호']==0]
 
@@ -42,21 +51,16 @@ df=df[df['옷장번호']==0]
 df=df[df['비입주']==A]
 
 
-now = datetime.datetime.now() #+ datetime.timedelta(days=3)
-print('오늘날짜',now)
-
-
-week = now.weekday()+day
-
-# print(df)
 
 df['접수일자']= df['접수일자'].apply(lambda x: datetime.datetime.strptime(x , "%Y-%m-%d"))
 df['완성일자']= df['완성일자'].apply(lambda x: datetime.datetime.strptime(x , "%Y-%m-%d"))
+df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
+
 
 df['날짜차이']= df['완성일자']-df['접수일자']
 
 pastSat= now - datetime.timedelta(days= (week))
-# pastSat = now
+
 print(pastSat)
 
 
@@ -90,6 +94,7 @@ remaining=0 #남아있는거 세는 변수
 jungbokcheck=[]
 BB=''
 CC=''
+gijun=df.loc[df.index[0],'몇주째']
 
 # print(df)
 for i in range(len(df)):
@@ -97,6 +102,13 @@ for i in range(len(df)):
     number=df.index[i] #오류방지용 순서넣기
 
     if not makejungbok(jungbokcheck, df.loc[df.index[i],'고객명']): #중복이 아니면실행
+        if df.loc[df.index[i],'몇주째']== gijun:
+            pass
+        else:
+            gijun = df.loc[df.index[i], '몇주째'] #기준 업
+            print() #\n누르기
+
+
         for j in range(len(dff)): #dff고객정보 의미
             if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
                 number = dff.loc[dff.index[j],'휴대폰']

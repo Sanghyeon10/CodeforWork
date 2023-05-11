@@ -105,6 +105,20 @@ sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통
 # df= df[['순번', '등록일자', '요청일자', '수거/배달', '등록위치', '전화번호', '고객명', '주소', '상태', '수정']]
 
 
+df2 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
+df2= df2[['고객명','택번호']]
+df2 = df2.fillna('a')
+df2['고객명'] = df2['고객명'].apply(lambda x: x.split('\n')[0])
+
+df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
+df3= df3[['고객명','체류']]
+df3= df3.dropna(axis=0)
+df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
+
+
+
+
+
 get_index=[]
 
 
@@ -265,9 +279,22 @@ dict={} # password 담는용
 text={} # 체크 포인트 담는용
 findingpassword('data.txt',dict)
 findingpassword('checkpoint.txt',text)
+
 BB=''
 AA=''
 CC=''
+tempnumber=""
+tagnumber=""
+#택번호와 개수 표시?
+
+switch=False # 개수와 택번호 표시 여부
+time = datetime.datetime.now()
+hour = time.hour
+if hour<16 and 12<hour : #오후 12~4시라면 필요한기능
+    switch=True
+    #pass
+
+
 
 
 for l in range(k+1): #모든 리스트 돌리기
@@ -277,11 +304,21 @@ for l in range(k+1): #모든 리스트 돌리기
 
             if globals()['get'+str(l)][i][1] == sunsu[j]: #동호수를꺼내서 15동부터 해당되는거 꺼내기
 
+                if switch == True:#정해진 시간대라면,
+                    for p in range(len(df2)) :#옷장에 있는거 택번호 가져올 정보
+                        if df2.loc[df2.index[p],'고객명'] == globals()['get'+str(l)][i][0][1]: #맞는 택번호 구하기
+                            tagnumber= df2.loc[df2.index[p],'택번호']
+
+                    for h in range(len(df3)): #개수 가져오기
+                        if df3.loc[df3.index[h],'고객명'] == globals()['get'+str(l)][i][0][1]:
+                            tempnumber= str(df3.loc[df3.index[h],'체류'])
+
+
 
                 if (globals()['get'+str(l)][i][0][2][-2:])=='10': # 무슨k, 튜플중 첫번째 정보, 그안에 있는 시간관련정보 중 miniute정보 가져오기
                     tem=(globals()['get'+str(l)][i][0][1])#동호수 입력
-                    # print(tem)
                     BB = (dict.get(tem,'문앞'))
+
                 if (globals()['get'+str(l)][i][0][2][-2:])=='50':
                     CC= '늦지말기'
 
@@ -292,19 +329,21 @@ for l in range(k+1): #모든 리스트 돌리기
                     AA=text.get(globals()['get'+str(l)][i][0][1],'')
 
 
-                print(globals()['get'+str(l)][i][0] ,BB, AA,CC)
+                print(globals()['get'+str(l)][i][0] , BB, AA,CC, tagnumber,tempnumber )
                 countingnumber= countingnumber + 1
                 BB=''
                 AA=''
                 CC=''
+                tagnumber =''
+                tempnumber =""
 
 
                 if (globals()['get'+str(l)][i][0][1]=='110-1504'):
                     print('호출금지')
 
-                if globals()['get' + str(l)][i][0][1] in c: #중복1개당 1발언
+                if globals()['get' + str(l)][i][0][1] in c and (globals()['get' + str(l)][i][0][0]) =='배달' : #중복1개당 1발언
                     print('중복존재')
-                c.append(globals()['get' + str(l)][i][0][1])
+                c.append((globals()['get' + str(l)][i][0][0],globals()['get' + str(l)][i][0][1])) #배달수거 + 동호수
 
 
 
@@ -313,5 +352,5 @@ for l in range(k+1): #모든 리스트 돌리기
     print()
 print(checkingtime())
 
-print(countingnumber,len(df.index))
+print(countingnumber== len(df.index), len(df.index))
 
