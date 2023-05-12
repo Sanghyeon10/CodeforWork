@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 import re
+import copy
 
 def contains_korean(text):
     #한글자라도 한글이 있는가?
@@ -71,6 +72,24 @@ def printtingf(df, get_index, i, k):
     a = (df.loc[df.index[i], '수거/배달'], df.loc[df.index[i], '고객명'], df.loc[df.index[i], '요청일자'])
     get_index.append(df.index[i])
     globals()['get' + str(k)].append([a, df.loc[df.index[i], '동호수']])
+
+def mergeforget(list):
+    newlist=copy.deepcopy(list)
+    for j in range(len(list)):
+        A = list[j][0][1]  # 기준이 될 고객명 j번째
+        B = list[j][0][0]  # 배달수거 문자열 저장된것
+        for i in range(len(list)): #전체를 검사한다 그리고 그것을 전체 반복할것
+            if A == list[i][0][1] and B!= list[i][0][0]: #이름은 같되 배달 수거가 다른것이 있다면 새로운것으로 재탄생
+                temp = ('수거배달', list[i][0][1],list[i][0][2])
+                if [temp,list[i][1]] not in newlist: #안들어있으면
+                    newlist.append([temp,list[i][1]])
+                    newlist.remove(list[j])
+                    newlist.remove(list[i])
+
+    return newlist
+
+
+
 
 
 df= pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
@@ -293,6 +312,18 @@ hour = time.hour
 if hour<16 and 12<hour : #오후 12~4시라면 필요한기능
     switch=True
     #pass
+switch=True
+
+
+##get(k) 배달수거 합치기
+# for l in range(k+1):
+#     for i in range(len(globals()['get' + str(l)])):
+#         globals()['get' + str(l)] = mergeforget(globals()['get' + str(l)])
+
+
+for h in range(k+1): #배달 수거 합치기
+    (globals()['get' + str(h)]) =mergeforget(globals()['get' + str(h)])
+
 
 
 
@@ -330,12 +361,18 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
                 print(globals()['get'+str(l)][i][0] , BB, AA,CC, tagnumber,tempnumber )
-                countingnumber= countingnumber + 1
+
                 BB=''
                 AA=''
                 CC=''
                 tagnumber =''
                 tempnumber =""
+
+
+                if (globals()['get'+str(l)][i][0][0]) =='수거배달': #2개합친거면
+                    countingnumber = countingnumber +2
+                else:
+                    countingnumber= countingnumber+1
 
 
                 if (globals()['get'+str(l)][i][0][1]=='110-1504'):

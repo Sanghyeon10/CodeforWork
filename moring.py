@@ -17,5 +17,5 @@ print(df.loc[df.index[0],'날짜'])
 name = input('몇동?')
 
 for i in range(len(df)):
-    if df.loc[df.index[i],'고객명']== name and int(df.loc[df.index[i],'시'])<=12 and (df.loc[df.index[i],'날짜']).weekday()!=5: #12시전이 오전 ,5라면 토요일
+    if df.loc[df.index[i],'고객명']== name and int(df.loc[df.index[i],'시'])<=12 and (df.loc[df.index[i],'날짜']).weekday()!=5 and df.loc[df.index[i],'분']!='10': #12시전이 오전 ,5라면 토요일
         print(df.loc[df.index[i],'고객명'], df.loc[df.index[i],'날짜'], )
