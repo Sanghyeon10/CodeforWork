@@ -100,7 +100,16 @@ afternoon =['17','18','19','20']
 early=['10']
 sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104','103','102','101']
 
-sunsu= sunsu[::-1] #조절하는 기능
+# sunsu= sunsu[::-1] #조절하는 기능
+
+switch=False # 개수와 택번호 표시 여부
+time = datetime.datetime.now()
+hour = time.hour
+if hour<16 : #오후 12~4시라면 필요한기능
+    switch=True
+    # pass
+# switch=True
+
 
 
 df = df[['수거/배달','고객명','요청일자']]
@@ -286,10 +295,6 @@ for i in range(len(df)): #남은게 있다면 출력 (잘못된 시간대일경�
 c=[]
 
 
-# print()
-# print()
-# print(df)
-
 
 
 
@@ -306,19 +311,8 @@ tempnumber=""
 tagnumber=""
 #택번호와 개수 표시?
 
-switch=False # 개수와 택번호 표시 여부
-time = datetime.datetime.now()
-hour = time.hour
-if hour<16 and 12<hour : #오후 12~4시라면 필요한기능
-    switch=True
-    #pass
-switch=True
 
 
-##get(k) 배달수거 합치기
-# for l in range(k+1):
-#     for i in range(len(globals()['get' + str(l)])):
-#         globals()['get' + str(l)] = mergeforget(globals()['get' + str(l)])
 
 
 for h in range(k+1): #배달 수거 합치기
@@ -378,9 +372,10 @@ for l in range(k+1): #모든 리스트 돌리기
                 if (globals()['get'+str(l)][i][0][1]=='110-1504'):
                     print('호출금지')
 
-                if globals()['get' + str(l)][i][0][1] in c and (globals()['get' + str(l)][i][0][0]) =='배달' : #중복1개당 1발언
+                # print(c)
+                if globals()['get' + str(l)][i][0][1] in c : #중복1개당 1발언
                     print('중복존재')
-                c.append((globals()['get' + str(l)][i][0][0],globals()['get' + str(l)][i][0][1])) #배달수거 + 동호수
+                c.append(globals()['get' + str(l)][i][0][1]) #배달수거 + 동호수
 
 
 
