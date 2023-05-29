@@ -3,15 +3,27 @@ import datetime
 import re
 import copy
 
+
 def contains_korean(text):
     #한글자라도 한글이 있는가?
     return re.search("[가-힣]+",text) #맞으면 값이 있고 없으면 NONE
 
-def checkingtime():
+def checkingtime(df2):
     time= datetime.datetime.now()
 
     hour = time.hour
     weekday = time.weekday()
+
+    df2 = df2[df2['옷장번호'] == 0]
+    df2 = df2[df2['비입주'] != '입주민']
+    df2= df2[['고객명','날짜차이']]
+    # df2= df2[df2['날짜차이']>datetime.timedelta(days=7)]
+    df2['날짜차이']= df2['날짜차이'].apply(lambda x : str(x)).apply(lambda x : x.split(' ',1)[0])
+    # print(df2)
+    # print(df2.values.flatten().tolist())
+    Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
+    # Y=df2.values.flatten().tolist()
+
     if weekday == 0: # 월요일
         if hour <12:
 
@@ -42,13 +54,13 @@ def checkingtime():
             X= '내일꺼 준비하기'
 
     elif weekday == 5: #토요일
-        X='가게 주차시 직진해서 주차'
+        X='가게 주차시 직진해서 주차, 트렁크 비우기'
 
 
     else:
         X='없음'
 
-    return X
+    return X+':비입주는'+Y
 
 
 def findingpassword(path, dict):
@@ -100,7 +112,7 @@ afternoon =['17','18','19','20']
 early=['10']
 sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104','103','102','101']
 
-# sunsu= sunsu[::-1] #조절하는 기능
+sunsu= sunsu[::-1] #조절하는 기능
 
 switch=False # 개수와 택번호 표시 여부
 time = datetime.datetime.now()
@@ -134,9 +146,17 @@ sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통
 
 
 df2 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-df2= df2[['고객명','택번호']]
-df2 = df2.fillna('a')
+df2= df2[['접수일자','완성일자', '고객명','옷장번호','택번호']]
+df2 =df2.dropna()
 df2['고객명'] = df2['고객명'].apply(lambda x: x.split('\n')[0])
+df2['비입주'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) != None else '입주민')
+
+df2['접수일자'] = df2['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
+df2['완성일자'] = df2['완성일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
+df2['접수일자'] = df2['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
+df2['완성일자'] = df2['완성일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
+df2['날짜차이'] = datetime.datetime.now()- df2['완성일자']
+
 
 df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
 df3= df3[['고객명','체류']]
@@ -382,7 +402,8 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 # print(l)
     print()
-print(checkingtime())
+print(checkingtime(df2))
+print(checkingtime(df2))
 
 print(countingnumber== len(df.index), len(df.index))
 

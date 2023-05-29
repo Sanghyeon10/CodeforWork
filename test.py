@@ -19,7 +19,7 @@ def makejungbok(listt,X):
 now = datetime.datetime.now() #+ datetime.timedelta(days=3)
 print('오늘날짜',now)
 
-inputt= input('비입주이면 a입력')
+inputt= input('비입주이면 a입력, 배달리스트 토요일까지 껄로 했나?')
 if inputt == "a":
     A='비입주민'
     day=5 # 월요일까지 뒤로 돌리고 여기서 5일 더 뒤로 돌려야 수요일됨
