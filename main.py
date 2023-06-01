@@ -35,7 +35,7 @@ def checkingtime(df2):
 
     elif weekday == 2: # 수요일
         if hour <12:
-            X='1.비입주 문자돌리기 2. 물건 주문하기 3. 충전하기?'
+            X='1. 물건 주문하기 2. 충전하기'
 
         else:
             X='없음'
@@ -146,8 +146,9 @@ sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통
 
 
 df2 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-df2= df2[['접수일자','완성일자', '고객명','옷장번호','택번호']]
+df2= df2[['접수일자','완성일자', '고객명','옷장번호','택번호','상품명']]
 df2 =df2.dropna()
+# df2= df2.fillna(method='ffill')
 df2['고객명'] = df2['고객명'].apply(lambda x: x.split('\n')[0])
 df2['비입주'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) != None else '입주민')
 
@@ -156,6 +157,23 @@ df2['완성일자'] = df2['완성일자'].apply(lambda x: x.split('\n')[0]).appl
 df2['접수일자'] = df2['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 df2['완성일자'] = df2['완성일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 df2['날짜차이'] = datetime.datetime.now()- df2['완성일자']
+
+
+
+# df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
+# df4=df4.fillna(method='ffill')
+# df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
+# df4= df4[['고객명','상품명']]
+# item_count= df4.groupby('고객명')['상품명'].count()
+# shoelist=['운동화','골프화','신발','아동화','등산화','가방','구두','부츠']
+#
+# # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
+# df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
+# print(df4,33)
+# shoe_count= df4.groupby('고객명')['상품명'].count()
+# print(item_count,55)
+# print(shoe_count,66)
+
 
 
 df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
