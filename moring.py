@@ -3,7 +3,7 @@ import datetime
 import re
 
 
-df= pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
+df= pd.read_excel(r'C:\Users\user\Desktop\아침수거.xls')
 df = df[['수거/배달','고객명','요청일자']]
 df['고객명'] = df['고객명'].apply(lambda x: x.split(' ')[-1])
 df['날짜'] = df['요청일자'].apply(lambda x: x.split('\n')[0])

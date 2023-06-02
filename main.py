@@ -157,22 +157,38 @@ df2['완성일자'] = df2['완성일자'].apply(lambda x: x.split('\n')[0]).appl
 df2['접수일자'] = df2['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 df2['완성일자'] = df2['완성일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 df2['날짜차이'] = datetime.datetime.now()- df2['완성일자']
+df2['동호수'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) == None else x)
 
 
 
-# df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-# df4=df4.fillna(method='ffill')
-# df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
-# df4= df4[['고객명','상품명']]
-# item_count= df4.groupby('고객명')['상품명'].count()
-# shoelist=['운동화','골프화','신발','아동화','등산화','가방','구두','부츠']
-#
-# # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
-# df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
-# print(df4,33)
-# shoe_count= df4.groupby('고객명')['상품명'].count()
-# print(item_count,55)
-# print(shoe_count,66)
+## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
+now = datetime.datetime.now()
+week = now.weekday()+2
+pastSat= now - datetime.timedelta(days= (week))
+# print(pastSat)
+lastSatdf=df2[df2['완성일자']<=pastSat]
+lastSatdf=lastSatdf[lastSatdf['옷장번호']==0]
+lastSatdf=lastSatdf[lastSatdf['비입주']=='입주민']
+lastSatdf= lastSatdf[['고객명','동호수']]
+
+lastSatdf = (lastSatdf[lastSatdf['동호수'].isin(df['동호수'])] )
+
+lastSatdf=lastSatdf[['고객명']]
+# print( lastSatdf.values.flatten().tolist() )
+
+
+
+
+
+df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
+df4=df4.fillna(method='ffill')
+df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
+df4= df4[['고객명','상품명']]
+item_count= df4.groupby('고객명')['상품명'].count()
+
+# print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
+df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
+shoe_count= df4.groupby('고객명')['상품명'].count()
 
 
 
@@ -371,10 +387,12 @@ for l in range(k+1): #모든 리스트 돌리기
                     for p in range(len(df2)) :#옷장에 있는거 택번호 가져올 정보
                         if df2.loc[df2.index[p],'고객명'] == globals()['get'+str(l)][i][0][1]: #맞는 택번호 구하기
                             tagnumber= df2.loc[df2.index[p],'택번호']
+                            tempnumber= str(item_count[df2.loc[df2.index[p],'고객명']])+'('+str(shoe_count[df2.loc[df2.index[p],'고객명']])+')'
 
-                    for h in range(len(df3)): #개수 가져오기
-                        if df3.loc[df3.index[h],'고객명'] == globals()['get'+str(l)][i][0][1]:
-                            tempnumber= str(df3.loc[df3.index[h],'체류'])
+
+                    # for h in range(len(df3)): #개수 가져오기
+                    #     if df3.loc[df3.index[h],'고객명'] == globals()['get'+str(l)][i][0][1]:
+                    #         tempnumber= str(df3.loc[df3.index[h],'체류'])
 
 
 
@@ -422,6 +440,10 @@ for l in range(k+1): #모든 리스트 돌리기
     print()
 print(checkingtime(df2))
 print(checkingtime(df2))
+s=set(df['고객명'])
+ss=set(lastSatdf.values.flatten().tolist())
+#자기자신은 제외할것
+print( ss-s,'예약잡혀있을수도')
 
 print(countingnumber== len(df.index), len(df.index))
 

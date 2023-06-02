@@ -89,6 +89,19 @@ df2['고객명'] = df2['고객명'].apply(lambda x: x.split(' ')[-1])
 # print(df2)
 
 
+#운동화개수, 그냥개수 구하기
+df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
+df4=df4.fillna(method='ffill')
+df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
+df4= df4[['고객명','상품명']]
+item_count= df4.groupby('고객명')['상품명'].count()
+
+# print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
+df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
+shoe_count= df4.groupby('고객명')['상품명'].count()
+
+
+
 numberlist=[]
 remaining=0 #남아있는거 세는 변수
 jungbokcheck=[]
@@ -112,7 +125,7 @@ for i in range(len(df)):
         for j in range(len(dff)): #dff고객정보 의미
             if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
                 number = dff.loc[dff.index[j],'휴대폰']
-                remaining = dff.loc[dff.index[j],'체류']
+                remaining = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'
 
                 for l in range(len(df2)): #df2 배달리스트에서 한 번 확인 (배달여부 체크)
                     if (df.loc[df.index[i],'고객명'] == df2.loc[df2.index[l],'고객명'])& (df2.loc[df2.index[l],'수거/배달'] =='배달') : #찾는게 있다면
