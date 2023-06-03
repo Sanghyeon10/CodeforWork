@@ -115,8 +115,8 @@ def makedf1():
 
 def makedf2():
     df2 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-    df2= df2[['접수일자','완성일자', '고객명','옷장번호','택번호']]
-    df2 = df2.fillna('a')
+    df2= df2[['접수일자','완성일자', '고객명','옷장번호','택번호','상품명']]
+    df2 = df2.fillna(method='ffill')
     df2['고객명'] = df2['고객명'].apply(lambda x: x.split('\n')[0])
 
     df2['접수일자']= df2['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20'+x)
@@ -156,6 +156,6 @@ def makedf3():
     return df3
 
 
-
-if __name__ == "__main__":
-    print('yes')
+#주소 특이사항에 전화있는 사람 목록 뽑는 코드
+df =makedf3()
+(df[df['전화여부']==True]['고객명'].to_csv('juso.txt',index=False))

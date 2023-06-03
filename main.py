@@ -120,7 +120,7 @@ hour = time.hour
 if hour<16 : #오후 12~4시라면 필요한기능
     switch=True
     # pass
-# switch=True
+switch=True
 
 
 
@@ -177,25 +177,29 @@ lastSatdf=lastSatdf[['고객명']]
 # print( lastSatdf.values.flatten().tolist() )
 
 
-
+#주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
+jusodf=pd.read_csv('juso.txt',sep=" ")
+jusodf= jusodf[jusodf['고객명'].isin(df2['고객명'])]
+# print(jusodf)
 
 
 df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
 df4=df4.fillna(method='ffill')
 df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
+
+df4= df4.drop_duplicates(subset='택번호')
 df4= df4[['고객명','상품명']]
 item_count= df4.groupby('고객명')['상품명'].count()
-
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
 df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
 shoe_count= df4.groupby('고객명')['상품명'].count()
 
 
 
-df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
-df3= df3[['고객명','체류']]
-df3= df3.dropna(axis=0)
-df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
+# df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
+# df3= df3[['고객명','체류']]
+# df3= df3.dropna(axis=0)
+# df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
 
 
 
@@ -443,7 +447,8 @@ print(checkingtime(df2))
 s=set(df['고객명'])
 ss=set(lastSatdf.values.flatten().tolist())
 #자기자신은 제외할것
-print( ss-s,'예약잡혀있을수도')
 
+print( ss-s,'예약잡혀있을수도')
+print('전화할것', jusodf.values.flatten().tolist())
 print(countingnumber== len(df.index), len(df.index))
 
