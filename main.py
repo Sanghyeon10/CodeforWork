@@ -120,7 +120,7 @@ hour = time.hour
 if hour<16 : #오후 12~4시라면 필요한기능
     switch=True
     # pass
-switch=True
+# switch=True
 
 
 
@@ -165,6 +165,7 @@ df2['동호수'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_
 now = datetime.datetime.now()
 week = now.weekday()+2
 pastSat= now - datetime.timedelta(days= (week))
+pastpastSat= now -datetime.timedelta(days= (week)+7)
 # print(pastSat)
 lastSatdf=df2[df2['완성일자']<=pastSat]
 lastSatdf=lastSatdf[lastSatdf['옷장번호']==0]
@@ -176,6 +177,14 @@ lastSatdf = (lastSatdf[lastSatdf['동호수'].isin(df['동호수'])] )
 lastSatdf=lastSatdf[['고객명']]
 # print( lastSatdf.values.flatten().tolist() )
 
+lastlastSatdf=df2[df2['완성일자']<=pastpastSat]
+lastlastSatdf=lastlastSatdf[lastlastSatdf['옷장번호']==0]
+lastlastSatdf=lastlastSatdf[lastlastSatdf['비입주']=='입주민']
+lastlastSatdf= lastlastSatdf[['고객명','동호수']]
+
+lastlastSatdf = (lastlastSatdf[lastlastSatdf['동호수'].isin(df['동호수'])] )
+lastlastSatdf=lastlastSatdf[['고객명']]
+# print(lastlastSatdf)
 
 #주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
 jusodf=pd.read_csv('juso.txt',sep=" ")
@@ -446,9 +455,11 @@ print(checkingtime(df2))
 print(checkingtime(df2))
 s=set(df['고객명'])
 ss=set(lastSatdf.values.flatten().tolist())
+sss=set(lastlastSatdf.values.flatten().tolist())
 #자기자신은 제외할것
 
-print( ss-s,'예약잡혀있을수도')
+print('지지난주이전 혹시 예약?',sss-s)
+print( '예약잡혀있을수도',ss-s)
 print('전화할것', jusodf.values.flatten().tolist())
 print(countingnumber== len(df.index), len(df.index))
 
