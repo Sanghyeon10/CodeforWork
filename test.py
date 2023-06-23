@@ -14,12 +14,29 @@ def makejungbok(listt,X):
         listt.append(X)
         return False #값이 없으니까 중복아님
 
+def findingpassword(path, dict):
+    # path = 'data.txt'
+
+    with open(path, 'r', encoding='utf-8') as f:
+        for line in f:
+
+            name= line.split(" ",1)[0]
+
+            text = line.split(" ",1)[1]
+            text = text.rstrip('\n')
+            # fields = line.strip().split()  # 공백을기준으로 분리해 기억
+
+            # name, text= fields
+
+            dict[name] = text
+
 
 
 now = datetime.datetime.now() #+ datetime.timedelta(days=3)
 print('오늘날짜',now)
 
-inputt= input('비입주이면 a입력, 배달리스트 토요일까지 껄로 했나?')
+inputt='b' # input('비입주이면 a입력, 배달리스트 토요일까지 껄로 했나?')
+print('배달리스트 토요일까지 껄로 했나?')
 if inputt == "a":
     A='비입주민'
     day=5 # 월요일까지 뒤로 돌리고 여기서 5일 더 뒤로 돌려야 수요일됨
@@ -92,14 +109,20 @@ df2['고객명'] = df2['고객명'].apply(lambda x: x.split(' ')[-1])
 #운동화개수, 그냥개수 구하기
 df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
 df4=df4.fillna(method='ffill')
+
+df4= df4.drop_duplicates(subset='택번호')
 df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
 df4= df4[['고객명','상품명']]
 item_count= df4.groupby('고객명')['상품명'].count()
 
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
-df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
+df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
 shoe_count= df4.groupby('고객명')['상품명'].count()
 
+
+#기타사항 가져오기
+dictt={}
+gita= findingpassword('gita.txt',dictt)
 
 
 numberlist=[]
@@ -108,6 +131,7 @@ jungbokcheck=[]
 BB=''
 CC=''
 gijun=df.loc[df.index[0],'몇주째']
+tempremaining=""
 
 # print(df)
 for i in range(len(df)):
@@ -125,7 +149,13 @@ for i in range(len(df)):
         for j in range(len(dff)): #dff고객정보 의미
             if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
                 number = dff.loc[dff.index[j],'휴대폰']
-                remaining = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'
+                if dff.loc[dff.index[j],'체류']!=item_count[dff.loc[dff.index[j],'고객명']]:
+                    tempremaining='XXX'
+                else:
+                    tempremaining=""
+
+                remaining = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'+tempremaining
+                # print(dff.loc[dff.index[j],'체류']==item_count[dff.loc[dff.index[j],'고객명']])
 
                 for l in range(len(df2)): #df2 배달리스트에서 한 번 확인 (배달여부 체크)
                     if (df.loc[df.index[i],'고객명'] == df2.loc[df2.index[l],'고객명'])& (df2.loc[df2.index[l],'수거/배달'] =='배달') : #찾는게 있다면
@@ -134,6 +164,8 @@ for i in range(len(df)):
                 if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
                     BB='전화'
 
+                if dictt.get(dff.loc[dff.index[j],'고객명'],'a')!='a' : #주어진 고객명을 검색했는데 기타텍본에 내용이 있다면
+                    BB= BB + dictt.get(dff.loc[dff.index[j],'고객명'],'a')
 
             else:
                 pass
@@ -146,6 +178,7 @@ for i in range(len(df)):
         numberlist.append((number,remaining))
         if df.loc[df.index[i],'고객명'] == '107-1304':
             print('평일 늦은 저녁에나 가능')
+
         jungbokcheck.append(df.loc[df.index[i],'고객명'])
         number= 'end' #number 초기화
         remaining = 0

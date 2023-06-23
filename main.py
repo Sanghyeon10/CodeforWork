@@ -120,7 +120,7 @@ hour = time.hour
 if hour<16 : #오후 12~4시라면 필요한기능
     switch=True
     # pass
-# switch=True
+switch=True
 
 
 
@@ -200,7 +200,10 @@ df4= df4.drop_duplicates(subset='택번호')
 df4= df4[['고객명','상품명']]
 item_count= df4.groupby('고객명')['상품명'].count()
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
-df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(lambda x : x if x == True else None)
+
+# bedding_count= df4['상품명'].str.contain('이불|커버|담요|시트|인형|매트')
+
+df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
 shoe_count= df4.groupby('고객명')['상품명'].count()
 
 
@@ -400,7 +403,7 @@ for l in range(k+1): #모든 리스트 돌리기
                     for p in range(len(df2)) :#옷장에 있는거 택번호 가져올 정보
                         if df2.loc[df2.index[p],'고객명'] == globals()['get'+str(l)][i][0][1]: #맞는 택번호 구하기
                             tagnumber= df2.loc[df2.index[p],'택번호']
-                            tempnumber= str(item_count[df2.loc[df2.index[p],'고객명']])+'('+str(shoe_count[df2.loc[df2.index[p],'고객명']])+')'
+                            tagnumber= tagnumber + str(item_count[df2.loc[df2.index[p],'고객명']])+'('+str(shoe_count[df2.loc[df2.index[p],'고객명']])+')'
 
 
                     # for h in range(len(df3)): #개수 가져오기
@@ -411,19 +414,19 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 if (globals()['get'+str(l)][i][0][2][-2:])=='10': # 무슨k, 튜플중 첫번째 정보, 그안에 있는 시간관련정보 중 miniute정보 가져오기
                     tem=(globals()['get'+str(l)][i][0][1])#동호수 입력
-                    BB = (dict.get(tem,'문앞'))
+                    AA = AA + (dict.get(tem,'문앞'))
 
                 if (globals()['get'+str(l)][i][0][2][-2:])=='50':
-                    CC= '늦지말기'
+                    AA= AA + '늦지말기'
 
                 # print(globals()['get'+str(l)][i][0][1]) # 정확한 이름임
                 # print(text.get(globals()['get'+str(l)][i][0][1],'a'))
 
                 if text.get(globals()['get'+str(l)][i][0][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
-                    AA=text.get(globals()['get'+str(l)][i][0][1],'')
+                    AA=AA+ text.get(globals()['get'+str(l)][i][0][1],'')
 
 
-                print(globals()['get'+str(l)][i][0] , BB, AA,CC, tagnumber,tempnumber )
+                print(globals()['get'+str(l)][i][0] ,AA, tagnumber )
 
                 BB=''
                 AA=''
