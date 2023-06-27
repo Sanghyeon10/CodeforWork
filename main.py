@@ -8,17 +8,22 @@ def contains_korean(text):
     #한글자라도 한글이 있는가?
     return re.search("[가-힣]+",text) #맞으면 값이 있고 없으면 NONE
 
-def checkingtime(df2):
+def checkingtime(df2,pricesum):
     time= datetime.datetime.now()
 
     hour = time.hour
     weekday = time.weekday()
+
 
     df2 = df2[df2['옷장번호'] == 0]
     df2 = df2[df2['비입주'] != '입주민']
     df2= df2[['고객명','날짜차이']]
     # df2= df2[df2['날짜차이']>datetime.timedelta(days=7)]
     df2['날짜차이']= df2['날짜차이'].apply(lambda x : str(x)).apply(lambda x : x.split(' ',1)[0])
+    # df2['접수금액'] = df2['접수금액']
+    for l in range(len(df2)): #칼럼추가해주기
+        df2.loc[df2.index[l],'접수금액']= str(pricesum[df2.loc[df2.index[l],'고객명']])
+    #
     # print(df2)
     # print(df2.values.flatten().tolist())
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
@@ -120,7 +125,7 @@ hour = time.hour
 if hour<16 : #오후 12~4시라면 필요한기능
     switch=True
     # pass
-switch=True
+# switch=True
 
 
 
@@ -197,8 +202,11 @@ df4=df4.fillna(method='ffill')
 df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
 
 df4= df4.drop_duplicates(subset='택번호')
-df4= df4[['고객명','상품명']]
+df4= df4[['고객명','상품명','접수금액']]
+df4['접수금액']= df4['접수금액'].apply(lambda x: int(x.replace(",","")))
 item_count= df4.groupby('고객명')['상품명'].count()
+price_sum= df4.groupby('고객명')['접수금액'].sum()/1000
+# print(price_sum)
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
 
 # bedding_count= df4['상품명'].str.contain('이불|커버|담요|시트|인형|매트')
@@ -403,7 +411,7 @@ for l in range(k+1): #모든 리스트 돌리기
                     for p in range(len(df2)) :#옷장에 있는거 택번호 가져올 정보
                         if df2.loc[df2.index[p],'고객명'] == globals()['get'+str(l)][i][0][1]: #맞는 택번호 구하기
                             tagnumber= df2.loc[df2.index[p],'택번호']
-                            tagnumber= tagnumber + str(item_count[df2.loc[df2.index[p],'고객명']])+'('+str(shoe_count[df2.loc[df2.index[p],'고객명']])+')'
+                            tempnumber=  str(item_count[df2.loc[df2.index[p],'고객명']])+'('+str(shoe_count[df2.loc[df2.index[p],'고객명']])+')'
 
 
                     # for h in range(len(df3)): #개수 가져오기
@@ -419,14 +427,32 @@ for l in range(k+1): #모든 리스트 돌리기
                 if (globals()['get'+str(l)][i][0][2][-2:])=='50':
                     AA= AA + '늦지말기'
 
+                # print(shoe_count.keys())
+                # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
+                # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
+                if globals()['get'+str(l)][i][0][0] == '배달' and globals()['get'+str(l)][i][0][1] in shoe_count.keys() : #배달이면서 재고가 0개라도 표시가능한 경우에
+                    if int(item_count[globals()['get'+str(l)][i][0][1]]) == int(shoe_count[globals()['get'+str(l)][i][0][1]]):# 운동화개수 = 재고자산인경우,
+                        AA = AA + '운동화'+str(shoe_count[globals()['get'+str(l)][i][0][1]])
+
+                    elif int(item_count[globals()['get'+str(l)][i][0][1]]) != int(shoe_count[globals()['get'+str(l)][i][0][1]]) and int(shoe_count[globals()['get'+str(l)][i][0][1]]) !=0:
+                        #재고자산과 운동화 개수가 다르면서 운동화 개수가 0이 아니라면
+                        AA = AA + '운동화' + str(shoe_count[globals()['get' + str(l)][i][0][1]]) + '도'
+
+                    else: #재고 자산과 운동화개수가 다르면서 운동화개수가 0인경우 즉 운동화 없음.
+                        pass
+
                 # print(globals()['get'+str(l)][i][0][1]) # 정확한 이름임
                 # print(text.get(globals()['get'+str(l)][i][0][1],'a'))
+
 
                 if text.get(globals()['get'+str(l)][i][0][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
                     AA=AA+ text.get(globals()['get'+str(l)][i][0][1],'')
 
+                if globals()['get'+str(l)][i][0][1] in price_sum.keys(): #접수 금액 표시 가능하다면
+                    AA = " "+ str(price_sum[globals()['get' + str(l)][i][0][1]]) #빈칸하나 넣고 가격 표시
 
-                print(globals()['get'+str(l)][i][0] ,AA, tagnumber )
+
+                print(globals()['get'+str(l)][i][0] ,AA, tagnumber,tempnumber )
 
                 BB=''
                 AA=''
@@ -454,8 +480,8 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 # print(l)
     print()
-print(checkingtime(df2))
-print(checkingtime(df2))
+print(checkingtime(df2,price_sum))
+print(checkingtime(df2,price_sum))
 s=set(df['고객명'])
 ss=set(lastSatdf.values.flatten().tolist())
 sss=set(lastlastSatdf.values.flatten().tolist())

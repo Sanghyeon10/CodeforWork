@@ -176,8 +176,8 @@ for i in range(len(df)):
 
 
         numberlist.append((number,remaining))
-        if df.loc[df.index[i],'고객명'] == '107-1304':
-            print('평일 늦은 저녁에나 가능')
+        # if df.loc[df.index[i],'고객명'] == '107-1304':
+        #     print('평일 늦은 저녁에나 가능')
 
         jungbokcheck.append(df.loc[df.index[i],'고객명'])
         number= 'end' #number 초기화
