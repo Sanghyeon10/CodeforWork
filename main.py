@@ -295,8 +295,6 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
-
-
 k= k+1
 
 
@@ -315,14 +313,11 @@ for i in range(len(df)):
 
 k= k+1
 
-
 for i in range(len(df)):
     if df.loc[df.index[i], '요청일자'][0:2] in afternoon:
         if df.loc[df.index[i],'시']=='18' and df.index[i] not in get_index : #6시 30분도 시간은 표시하되 저녁타임으로 생각
 
             printtingf(df, get_index, i, k)
-
-
 
 k= k+1
 
@@ -333,14 +328,12 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
-
 k = k+1
 
 for i in range(len(df)):
     if df.loc[df.index[i], '요청일자'][0:2] in afternoon:
         if df.loc[df.index[i],'시']=='19' and df.loc[df.index[i],'분']!='30' and df.index[i] not in get_index:
             printtingf(df, get_index, i, k)
-
 
 k = k+1
 
@@ -349,14 +342,12 @@ for i in range(len(df)):
         if df.loc[df.index[i],'시']=='19' and df.loc[df.index[i],'분']=='30'  and df.index[i] not in get_index:
             printtingf(df, get_index, i, k)
 
-
 k = k+1
 
 for i in range(len(df)):
     if df.loc[df.index[i], '요청일자'][0:2] in afternoon:
         if df.loc[df.index[i],'시']=='20' and df.loc[df.index[i],'분']=='00'  and df.index[i] not in get_index:
             printtingf(df, get_index, i, k)
-
 
 
 k = k+1
@@ -371,11 +362,6 @@ for i in range(len(df)): #남은게 있다면 출력 (잘못된 시간대일경�
 
 
 c=[]
-
-
-
-
-
 countingnumber=0
 dict={} # password 담는용
 text={} # 체크 포인트 담는용
@@ -395,8 +381,6 @@ tagnumber=""
 
 for h in range(k+1): #배달 수거 합치기
     (globals()['get' + str(h)]) =mergeforget(globals()['get' + str(h)])
-
-
 
 
 
@@ -449,7 +433,7 @@ for l in range(k+1): #모든 리스트 돌리기
                     AA=AA+ text.get(globals()['get'+str(l)][i][0][1],'')
 
                 if globals()['get'+str(l)][i][0][1] in price_sum.keys(): #접수 금액 표시 가능하다면
-                    AA = " "+ str(price_sum[globals()['get' + str(l)][i][0][1]]) #빈칸하나 넣고 가격 표시
+                    AA = AA+ " "+ str(price_sum[globals()['get' + str(l)][i][0][1]]) #빈칸하나 넣고 가격 표시
 
 
                 print(globals()['get'+str(l)][i][0] ,AA, tagnumber,tempnumber )
@@ -467,8 +451,8 @@ for l in range(k+1): #모든 리스트 돌리기
                     countingnumber= countingnumber+1
 
 
-                if (globals()['get'+str(l)][i][0][1]=='110-1504'):
-                    print('호출금지')
+                # if (globals()['get'+str(l)][i][0][1]=='110-1504'):
+                #     print('호출금지')
 
                 # print(c)
                 if globals()['get' + str(l)][i][0][1] in c : #중복1개당 1발언

@@ -154,7 +154,8 @@ for i in range(len(df)):
                 else:
                     tempremaining=""
 
-                remaining = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'+tempremaining
+                remainings = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'+tempremaining
+                remaining = int(dff.loc[dff.index[j],'체류'])
                 # print(dff.loc[dff.index[j],'체류']==item_count[dff.loc[dff.index[j],'고객명']])
 
                 for l in range(len(df2)): #df2 배달리스트에서 한 번 확인 (배달여부 체크)
@@ -171,7 +172,7 @@ for i in range(len(df)):
                 pass
         #number 값 획득
 
-        print(df.loc[df.index[i], '고객명'], df.loc[df.index[i], '날짜차이'].days, number,'개수:',remaining ,BB,CC)
+        print(df.loc[df.index[i], '고객명'], df.loc[df.index[i], '날짜차이'].days, number,'개수:',remainings ,BB,CC)
 
 
 
@@ -182,6 +183,7 @@ for i in range(len(df)):
         jungbokcheck.append(df.loc[df.index[i],'고객명'])
         number= 'end' #number 초기화
         remaining = 0
+        remainings = ''
         CC=""
         BB=''
     else:
