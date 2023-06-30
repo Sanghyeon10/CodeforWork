@@ -30,7 +30,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="-3"
+sigan="2.26"
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")

@@ -27,6 +27,7 @@ def checkingtime(df2,pricesum):
     #
     # print(df2)
     # print(df2.values.flatten().tolist())
+    df2 = df2.drop_duplicates(subset='고객명')
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
     # Y=df2.values.flatten().tolist()
 
