@@ -30,6 +30,25 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
+sigan="-3"
+sigan = str(float(sigan)+12)
+today= datetime.datetime.now().date()
+hour , minute = sigan.split(".")
+aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
+
+# print(aftersigan)
+sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
+
+
+
+
+
+
+
+
+
+
+
 
 plussunsu=[]
 for o in range(len(df)): #문자이름 뽑아내기
@@ -42,7 +61,7 @@ sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통
 
 
 df2 = supportmain.getdf2()
-
+# print(df2)
 
 ## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
 lastSatdf , lastlastSatdf= supportmain.getpastSat(df,df2)
@@ -53,7 +72,7 @@ jusodf= jusodf[jusodf['고객명'].isin(df2['고객명'])]
 # print(jusodf)
 
 
-item_count, price_sum, shoe_count = supportmain.getdf4()
+item_count, price_sum, shoe_count ,diffnumber = supportmain.getdf4()
 
 
 
@@ -237,6 +256,7 @@ for l in range(k+1): #모든 리스트 돌리기
                         if df2.loc[df2.index[p],'고객명'] == globals()['get'+str(l)][i][1]: #맞는 택번호 구하기
                             tagnumber= df2.loc[df2.index[p],'택번호']
                             tempnumber=  str(item_count[df2.loc[df2.index[p],'고객명']])+'('+str(shoe_count[df2.loc[df2.index[p],'고객명']])+')'
+                            break #택첫번째면 충분함
 
 
 
@@ -271,6 +291,12 @@ for l in range(k+1): #모든 리스트 돌리기
                     AA = AA+ " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
 
 
+
+                if globals()['get' + str(l)][i][0] == '배달' and globals()['get' + str(l)][i][1] in item_count.keys(): #배달이면서 재고 개수가 있는 경우에
+                    if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
+                        AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
+
+
                 print(globals()['get'+str(l)][i][:-1] ,AA, tagnumber,tempnumber )
 
                 BB=''
@@ -299,11 +325,35 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 # print(l)
     print()
+
+
+
+# print(sigandf)
+newlist=[] #늦게 등록된거 택번호 재고개수 표시하기
+#['고객명','택번호','재고개수'])
+for i in range(len(sigandf)):
+    newlist.append(sigandf.loc[sigandf.index[i],'고객명'])
+    if sigandf.loc[sigandf.index[i],'고객명'] in item_count.keys() : #옷장에서 찾을수 있다면
+        for j in range(len(df2)):
+            if df2.loc[df2.index[j],'고객명']== sigandf.loc[sigandf.index[i],'고객명'] :#찾고있는 고객명이 일치한다면,
+                newlist.append(df2.loc[df2.index[j],'택번호'])
+                break
+        newlist.append(str(item_count[sigandf.loc[sigandf.index[i], '고객명']]) + '(' + str(
+            shoe_count[sigandf.loc[sigandf.index[i], '고객명']]) + ')')
+
+    else:#옷장에 없으면
+        del newlist[-1] #추가한 이름은 큰 의미가 없으므로 삭제
+
+
+
+print(newlist)
+
 print(supportmain.checkingtime(df2,price_sum))
 print(supportmain.checkingtime(df2,price_sum))
 s=set(df['고객명'])
 ss=set(lastSatdf.values.flatten().tolist())
 sss=set(lastlastSatdf.values.flatten().tolist())
+
 #자기자신은 제외할것
 
 print('지지난주이전 혹시 예약?',sss-s)

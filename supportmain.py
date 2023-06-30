@@ -114,21 +114,25 @@ def mergeforget(list):
 def getdf1():
     df = pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
 
-    df = df[['수거/배달', '고객명', '요청일자']]
+    df = df[['수거/배달', '고객명', '요청일자','등록일자']]
     df['고객명'] = df['고객명'].apply(lambda x: x.split(' ')[-1])
     df['요청일자'] = df['요청일자'].apply(lambda x: x.split('\n')[-1]).apply(lambda x: x[1:6])
+    df['등록일자'] = pd.to_datetime( df['등록일자'].apply(lambda x: "20"+x.split('\n')[0] +" " + x.split('\n')[-1][1:6] )) #datetime형태로 시간저장
+
     df['동호수'] = df['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) == None else x)  # 한글이 없으면 -앞에꺼, 있으면 그대로쓰기
     df['시'] = df['요청일자'].apply(lambda x: x.split(':')[0])
     df['분'] = df['요청일자'].apply(lambda x: x.split(':')[1])
     df['문자이름'] = df['고객명'].apply(lambda x: False if contains_korean(x) == None else True)  # 한글이 없으면 None이므로 False 있으면 True
 
+    # print(df)
     return df
 
 def getdf2():
     df2 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
     df2 = df2[['접수일자', '완성일자', '고객명', '옷장번호', '택번호', '상품명']]
-    df2 = df2.dropna()
-    # df2= df2.fillna(method='ffill')
+    # df2 = df2.dropna()
+    df2= df2.fillna(method='ffill')
+    df2 = df2.drop_duplicates(subset='택번호')
     df2['고객명'] = df2['고객명'].apply(lambda x: x.split('\n')[0])
     df2['비입주'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) != None else '입주민')
 
@@ -138,7 +142,9 @@ def getdf2():
     df2['완성일자'] = df2['완성일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
     df2['날짜차이'] = datetime.datetime.now() - df2['완성일자']
     df2['동호수'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) == None else x)
-
+    df2['택숫자'] = df2['택번호'].apply(lambda x: int(x.replace("-","")) if "-" in x else None ) #-있으면 숫자화 아니면 사용안함이므로 놔두기
+    # df2['숫자차이'] = df2['택숫자'].diff().fillna(1)
+    # print(df2)
     return df2
 
 def getpastSat(df1,df2):
@@ -176,20 +182,34 @@ def getdf4():
     df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
 
     df4 = df4.drop_duplicates(subset='택번호')
-    df4 = df4[['고객명', '상품명', '접수금액']]
+    df4 = df4[['고객명', '상품명', '접수금액','택번호']]
     df4['접수금액'] = df4['접수금액'].apply(lambda x: int(x.replace(",", "")))
+    df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
+    df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
     item_count = df4.groupby('고객명')['상품명'].count()
     price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
+    diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
+    # print(diffnumber)
 
     df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(
         lambda x: x if x == True else None)
     shoe_count = df4.groupby('고객명')['상품명'].count()
 
-    return item_count, price_sum, shoe_count
+    return item_count, price_sum, shoe_count , diffnumber
 
+
+def makedf3():
+
+    df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
+    df3= df3[['고객명','휴대폰','체류','주소','특이사항']]
+    df3.fillna('',inplace=True)
+    # df3= df3.dropna(axis=0)
+    df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
+    df3['전화여부'] = df3[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
+
+    return df3
 
 if __name__ =="__main__":
-    pass
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드
-    # df =makedf3()
-    # df[df['전화여부']==True]['고객명'].to_csv('juso.txt',index=False)
+    df =makedf3()
+    df[df['전화여부']==True]['고객명'].to_csv('juso.txt',index=False)
