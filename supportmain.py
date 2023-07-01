@@ -143,8 +143,7 @@ def getdf2():
     df2['완성일자'] = df2['완성일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
     df2['날짜차이'] = datetime.datetime.now() - df2['완성일자']
     df2['동호수'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) == None else x)
-    df2['택숫자'] = df2['택번호'].apply(lambda x: int(x.replace("-","")) if "-" in x else None ) #-있으면 숫자화 아니면 사용안함이므로 놔두기
-    # df2['숫자차이'] = df2['택숫자'].diff().fillna(1)
+    df2['택숫자'] = df2['택번호'].apply(lambda x: int(x.replace("-","")) if "-" in x else None ) #-있으면 숫자화 아니면 '사용안함'이므로 None처리
     # print(df2)
     return df2
 
@@ -182,16 +181,18 @@ def getdf4():
     df4 = df4.fillna(method='ffill')
     df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
 
-    df4 = df4.drop_duplicates(subset='택번호')
     df4 = df4[['고객명', '상품명', '접수금액','택번호']]
+
+
     df4['접수금액'] = df4['접수금액'].apply(lambda x: int(x.replace(",", "")))
+    price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
+
+    df4 = df4.drop_duplicates(subset='택번호')
+
     df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
     df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
     item_count = df4.groupby('고객명')['상품명'].count()
-    price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
     diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
-    # print(diffnumber)
-
     df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(
         lambda x: x if x == True else None)
     shoe_count = df4.groupby('고객명')['상품명'].count()
@@ -199,10 +200,10 @@ def getdf4():
     return item_count, price_sum, shoe_count , diffnumber
 
 
-def makedf3():
+def getdf3():
 
     df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
-    df3= df3[['고객명','휴대폰','체류','주소','특이사항']]
+    df3= df3[['고객명','휴대폰','체류','주소','특이사항',"총미수금"]]
     df3.fillna('',inplace=True)
     # df3= df3.dropna(axis=0)
     df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
@@ -212,5 +213,6 @@ def makedf3():
 
 if __name__ =="__main__":
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드
-    df =makedf3()
+    df =getdf3()
     df[df['전화여부']==True]['고객명'].to_csv('juso.txt',index=False)
+    # print(df)

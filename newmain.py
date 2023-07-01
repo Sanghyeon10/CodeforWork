@@ -75,7 +75,6 @@ jusodf= jusodf[jusodf['고객명'].isin(df2['고객명'])]
 item_count, price_sum, shoe_count ,diffnumber = supportmain.getdf4()
 
 
-
 # df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
 # df3= df3[['고객명','체류']]
 # df3= df3.dropna(axis=0)
@@ -237,6 +236,12 @@ tagnumber=""
 
 
 
+#총미수금 알아낼 정보 얻기
+df3= supportmain.getdf3()
+df3.set_index('고객명', inplace= True)
+df3=df3[["총미수금"]]
+df3['총미수금']=df3['총미수금'].apply(lambda x: int(x.replace("," ,"")) )
+# print(df3)
 
 
 for h in range(k+1): #배달 수거 합치기
@@ -287,9 +292,11 @@ for l in range(k+1): #모든 리스트 돌리기
                 if text.get(globals()['get'+str(l)][i][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
                     AA=AA+ text.get(globals()['get'+str(l)][i][1],'')
 
-                if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면
-                    AA = AA+ " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
-
+                if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
+                    if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,
+                        AA = AA + " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
+                    else: #총미수금이 0이면,선불이므로 개수와 선불표시하기
+                        AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
 
 
                 if globals()['get' + str(l)][i][0] == '배달' and globals()['get' + str(l)][i][1] in item_count.keys(): #배달이면서 재고 개수가 있는 경우에

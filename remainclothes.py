@@ -155,7 +155,8 @@ for i in range(len(df)):
                     tempremaining=""
 
                 remainings = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'+tempremaining
-                remaining = int(dff.loc[dff.index[j],'체류'])
+                totalremaining = int(dff.loc[dff.index[j],'체류'])
+                inventories= int(item_count[dff.loc[dff.index[j],'고객명']])
                 # print(dff.loc[dff.index[j],'체류']==item_count[dff.loc[dff.index[j],'고객명']])
 
                 for l in range(len(df2)): #df2 배달리스트에서 한 번 확인 (배달여부 체크)
@@ -176,14 +177,15 @@ for i in range(len(df)):
 
 
 
-        numberlist.append((number,remaining))
+        numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명']))
         # if df.loc[df.index[i],'고객명'] == '107-1304':
         #     print('평일 늦은 저녁에나 가능')
 
         jungbokcheck.append(df.loc[df.index[i],'고객명'])
         number= 'end' #number 초기화
         remaining = 0
-        remainings = ''
+        totalremainings = ''
+        inventories=""
         CC=""
         BB=''
     else:
@@ -195,6 +197,8 @@ print()
 
 
 jungbokcheck=[]
+forprintdf=[]
+notpirnt=["110-2202"] #출력하지 않을 동호수
 
 B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
 if B=='0':
@@ -206,21 +210,30 @@ elif B=='1':
         if numberlist[i][1]==1 and not makejungbok(jungbokcheck,numberlist[i][0]):
             print(numberlist[i][0])
             print()
+            if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
+                forprintdf.append(numberlist[i][0])
 
 elif B=='2':
     for i in range(len(numberlist)):
         if numberlist[i][1]>=2 and not makejungbok(jungbokcheck,numberlist[i][0]):
             print(numberlist[i][0])
             print()
+            if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
+                forprintdf.append(numberlist[i][0])
 
 else:
     for i in range(len(numberlist)):
         if not makejungbok(jungbokcheck,numberlist[i][0]):
             print(numberlist[i][0])
             print()
+            if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt: #재고개수와 완성개수가 같다면 프린트목록에 해당.
+                forprintdf.append(numberlist[i][0])
 
 
 
+forprintdf =pd.DataFrame(forprintdf,columns=['전화번호'])
+print(forprintdf)
+forprintdf.to_csv('전화번호리스트.csv',index=False)
 
 # print('기존전산기록확인')
 # print('문자기록')
