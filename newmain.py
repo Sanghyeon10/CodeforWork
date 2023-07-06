@@ -30,7 +30,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="1.27"
+sigan="1.59"
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")
@@ -348,7 +348,7 @@ for i in range(len(sigandf)):
                 templist.append(df2.loc[df2.index[j],'택번호'])
                 break
         templist.append(str(item_count[sigandf.loc[sigandf.index[i], '고객명']]) + '(' + str(
-            shoe_count[sigandf.loc[sigandf.index[i], '고객명']]) + ')')
+            gita_count[sigandf.loc[sigandf.index[i], '고객명']]) + ')')
 
         newlist= np.append(newlist, np.array([templist]), axis=0)
         templist=[]
