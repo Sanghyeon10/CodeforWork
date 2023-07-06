@@ -3,7 +3,7 @@ import datetime
 import re
 import copy
 import supportmain
-
+import numpy as np
 
 
 def printtingf(df, get_index, i, k):
@@ -30,7 +30,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="2.26"
+sigan="1.27"
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")
@@ -72,7 +72,7 @@ jusodf= jusodf[jusodf['고객명'].isin(df2['고객명'])]
 # print(jusodf)
 
 
-item_count, price_sum, shoe_count ,diffnumber = supportmain.getdf4()
+item_count,gita_count, shoe_count , bedding_count, diffnumber , price_sum = supportmain.getdf4()
 
 
 # df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
@@ -276,16 +276,17 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(shoe_count.keys())
                 # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
                 # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
-                if globals()['get'+str(l)][i][0] == '배달' and globals()['get'+str(l)][i][1] in shoe_count.keys() : #배달이면서 재고가 0개라도 표시가능한 경우에
-                    if int(item_count[globals()['get'+str(l)][i][1]]) == int(shoe_count[globals()['get'+str(l)][i][1]]):# 운동화개수 = 재고자산인경우,
+                if globals()['get'+str(l)][i][0] == '배달' and globals()['get'+str(l)][i][1] in gita_count.keys() : #배달이면서 재고가 0개라도 표시가능한 경우에
+                    if int(shoe_count[globals()['get'+str(l)][i][1]])>0:#  운동화개수가 0 이상이면
                         AA = AA + '운동화'+str(shoe_count[globals()['get'+str(l)][i][1]])
 
-                    elif int(item_count[globals()['get'+str(l)][i][1]]) != int(shoe_count[globals()['get'+str(l)][i][1]]) and int(shoe_count[globals()['get'+str(l)][i][1]]) !=0:
+                    if int(bedding_count[globals()['get'+str(l)][i][1]]) >0 : # 이불개수가 0이상이면
                         #재고자산과 운동화 개수가 다르면서 운동화 개수가 0이 아니라면
-                        AA = AA + '운동화' + str(shoe_count[globals()['get' + str(l)][i][1]]) + '도'
+                        AA = AA + '이불' + str(shoe_count[globals()['get' + str(l)][i][1]])
 
-                    else: #재고 자산과 운동화개수가 다르면서 운동화개수가 0인경우 즉 운동화 없음.
-                        pass
+                    if int(item_count[globals()['get'+str(l)][i][1]]) > int(gita_count[globals()['get'+str(l)][i][1]]) and int(gita_count[globals()['get'+str(l)][i][1]])>0 :
+                        #기타 개수가 있고 재고자산보다 모자르면, 도 추가해주기
+                        AA= AA + '도'
 
 
 
@@ -336,21 +337,24 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
 # print(sigandf)
-newlist=[] #늦게 등록된거 택번호 재고개수 표시하기
+newlist = np.empty((0,3), str) #늦게 등록된거 택번호 재고개수 표시하기
+templist=[]
 #['고객명','택번호','재고개수'])
 for i in range(len(sigandf)):
-    newlist.append(sigandf.loc[sigandf.index[i],'고객명'])
     if sigandf.loc[sigandf.index[i],'고객명'] in item_count.keys() : #옷장에서 찾을수 있다면
+        templist.append(sigandf.loc[sigandf.index[i], '고객명']) #찾을 사람 이름 추가
         for j in range(len(df2)):
             if df2.loc[df2.index[j],'고객명']== sigandf.loc[sigandf.index[i],'고객명'] :#찾고있는 고객명이 일치한다면,
-                newlist.append(df2.loc[df2.index[j],'택번호'])
+                templist.append(df2.loc[df2.index[j],'택번호'])
                 break
-        newlist.append(str(item_count[sigandf.loc[sigandf.index[i], '고객명']]) + '(' + str(
+        templist.append(str(item_count[sigandf.loc[sigandf.index[i], '고객명']]) + '(' + str(
             shoe_count[sigandf.loc[sigandf.index[i], '고객명']]) + ')')
 
-    else:#옷장에 없으면
-        del newlist[-1] #추가한 이름은 큰 의미가 없으므로 삭제
+        newlist= np.append(newlist, np.array([templist]), axis=0)
+        templist=[]
 
+    else:#옷장에 없으면
+        pass
 
 
 print(newlist)

@@ -193,11 +193,23 @@ def getdf4():
     df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
     item_count = df4.groupby('고객명')['상품명'].count()
     diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
-    df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(
+
+    tempdf= df4['상품명'].copy()
+
+    df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(
+        lambda x: x if x == True else None)
+    gita_count= df4.groupby('고객명')['상품명'].count()
+
+    df4['상품명'] =  tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(
         lambda x: x if x == True else None)
     shoe_count = df4.groupby('고객명')['상품명'].count()
 
-    return item_count, price_sum, shoe_count , diffnumber
+    df4['상품명'] =  tempdf.str.contains("이불|커버|담요|시트|인형|매트").apply(
+        lambda x: x if x == True else None)
+    bedding_count= df4.groupby('고객명')['상품명'].count()
+
+
+    return item_count,gita_count, shoe_count , bedding_count,diffnumber ,   price_sum
 
 
 def getdf3():

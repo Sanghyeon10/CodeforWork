@@ -464,6 +464,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 # print(l)
     print()
+print('이것은 newmain이 아니다')
 print(checkingtime(df2,price_sum))
 print(checkingtime(df2,price_sum))
 s=set(df['고객명'])
