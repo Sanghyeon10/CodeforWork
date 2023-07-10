@@ -191,8 +191,25 @@ def getdf4():
 
     df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
     df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
+    # df4.to_csv('testtest.csv')
     item_count = df4.groupby('고객명')['상품명'].count()
     diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
+
+
+    # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
+    grouped_df = df4.groupby('고객명')['택숫자'].diff()
+    # print(type(grouped_df))
+    # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이의 누적합 구하기
+    cumulative_sum = grouped_df.groupby(df4['고객명']).cumsum()
+    # print(cumulative_sum)
+    # 모든 사람의 마지막 값 출력
+    diffnumber = cumulative_sum.groupby(df4['고객명']).last().fillna(0)
+
+    # print(diffnumber)
+    # grouped_df.to_csv('testtest.csv')
+
+
+
 
     tempdf= df4['상품명'].copy()
 

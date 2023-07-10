@@ -197,7 +197,7 @@ print()
 
 
 jungbokcheck=[]
-forprintdf=[]
+forprintdf=pd.Series(dtype='object')
 notpirnt=["110-2202"] #출력하지 않을 동호수
 
 B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
@@ -211,7 +211,8 @@ elif B=='1':
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                forprintdf.append(numberlist[i][0])
+                pass
+                # forprintdf.append(numberlist[i][0])
 
 elif B=='2':
     for i in range(len(numberlist)):
@@ -219,7 +220,8 @@ elif B=='2':
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                forprintdf.append(numberlist[i][0])
+                pass
+                # forprintdf.append(numberlist[i][0])
 
 else:
     for i in range(len(numberlist)):
@@ -227,13 +229,26 @@ else:
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt: #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                forprintdf.append(numberlist[i][0])
+                pass
+                # forprintdf.append(numberlist[i][0])
+
+
+with open('checkpoint.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        if "010" in line:
+            forprintdf= pd.concat([forprintdf, pd.Series(line.rstrip("\n"))])
 
 
 
-forprintdf =pd.DataFrame(forprintdf,columns=['전화번호'])
+# forprintdf =pd.DataFrame(forprintdf,columns=['전화번호'])
+forprintdf.name='전화번호'
 print(forprintdf)
 forprintdf.to_csv('전화번호리스트.csv',index=False)
+
+
+
+
+
 
 # print('기존전산기록확인')
 # print('문자기록')

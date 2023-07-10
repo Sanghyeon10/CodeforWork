@@ -30,7 +30,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="1.59"
+sigan="-1"
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")
@@ -249,6 +249,7 @@ for h in range(k+1): #배달 수거 합치기
 
 
 
+
 for l in range(k+1): #모든 리스트 돌리기
     # print(globals()['get'+str(l)],l)
     for j in range(len(sunsu)):
@@ -282,7 +283,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
                     if int(bedding_count[globals()['get'+str(l)][i][1]]) >0 : # 이불개수가 0이상이면
                         #재고자산과 운동화 개수가 다르면서 운동화 개수가 0이 아니라면
-                        AA = AA + '이불' + str(shoe_count[globals()['get' + str(l)][i][1]])
+                        AA = AA + '이불' + str(bedding_count[globals()['get' + str(l)][i][1]])
 
                     if int(item_count[globals()['get'+str(l)][i][1]]) > int(gita_count[globals()['get'+str(l)][i][1]]) and int(gita_count[globals()['get'+str(l)][i][1]])>0 :
                         #기타 개수가 있고 재고자산보다 모자르면, 도 추가해주기
@@ -301,6 +302,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
                 if globals()['get' + str(l)][i][0] == '배달' and globals()['get' + str(l)][i][1] in item_count.keys(): #배달이면서 재고 개수가 있는 경우에
+                    # print(globals()['get' + str(l)][i][1], diffnumber[globals()['get'+str(l)][i][1]])
                     if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
                         AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
 
