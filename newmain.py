@@ -7,9 +7,13 @@ import numpy as np
 
 
 def printtingf(df, get_index, i, k):
-    a = (df.loc[df.index[i], '수거/배달'], df.loc[df.index[i], '고객명'], df.loc[df.index[i], '요청일자'],df.loc[df.index[i], '동호수'] )
+    a = (df.loc[df.index[i], '수거/배달'], df.loc[df.index[i], '고객명'], df.loc[df.index[i], '요청일자'],df.loc[df.index[i], '동호수'], supportmain.lastpiece(df.loc[df.index[i], '고객명']) )
     get_index.append(df.index[i])
     globals()['get' + str(k)].append(a)
+
+
+
+
 
 df= supportmain.getdf1()
 
@@ -30,7 +34,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="-1"
+sigan="2.08"
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")
@@ -244,10 +248,10 @@ df3['총미수금']=df3['총미수금'].apply(lambda x: int(x.replace("," ,"")) 
 # print(df3)
 
 
-for h in range(k+1): #배달 수거 합치기
+for h in range(k+1): #배달 수거 합치기 + 끝호수 1~5 정렬해주기
     (globals()['get' + str(h)]) =supportmain.mergeforget(globals()['get' + str(h)])
-
-
+    globals()['get' + str(h)].sort(key=lambda x: x[-1], reverse=False) #마지막꺼에 1~5들어있으므로 이것을 기준으로 정렬해주기
+    # print((globals()['get' + str(h)]))
 
 
 for l in range(k+1): #모든 리스트 돌리기
@@ -307,7 +311,7 @@ for l in range(k+1): #모든 리스트 돌리기
                         AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
 
 
-                print(globals()['get'+str(l)][i][:-1] ,AA, tagnumber,tempnumber )
+                print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )
 
                 BB=''
                 AA=''

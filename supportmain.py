@@ -9,6 +9,8 @@ def contains_korean(text):
     return re.search("[가-힣]+",text) #맞으면 값이 있고 없으면 NONE
 
 
+
+
 def checkingtime(df2,pricesum):
     time= datetime.datetime.now()
 
@@ -92,6 +94,16 @@ def printtingf(df, get_index, i, k):
     get_index.append(df.index[i])
     globals()['get' + str(k)].append(a)
 
+def lastpiece(X):
+    a=X[-1:] #마지막 글자만 슬라이싱
+    if a.isdigit() :#문자열로된 숫자라면
+        a= int(a)
+    else:
+        pass
+
+    return a
+
+
 def mergeforget(list):
     newlist=copy.deepcopy(list)
     # print(list)
@@ -101,7 +113,7 @@ def mergeforget(list):
         B = list[j][0]  # 배달수거 문자열 저장된것
         for i in range(len(list)): #전체를 검사한다 그리고 그것을 전체 반복할것
             if A == list[i][1] and B!= list[i][0]: #이름은 같되 배달 수거가 다른것이 있다면 새로운것으로 재탄생
-                temp = ('수거배달', list[i][1],list[i][2],list[i][3] ) #개수 4개로 맞춰주기
+                temp = ('수거배달', list[i][1],list[i][2],list[i][3], list[i][4] ) #개수 5개로 맞춰주기
                 if temp not in newlist: #고객명이 안들어있으면
                     newlist.append(temp)
                     newlist.remove(list[j])
@@ -190,6 +202,7 @@ def getdf4():
     df4 = df4.drop_duplicates(subset='택번호')
 
     df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
+    #-이 없으면 사용안함문자열이므로 None 결측치 처리하기
     df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
     # df4.to_csv('testtest.csv')
     item_count = df4.groupby('고객명')['상품명'].count()
