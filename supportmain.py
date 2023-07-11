@@ -181,11 +181,12 @@ def getpastSat(df1,df2):
     lastlastSatdf = lastlastSatdf[lastlastSatdf['비입주'] == '입주민']
     lastlastSatdf = lastlastSatdf[['고객명', '동호수']]
 
+    calllist = lastlastSatdf[['고객명']]
     lastlastSatdf = (lastlastSatdf[lastlastSatdf['동호수'].isin(df1['동호수'])])
     lastlastSatdf = lastlastSatdf[['고객명']]
     # print(lastlastSatdf)
 
-    return lastSatdf, lastlastSatdf
+    return lastSatdf, lastlastSatdf, calllist
 
 
 def getdf4():

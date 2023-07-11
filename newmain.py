@@ -12,9 +12,6 @@ def printtingf(df, get_index, i, k):
     globals()['get' + str(k)].append(a)
 
 
-
-
-
 df= supportmain.getdf1()
 
 noon=['09','10']
@@ -68,7 +65,7 @@ df2 = supportmain.getdf2()
 # print(df2)
 
 ## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
-lastSatdf , lastlastSatdf= supportmain.getpastSat(df,df2)
+lastSatdf , lastlastSatdf, calllist = supportmain.getpastSat(df,df2)
 
 #주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
 jusodf=pd.read_csv('juso.txt',sep=" ")
@@ -373,8 +370,9 @@ sss=set(lastlastSatdf.values.flatten().tolist())
 
 #자기자신은 제외할것
 
-print('지지난주이전 혹시 예약?',sss-s)
-print( '예약잡혀있을수도',ss-s)
-print('전화할것', jusodf.values.flatten().tolist())
+print('지지난주이전 예약?',sss-s)
+print('지난주 예약확인',ss-s)
+print('지난주 이전꺼',calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
+print('전화 배달할것', jusodf.values.flatten().tolist())
 print(countingnumber== len(df.index), len(df.index))
 
