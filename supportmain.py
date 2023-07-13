@@ -30,6 +30,7 @@ def checkingtime(df2,pricesum):
     # print(df2)
     # print(df2.values.flatten().tolist())
     df2 = df2.drop_duplicates(subset='고객명')
+    df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
     # Y=df2.values.flatten().tolist()
 
@@ -99,7 +100,7 @@ def lastpiece(X):
     if a.isdigit() :#문자열로된 숫자라면
         a= int(a)
     else:
-        pass
+        a=0
 
     return a
 
@@ -143,6 +144,8 @@ def getdf1():
 def getdf2():
     df2 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
     df2 = df2[['접수일자', '완성일자', '고객명', '옷장번호', '택번호', '상품명']]
+
+    df2 = df2[df2['옷장번호'] == 0] #옷장번호 0번 외에것은 무시하기
     # df2 = df2.dropna()
     df2= df2.fillna(method='ffill')
     df2 = df2.drop_duplicates(subset='택번호')
