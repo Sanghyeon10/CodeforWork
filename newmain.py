@@ -31,7 +31,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="2.15"
+sigan="1.15" #키패트. 쓰지 말기
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")
@@ -81,7 +81,8 @@ item_count,gita_count, shoe_count , bedding_count, diffnumber , price_sum = supp
 # df3= df3.dropna(axis=0)
 # df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
 
-
+# 미리예약여부로 중복 일일이 확인 x하기
+df5 = supportmain.getdf5()
 
 
 
@@ -363,19 +364,26 @@ for i in range(len(sigandf)):
 print(newlist)
 
 print(supportmain.checkingtime(df2,price_sum))
-print(supportmain.checkingtime(df2,price_sum))
-s=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
+# print(supportmain.checkingtime(df2,price_sum))
+s1=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
 ss=set(lastSatdf.values.flatten().tolist())
 sss=set(lastlastSatdf.values.flatten().tolist())
 jusotoset= set(jusodf.values.flatten().tolist())
+# print(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
 calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화
+
+
+
+# print(df5)
+s2= set(df5) #미래예약 파일 집합화
+# print(s2)
 
 #자기자신은 제외할것
 
 print('예약은 비포함')
-print('지지난주이전 동수 일치',sss-s)
-print('지난주 동수 일치',ss-s)
-print('지난주 것 전체 리스트', calllisttoset - s)
-print('전화 배달 리스트', jusotoset-s)
+print('지지난주이전 동수 일치',sss.difference(s1|s2))
+print('지난주 동수 일치',ss.difference(s1|s2))
+print('지난주 것 전체 리스트', calllisttoset.difference(s1|s2))
+print('전화 배달 리스트', jusotoset.difference(s1|s2))
 print(countingnumber== len(df.index), len(df.index))
 

@@ -243,6 +243,7 @@ with open('checkpoint.txt', 'r', encoding='utf-8') as f:
 # forprintdf =pd.DataFrame(forprintdf,columns=['전화번호'])
 forprintdf.name='전화번호'
 print(forprintdf)
+print(len(forprintdf))
 forprintdf.to_csv('전화번호리스트.csv',index=False)
 
 

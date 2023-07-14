@@ -32,7 +32,10 @@ def checkingtime(df2,pricesum):
     df2 = df2.drop_duplicates(subset='고객명')
     df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
-    # Y=df2.values.flatten().tolist()
+
+    # Z= ', '.join(df2.values.flatten().tolist()) #문자열인 숫자라 정렬이 안됨.
+    # print(Y)
+    # print(Z)
 
     if weekday == 0: # 월요일
         if hour <12:
@@ -70,7 +73,7 @@ def checkingtime(df2,pricesum):
     else:
         X='없음'
 
-    return X+':비입주는'+Y
+    return X +':비입주는'+Y
 
 
 def findingpassword(path, dict):
@@ -256,6 +259,26 @@ def getdf3():
     df3['전화여부'] = df3[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
 
     return df3
+
+
+def getdf5(): # 미래에 예약된거 찾아보기
+    df5= pd.read_excel(r'C:\Users\user\Desktop\후예약.xls')
+    df5 = df5[['수거/배달', '고객명','요청일자']]
+    df5['고객명'] = df5['고객명'].apply(lambda x: x.split(' ')[-1])
+    df5['요청일자'] = pd.to_datetime( df5['요청일자'].apply(lambda x: "20"+x.split('\n')[0] +" " + x.split('\n')[-1][1:6] )) #datetime형태로 시간저장
+
+    today = datetime.datetime.now()
+    if df5.loc[df5.index[0],'요청일자'].date()== today.date() :# 첫번째 정보가 오늘날짜와 같다면 비업데이트는 아님.
+        df5= df5[df5['수거/배달']=='배달'] #배달예약만 의미있음.
+        df5= df5[['고객명']] #이것만 살리기
+        df5= df5.values.flatten().tolist()
+
+    else:
+
+        df5=[] #업데이트 안된 파일이므로 쓸모없는 정보임.
+
+    return df5
+
 
 if __name__ =="__main__":
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드
