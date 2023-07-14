@@ -1,16 +1,16 @@
 import pandas as pd
 
-# 데이터프레임 생성
-df = pd.DataFrame({'Name': ['Alice', 'Bob', 'Alice', 'Charlie', 'Bob',"Bob"],
-                   'Number': [10, 20, 15, 25, 30,45]})
+# 집합 생성 (오늘 독촉할 사람들의 명단)
+name_set = {'Alice',  'Charlie', 'David'}
 
-# 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
-grouped_df = df.groupby('Name')['Number'].diff()
-print(type(grouped_df))
-# 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이의 누적합 구하기
-cumulative_sum = grouped_df.groupby(df['Name']).cumsum()
-print(cumulative_sum)
-# 모든 사람의 마지막 값 출력
-last_values = cumulative_sum.groupby(df['Name']).last()
+# 미수금과 명단 데이터프레임 생성
+df = pd.DataFrame({'Name': ['Alice', 'Bob', 'Charlie', 'David'],
+                   'OutstandingAmount': [500, 1000, 300, 700]})
 
-print(last_values)
+# 집합에 있는 사람들 중 미수금이 큰 순서대로 필터링 및 정렬
+filtered_df = df[df['Name'].isin(name_set)].sort_values(by='OutstandingAmount', ascending=False)
+
+# 독촉할 사람들의 명부 출력
+contact_list = filtered_df['Name'].tolist()
+for name in contact_list:
+    print(name)
