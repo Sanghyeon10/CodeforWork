@@ -374,16 +374,18 @@ calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten(
 
 
 
-# print(df5)
+# print(df5,'ㄷㄷ')
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
 #자기자신은 제외할것
 
+
+
 print('예약은 비포함')
-print('지지난주이전 동수 일치',sss.difference(s1|s2))
-print('지난주 동수 일치',ss.difference(s1|s2))
-print('지난주 것 전체 리스트', calllisttoset.difference(s1|s2))
-print('전화 배달 리스트', jusotoset.difference(s1|s2))
+print('지지난주이전 동수 일치', supportmain.getorder(price_sum,sss.difference(s1|s2) ))
+print('지난주 동수 일치',supportmain.getorder(price_sum,ss.difference(s1|s2)))
+print('지지난주 것 전체 리스트', supportmain.getorder(price_sum,calllisttoset.difference(s1|s2)))
+print('전화 배달 리스트', supportmain.getorder(price_sum,jusotoset.difference(s1|s2)))
 print(countingnumber== len(df.index), len(df.index))
 

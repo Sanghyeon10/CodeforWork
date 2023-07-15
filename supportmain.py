@@ -126,7 +126,11 @@ def mergeforget(list):
 
     return newlist
 
+def getorder(price_sum,set):
 
+    A = sorted( set, key= lambda x: price_sum[x],reverse=True)
+
+    return A
 
 def getdf1():
     df = pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
@@ -205,6 +209,7 @@ def getdf4():
 
     df4['접수금액'] = df4['접수금액'].apply(lambda x: int(x.replace(",", "")))
     price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
+    # print('price',price_sum)
 
     df4 = df4.drop_duplicates(subset='택번호')
 

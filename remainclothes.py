@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 import re
+import supportmain
 
 def contains_korean(text):
     #한글자라도 한글이 있는가?
@@ -102,9 +103,16 @@ dff['전화여부'] = dff[['주소','특이사항']].apply(lambda x:'전화' in 
 df2= pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
 df2 = df2[['수거/배달','고객명']]
 df2['고객명'] = df2['고객명'].apply(lambda x: x.split(' ')[-1])
+df2= df2[df2['수거/배달']=='배달'] #배달만 살리고 수거는 없애기.
+df2=df2['고객명']
+df2= df2.tolist()
 
 # print(df2)
+# 후예약 가져오기
+df5= supportmain.getdf5()
 
+baedallist= df5 + df2
+# print(baedallist)
 
 #운동화개수, 그냥개수 구하기
 df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
@@ -118,6 +126,9 @@ item_count= df4.groupby('고객명')['상품명'].count()
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
 df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
 shoe_count= df4.groupby('고객명')['상품명'].count()
+
+
+
 
 
 #기타사항 가져오기
@@ -159,9 +170,9 @@ for i in range(len(df)):
                 inventories= int(item_count[dff.loc[dff.index[j],'고객명']])
                 # print(dff.loc[dff.index[j],'체류']==item_count[dff.loc[dff.index[j],'고객명']])
 
-                for l in range(len(df2)): #df2 배달리스트에서 한 번 확인 (배달여부 체크)
-                    if (df.loc[df.index[i],'고객명'] == df2.loc[df2.index[l],'고객명'])& (df2.loc[df2.index[l],'수거/배달'] =='배달') : #찾는게 있다면
-                        CC='배달리스트 존재'
+
+                if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
+                    CC='배달리스트 존재'
 
                 if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
                     BB='전화'
