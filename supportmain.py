@@ -29,7 +29,7 @@ def checkingtime(df2,pricesum):
     #
     # print(df2)
     # print(df2.values.flatten().tolist())
-    df2 = df2.drop_duplicates(subset='고객명')
+    df2 = df2.drop_duplicates(subset='고객명',keep='last')
     df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
@@ -181,7 +181,9 @@ def getpastSat(df1,df2):
     lastSatdf = lastSatdf[lastSatdf['비입주'] == '입주민']
     lastSatdf = lastSatdf[['고객명', '동호수']]
 
-    lastSatdf = (lastSatdf[lastSatdf['동호수'].isin(df1['동호수'])])
+    fulllist= lastSatdf[['고객명']]
+
+    lastSatdf = (lastSatdf[lastSatdf['동호수'].isin(df1['동호수'])]) #동수가 같은것 골라내는 것
 
     lastSatdf = lastSatdf[['고객명']]
     # print( lastSatdf.values.flatten().tolist() )
@@ -196,7 +198,7 @@ def getpastSat(df1,df2):
     lastlastSatdf = lastlastSatdf[['고객명']]
     # print(lastlastSatdf)
 
-    return lastSatdf, lastlastSatdf, calllist
+    return lastSatdf, lastlastSatdf, calllist, fulllist
 
 
 def getdf4():

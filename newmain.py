@@ -65,7 +65,7 @@ df2 = supportmain.getdf2()
 # print(df2)
 
 ## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
-lastSatdf , lastlastSatdf, calllist = supportmain.getpastSat(df,df2)
+lastSatdf , lastlastSatdf, calllist , fulllist = supportmain.getpastSat(df,df2)
 
 #주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
 jusodf=pd.read_csv('juso.txt',sep=" ")
@@ -371,7 +371,7 @@ sss=set(lastlastSatdf.values.flatten().tolist())
 jusotoset= set(jusodf.values.flatten().tolist())
 # print(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
 calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화
-
+fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten().tolist())
 
 
 # print(df5,'ㄷㄷ')
@@ -384,8 +384,9 @@ s2= set(df5) #미래예약 파일 집합화
 
 print('예약은 비포함')
 print('지지난주이전 동수 일치', supportmain.getorder(price_sum,sss.difference(s1|s2) ))
-print('지난주 동수 일치',supportmain.getorder(price_sum,ss.difference(s1|s2)))
 print('지지난주 것 전체 리스트', supportmain.getorder(price_sum,calllisttoset.difference(s1|s2)))
+print('지난주 동수 일치',supportmain.getorder(price_sum,ss.difference(s1|s2)))
+print('지난주 것 전체 리스트', supportmain.getorder(price_sum, fullllisttoset.difference(s1|s2|calllisttoset))) #지지난주것도 표현하면 너무 김.
 print('전화 배달 리스트', supportmain.getorder(price_sum,jusotoset.difference(s1|s2)))
 print(countingnumber== len(df.index), len(df.index))
 
