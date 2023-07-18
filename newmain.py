@@ -31,7 +31,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 
-sigan="1.15" #키패트. 쓰지 말기
+sigan="1.52" #키패트. 쓰지 말기
 sigan = str(float(sigan)+12)
 today= datetime.datetime.now().date()
 hour , minute = sigan.split(".")
@@ -378,15 +378,19 @@ fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten(
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-#자기자신은 제외할것
+
+if s2 == set():#빈집합이면 예약 비포함
+    A= "예약은 비포함"
+else:
+    A="후예약 포함되어있음"
 
 
-
-print('예약은 비포함')
+#자기자신과 중복은 제외할것
+print(A)
 print('지지난주이전 동수 일치', supportmain.getorder(price_sum,sss.difference(s1|s2) ))
-print('지지난주 것 전체 리스트', supportmain.getorder(price_sum,calllisttoset.difference(s1|s2)))
-print('지난주 동수 일치',supportmain.getorder(price_sum,ss.difference(s1|s2)))
-print('지난주 것 전체 리스트', supportmain.getorder(price_sum, fullllisttoset.difference(s1|s2|calllisttoset))) #지지난주것도 표현하면 너무 김.
+print('지지난주 것 전체 리스트', supportmain.getorder(price_sum,calllisttoset.difference(s1|s2|sss)))
+print('지난주 동수 일치',supportmain.getorder(price_sum,ss.difference(s1|s2|calllisttoset)))  # 지지난주껏도 중복제거할까?
+print('지난주 것 전체 리스트', supportmain.getorder(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss))) #지지난주것도 표현하면 너무 김.
 print('전화 배달 리스트', supportmain.getorder(price_sum,jusotoset.difference(s1|s2)))
-print(countingnumber== len(df.index), len(df.index))
+print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"))
 

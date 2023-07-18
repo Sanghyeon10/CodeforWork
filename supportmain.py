@@ -22,7 +22,8 @@ def checkingtime(df2,pricesum):
     df2 = df2[df2['비입주'] != '입주민']
     df2= df2[['고객명','날짜차이']]
     # df2= df2[df2['날짜차이']>datetime.timedelta(days=7)]
-    df2['날짜차이']= df2['날짜차이'].apply(lambda x : str(x)).apply(lambda x : x.split(' ',1)[0])
+    df2['날짜차이']= df2['날짜차이'].apply(lambda x : str(x)).apply(lambda x : x.split(' ',1)[0]).apply(lambda x : int(x))
+    #정렬을 위해 정수화해주기
     # df2['접수금액'] = df2['접수금액']
     for l in range(len(df2)): #칼럼추가해주기
         df2.loc[df2.index[l],'접수금액']= str(pricesum[df2.loc[df2.index[l],'고객명']])
@@ -31,6 +32,8 @@ def checkingtime(df2,pricesum):
     # print(df2.values.flatten().tolist())
     df2 = df2.drop_duplicates(subset='고객명',keep='last')
     df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기
+    #정렬후에는 문자열 합치기를 위해서 다시 문자열화
+    df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
     # Z= ', '.join(df2.values.flatten().tolist()) #문자열인 숫자라 정렬이 안됨.
