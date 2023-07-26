@@ -32,11 +32,11 @@ if hour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =   +12
+hour =  9
 minute = 3
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
-# print(aftersigan)
+print(aftersigan)
 sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
@@ -341,7 +341,9 @@ for l in range(k+1): #모든 리스트 돌리기
 
 # print(sigandf)
 newlist = np.empty((0,3), str) #늦게 등록된거 택번호 재고개수 표시하기
+newlist =[]
 templist=[]
+# print(sigandf)
 #['고객명','택번호','재고개수'])
 for i in range(len(sigandf)):
     if sigandf.loc[sigandf.index[i],'고객명'] in item_count.keys() : #옷장에서 찾을수 있다면
@@ -353,11 +355,22 @@ for i in range(len(sigandf)):
         templist.append(str(item_count[sigandf.loc[sigandf.index[i], '고객명']]) + '(' + str(
             gita_count[sigandf.loc[sigandf.index[i], '고객명']]) + ')')
 
-        newlist= np.append(newlist, np.array([templist]), axis=0)
+        templist.append(sigandf.loc[sigandf.index[i] , '동호수'])
+        templist.append(int(sigandf.loc[sigandf.index[i] , '시']))
+        templist.append(int(sigandf.loc[sigandf.index[i] , '분']))
+
+
+        newlist.append(templist)
+        # newlist= np.concatenate((newlist, np.array([templist])) , axis= 0)
         templist=[]
 
     else:#옷장에 없으면
         pass
+
+newlist = sorted(newlist, key=lambda x: (x[4],x[5], x[3])) #시, 분을 기준으로 정렬하고 남은건 동호수로 정렬
+
+# NumPy 배열로 변환
+newlist = np.array(newlist, dtype=object)[:,:3] #슬라이싱해서 뒤에꺼 날리기
 
 
 print(newlist)
