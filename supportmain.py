@@ -290,6 +290,17 @@ def getdf5(): # 미래에 예약된거 찾아보기
     return df5
 
 
+def remove_duplicates_preserve_order(input_list):
+    output_list = []
+    for item in input_list:
+        if item not in output_list:
+            output_list.append(item)
+    return output_list
+
+
+
+
+
 if __name__ =="__main__":
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드
     df =getdf3()

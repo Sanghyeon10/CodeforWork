@@ -4,6 +4,7 @@ import re
 import copy
 import supportmain
 import numpy as np
+from collections import OrderedDict
 
 
 def printtingf(df, get_index, i, k):
@@ -20,7 +21,11 @@ afternoon =['17','18','19','20']
 early=['10']
 sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104','103','102','101']
 
-sunsu= sunsu[::-1] #조절하는 기능
+sunsucheck = False # False면 오름차순, True면 내림차순
+# sunsucheck = True
+#조절하는 기능
+sunsu = sorted(sunsu, reverse=sunsucheck)
+# print(sunsu)
 
 switch=False # 개수와 택번호 표시 여부
 time = datetime.datetime.now()
@@ -32,11 +37,11 @@ if hour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  9
-minute = 3
+hour =  1
+minute = 54
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
-print(aftersigan)
+# print(aftersigan)
 sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
@@ -340,10 +345,12 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
 # print(sigandf)
-newlist = np.empty((0,3), str) #늦게 등록된거 택번호 재고개수 표시하기
+# newlist = np.empty((0,3), str) #늦게 등록된거 택번호 재고개수 표시하기
 newlist =[]
 templist=[]
 # print(sigandf)
+sigandf['동호수'] = sigandf['동호수'].apply(lambda x: int(x) if x.isdigit() else 0) # ex. "105"를 숫자105로 바꿔줌
+
 #['고객명','택번호','재고개수'])
 for i in range(len(sigandf)):
     if sigandf.loc[sigandf.index[i],'고객명'] in item_count.keys() : #옷장에서 찾을수 있다면
@@ -367,11 +374,17 @@ for i in range(len(sigandf)):
     else:#옷장에 없으면
         pass
 
-newlist = sorted(newlist, key=lambda x: (x[4],x[5], x[3])) #시, 분을 기준으로 정렬하고 남은건 동호수로 정렬
+if sunsucheck == True:
+    newlist = sorted(newlist, key=lambda x: (x[4],x[5], -x[3])) #시, 분을 기준으로 정렬하고 남은건 동호수로 정렬
+else:
+    newlist = sorted(newlist, key=lambda x: (x[4], x[5], x[3]))
 
+if newlist == []: #빈칸이면 슬라이싱에 문제생김
+    newlist.append(['',"",""])
+newlist = supportmain.remove_duplicates_preserve_order(newlist)
+#중복 제거하기
 # NumPy 배열로 변환
 newlist = np.array(newlist, dtype=object)[:,:3] #슬라이싱해서 뒤에꺼 날리기
-
 
 print(newlist)
 
