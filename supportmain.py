@@ -135,6 +135,20 @@ def getorder(price_sum,set):
 
     return A
 
+def getorderwithprice( price_sum,set):
+    # 미수금을 기준으로 내림차순으로 정렬된 리스트 생성
+    price_sum = sorted(price_sum.items(), key=lambda x: x[1], reverse=True)
+
+    # 결과를 저장할 리스트 초기화
+    result_list = []
+
+    # 결과 리스트에 이름과 미수금 정보 추가
+    for name, debt in price_sum:
+        if name in set and debt > 0.0:
+            result_list.append(f'{name}({debt})')
+
+    return  result_list
+
 def getdf1():
     df = pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
 

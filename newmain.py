@@ -4,7 +4,6 @@ import re
 import copy
 import supportmain
 import numpy as np
-from collections import OrderedDict
 
 
 def printtingf(df, get_index, i, k):
@@ -38,7 +37,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  1
-minute = 54
+minute = 53
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
@@ -374,10 +373,16 @@ for i in range(len(sigandf)):
     else:#옷장에 없으면
         pass
 
+
+
 if sunsucheck == True:
-    newlist = sorted(newlist, key=lambda x: (x[4],x[5], -x[3])) #시, 분을 기준으로 정렬하고 남은건 동호수로 정렬
-else:
+    newlist = sorted(newlist, key=lambda x: (x[4],x[5], -x[3]))
+    #시, 분을 기준으로 정렬하고 남은건 동호수로 정렬
+elif sunsucheck == False:
     newlist = sorted(newlist, key=lambda x: (x[4], x[5], x[3]))
+else:
+    print("error")
+
 
 if newlist == []: #빈칸이면 슬라이싱에 문제생김
     newlist.append(['',"",""])
@@ -413,10 +418,10 @@ else:
 
 #자기자신과 중복은 제외할것
 print(A)
-print('지지난주이전 동수 일치', supportmain.getorder(price_sum,sss.difference(s1|s2|exceptset) ))
-print('지지난주 것 전체 리스트', supportmain.getorder(price_sum,calllisttoset.difference(s1|s2|sss|exceptset)))
-print('지난주 동수 일치',supportmain.getorder(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
-print('지난주 것 전체 리스트', supportmain.getorder(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
-print('전화 배달 리스트', supportmain.getorder(price_sum,jusotoset.difference(s1|s2|exceptset)))
+print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_sum,sss.difference(s1|s2|exceptset) ))
+print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset)))
+print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
+print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
+print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"))
 
