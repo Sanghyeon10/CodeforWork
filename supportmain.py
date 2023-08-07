@@ -76,7 +76,7 @@ def checkingtime(df2,pricesum):
     else:
         X='없음'
 
-    return X +':비입주는'+Y
+    return X +':비입주는 '+Y
 
 
 def findingpassword(path, dict):

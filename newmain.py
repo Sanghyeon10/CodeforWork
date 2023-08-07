@@ -36,8 +36,8 @@ if hour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  1
-minute = 53
+hour =  1+12
+minute = 42
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
@@ -306,7 +306,7 @@ for l in range(k+1): #모든 리스트 돌리기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
 
 
-                if globals()['get' + str(l)][i][0] == '배달' and globals()['get' + str(l)][i][1] in item_count.keys(): #배달이면서 재고 개수가 있는 경우에
+                if (globals()['get' + str(l)][i][0] == '배달' or globals()['get' + str(l)][i][0] == '수거배달') and globals()['get' + str(l)][i][1] in item_count.keys(): #배달이면서 재고 개수가 있는 경우에
                     # print(globals()['get' + str(l)][i][1], diffnumber[globals()['get'+str(l)][i][1]])
                     if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
                         AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
