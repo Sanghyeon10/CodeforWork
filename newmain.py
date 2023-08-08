@@ -37,7 +37,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  1+12
-minute = 42
+minute = 31
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
@@ -270,6 +270,8 @@ for l in range(k+1): #모든 리스트 돌리기
                             break #택첫번째면 충분함
 
 
+                if dict.get((globals()['get'+str(l)][i][1]), 'a')!= "a": #비번이 있으면 4자리 숫자를 얻고 아니면 a를 얻음 a가 아니다= 비번있다,
+                    AA =AA+"*"
 
 
                 if (globals()['get'+str(l)][i][2][-2:])=='10': # 무슨k, 튜플중 첫번째 정보, 그안에 있는 시간관련정보 중 miniute정보 가져오기
@@ -306,10 +308,11 @@ for l in range(k+1): #모든 리스트 돌리기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
 
 
-                if (globals()['get' + str(l)][i][0] == '배달' or globals()['get' + str(l)][i][0] == '수거배달') and globals()['get' + str(l)][i][1] in item_count.keys(): #배달이면서 재고 개수가 있는 경우에
+                if globals()['get' + str(l)][i][1] in item_count.keys(): # item 딕셔너리에 자료가 있을때,(수거이더라도 불연속잡아낼때 쓰기)
                     # print(globals()['get' + str(l)][i][1], diffnumber[globals()['get'+str(l)][i][1]])
-                    if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
-                        AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
+                    if int(item_count[globals()['get'+str(l)][i][1]]) !=0: #재고가 1개 이상이면서
+                        if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
+                            AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
 
 
                 print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )
