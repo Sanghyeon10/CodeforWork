@@ -37,7 +37,7 @@ if hour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  1+12
-minute = 31
+minute = 43
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
@@ -271,7 +271,8 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
                 if dict.get((globals()['get'+str(l)][i][1]), 'a')!= "a": #비번이 있으면 4자리 숫자를 얻고 아니면 a를 얻음 a가 아니다= 비번있다,
-                    AA =AA+"*"
+                    if (globals()['get' + str(l)][i][2][-2:]) != '10': #10분이면 문앞이라 필요없음
+                        AA =AA+"*"
 
 
                 if (globals()['get'+str(l)][i][2][-2:])=='10': # 무슨k, 튜플중 첫번째 정보, 그안에 있는 시간관련정보 중 miniute정보 가져오기
@@ -314,8 +315,8 @@ for l in range(k+1): #모든 리스트 돌리기
                         if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
                             AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
 
-
-                print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )
+                print(f"{globals()['get' + str(l)][i][:3]}{AA}", tagnumber, tempnumber)
+                # print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )
 
                 BB=''
                 AA=''
@@ -361,6 +362,8 @@ for i in range(len(sigandf)):
             if df2.loc[df2.index[j],'고객명']== sigandf.loc[sigandf.index[i],'고객명'] :#찾고있는 고객명이 일치한다면,
                 templist.append(df2.loc[df2.index[j],'택번호'])
                 break
+        if len(templist)!=2: #택번호 안찍힌경우임 
+            templist.append("0번호부재")
         templist.append(str(item_count[sigandf.loc[sigandf.index[i], '고객명']]) + '(' + str(
             gita_count[sigandf.loc[sigandf.index[i], '고객명']]) + ')')
 
@@ -376,8 +379,8 @@ for i in range(len(sigandf)):
     else:#옷장에 없으면
         pass
 
-
-
+#
+# print(newlist)
 if sunsucheck == True:
     newlist = sorted(newlist, key=lambda x: (x[4],x[5], -x[3]))
     #시, 분을 기준으로 정렬하고 남은건 동호수로 정렬
