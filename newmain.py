@@ -402,15 +402,18 @@ print(newlist)
 print(supportmain.checkingtime(df2,price_sum))
 # print(supportmain.checkingtime(df2,price_sum))
 s1=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
-ss=set(lastSatdf.values.flatten().tolist())
-sss=set(lastlastSatdf.values.flatten().tolist())
+ss=set(lastSatdf.values.flatten().tolist()) #지난주 동수일치
+sss=set(lastlastSatdf.values.flatten().tolist()) ##지지난주 동수일치
 jusotoset= set(jusodf.values.flatten().tolist())
 # print(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
-calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화
-fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten().tolist())
+calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화 , 지지난주 동수일치
+fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten().tolist()) #지난주 풀 리스트
+
+potentail_beadaldf=pd.read_csv('potential beadal.txt',sep=" ")
+potentail_beadaldf= set(potentail_beadaldf.values.flatten())
+# print(potentail_beadaldf.values.flatten())
 
 
-# print(df5,'ㄷㄷ')
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
@@ -429,5 +432,6 @@ print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_s
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
 print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
+print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset)))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"))
 

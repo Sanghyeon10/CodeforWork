@@ -124,9 +124,12 @@ df4= df4[['고객명','상품명']]
 item_count= df4.groupby('고객명')['상품명'].count()
 
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
-df4['상품명'] = df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
+tempdf= df4['상품명'].copy()
+df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
 shoe_count= df4.groupby('고객명')['상품명'].count()
-
+df4['상품명'] = tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트").apply(
+    lambda x: x if x == True else None)
+bedding_count = df4.groupby('고객명')['상품명'].count()
 
 
 
@@ -176,6 +179,9 @@ for i in range(len(df)):
 
                 if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
                     BB='전화'
+                # print(int(bedding_count[dff.loc[dff.index[j],'고객명']]))
+                if int(bedding_count[dff.loc[dff.index[j],'고객명']])>0: #이불이 있으면 그건 따로 글자로 표현
+                    BB= BB+"이불"+str(bedding_count[dff.loc[dff.index[j],'고객명']])
 
                 if dictt.get(dff.loc[dff.index[j],'고객명'],'a')!='a' : #주어진 고객명을 검색했는데 기타텍본에 내용이 있다면
                     BB= BB + dictt.get(dff.loc[dff.index[j],'고객명'],'a')
