@@ -28,16 +28,16 @@ sunsu = sorted(sunsu, reverse=sunsucheck)
 
 switch=False # 개수와 택번호 표시 여부
 time = datetime.datetime.now()
-hour = time.hour
-if hour<16 : #오후 12~4시라면 필요한기능
+nowhour = time.hour
+if nowhour<16 : #오후 12~4시라면 필요한기능
     switch=True
     # pass
 # switch=True
 
 
 today= datetime.datetime.now().date()
-hour =  1+12
-minute = 43
+hour =  2+12
+minute = 5
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
@@ -305,8 +305,12 @@ for l in range(k+1): #모든 리스트 돌리기
                 if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
                     if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,
                         AA = AA + " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
+                        if (globals()['get' + str(l)][i][2][-2:]) == '10': #만일 문앞에 두는건데 선불이 아니면 미수인지 체크
+                            AA = AA +" 미수?"
+
                     else: #총미수금이 0이면,선불이므로 개수와 선불표시하기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
+
 
 
                 if globals()['get' + str(l)][i][1] in item_count.keys(): # item 딕셔너리에 자료가 있을때,(수거이더라도 불연속잡아낼때 쓰기)
@@ -431,7 +435,9 @@ print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_su
 print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset)))
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
-print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset)))
-print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"))
+print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
+print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A") )
+if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
+    print('내일꺼 찾기')
 
