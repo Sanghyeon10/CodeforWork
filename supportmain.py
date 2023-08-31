@@ -188,6 +188,7 @@ def getdf2():
 
 def getpastSat(df1,df2):
     ## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
+    # 후예약은 대쉬보드에서 집합으로 제외해줌. 여기서는 오늘치껏만 계산.
     now = datetime.datetime.now()
     week = now.weekday() + 2
     pastSat = now - datetime.timedelta(days=(week))
@@ -215,7 +216,12 @@ def getpastSat(df1,df2):
     lastlastSatdf = lastlastSatdf[['고객명']]
     # print(lastlastSatdf)
 
-    return lastSatdf, lastlastSatdf, calllist, fulllist
+    allofalllist=df2[df2['옷장번호'] == 0]
+    allofalllist = allofalllist[allofalllist['비입주'] == '입주민']
+    allofalllist= allofalllist[['고객명', '동호수']]
+    # print('dff',df2)
+
+    return lastSatdf, lastlastSatdf, calllist, fulllist ,allofalllist
 
 
 def getdf4():

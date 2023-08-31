@@ -36,8 +36,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  2+12
-minute = 5
+hour =  1+12
+minute = 38
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
@@ -68,7 +68,7 @@ df2 = supportmain.getdf2()
 # print(df2)
 
 ## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
-lastSatdf , lastlastSatdf, calllist , fulllist = supportmain.getpastSat(df,df2)
+lastSatdf , lastlastSatdf, calllist , fulllist ,allofalllist = supportmain.getpastSat(df,df2)
 
 #주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
 jusodf=pd.read_csv('juso.txt',sep=" ")
@@ -300,7 +300,13 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
                 if text.get(globals()['get'+str(l)][i][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
-                    AA=AA+ text.get(globals()['get'+str(l)][i][1],'')
+                    if text.get(globals()['get'+str(l)][i][1],'a').count('?')>=2 : #물음표가 2개 이상이고
+                        if globals()['get'+str(l)][i][0] == '수거' or globals()['get'+str(l)][i][0] == '수거배달':  #수거라면,
+                            AA = AA + text.get(globals()['get' + str(l)][i][1], '')
+                        else: #배달이면 신발 줄수도 있다는뜻.
+                            AA = AA +"+" #신발 잘 주는집이라는 표시.
+                    else:
+                        AA=AA+ text.get(globals()['get'+str(l)][i][1],'')
 
                 if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
                     if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,
@@ -418,6 +424,9 @@ potentail_beadaldf= set(potentail_beadaldf.values.flatten())
 # print(potentail_beadaldf.values.flatten())
 
 
+allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.flatten().tolist())
+
+
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
@@ -428,6 +437,10 @@ if s2 == set():#빈집합이면 예약 비포함
 else:
     A="후예약 포함되어있음"
 
+if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
+    fridayTodo='내일꺼 찾기'
+else:
+    fridayTodo = ''
 
 #자기자신과 중복은 제외할것
 print(A)
@@ -437,7 +450,7 @@ print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.diffe
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset)))
 print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
-print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A") )
-if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
-    print('내일꺼 찾기')
+# print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset)))
+print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"),fridayTodo )
+
 
