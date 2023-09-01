@@ -20,7 +20,7 @@ def checkingtime(df2,pricesum):
 
     df2 = df2[df2['옷장번호'] == 0]
     df2 = df2[df2['비입주'] != '입주민']
-    df2= df2[['고객명','날짜차이']]
+    df2= df2[['고객명','날짜차이',"완성일자"]]
     # df2= df2[df2['날짜차이']>datetime.timedelta(days=7)]
     df2['날짜차이']= df2['날짜차이'].apply(lambda x : str(x)).apply(lambda x : x.split(' ',1)[0]).apply(lambda x : int(x))
     #정렬을 위해 정수화해주기
@@ -30,8 +30,10 @@ def checkingtime(df2,pricesum):
     #
     # print(df2)
     # print(df2.values.flatten().tolist())
-    df2 = df2.drop_duplicates(subset='고객명',keep='last')
+    df2 = df2.sort_values(by='완성일자', ascending=False).drop_duplicates(subset='고객명', keep='first') #가장 최신날짜만 남기기
+    # df2 = df2.drop_duplicates(subset='고객명',keep='last')
     df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기
+    df2 = df2[['고객명', '날짜차이']]
     #정렬후에는 문자열 합치기를 위해서 다시 문자열화
     df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화

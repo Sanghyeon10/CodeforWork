@@ -450,7 +450,7 @@ print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.diffe
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset)))
 print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
-# print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset)))
+# print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset)))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"),fridayTodo )
 
 
