@@ -55,16 +55,17 @@ df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
 df['날짜차이']= df['완성일자']-df['접수일자']
 
 
-# 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
-grouped_df1 = df.groupby('고객명')['접수일자'].diff()
-grouped_df2 = df.groupby('고객명')['완성일자'].diff()
-# print(type(grouped_df))
-# 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이의 누적합 구하기
-cumulative_sum1 = grouped_df1.groupby(df['고객명']).cumsum()
-cumulative_sum2 = grouped_df2.groupby(df['고객명']).cumsum()
 
-# 모든 사람의 마지막 값 출력
-diffnumber = cumulative_sum2.groupby(df['고객명']).last().fillna(pd.Timedelta(0)) -cumulative_sum1.groupby(df['고객명']).last().fillna(pd.Timedelta(0))
+# # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
+# grouped_df1 = df.groupby('고객명')['접수일자'].diff()
+# grouped_df2 = df.groupby('고객명')['완성일자'].diff()
+# # print(type(grouped_df))
+# # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이의 누적합 구하기
+# cumulative_sum1 = grouped_df1.groupby(df['고객명']).cumsum()
+# cumulative_sum2 = grouped_df2.groupby(df['고객명']).cumsum()
+#
+# # 모든 사람의 마지막 값 출력
+# diffnumber = cumulative_sum2.groupby(df['고객명']).last().fillna(pd.Timedelta(0)) -cumulative_sum1.groupby(df['고객명']).last().fillna(pd.Timedelta(0))
 
 
 # print(df[df['고객명']=="108-2304"])
@@ -182,8 +183,12 @@ for i in range(len(df)):
 
                 if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
                     CC='배달리스트 존재'
-                if diffnumber.get(df.loc[df.index[i],'고객명']).days !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
-                    BB ="불연속"
+
+                if supportmain.getdiffrentwangsung(df,(df.loc[df.index[i],'고객명'])) !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
+                    BB ="불연속" +str(supportmain.getdiffrentwangsung(df,df.loc[df.index[i],'고객명']))
+
+                # if diffnumber.get(df.loc[df.index[i],'고객명']).days !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
+                #     BB ="불연속"
 
                 if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
                     BB='전화'
