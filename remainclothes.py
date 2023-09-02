@@ -33,7 +33,7 @@ def findingpassword(path, dict):
 
 
 
-now = datetime.datetime.now() + datetime.timedelta(days=3)
+now = datetime.datetime.now() #+ datetime.timedelta(days=3)
 print('오늘날짜',now)
 
 print('배달리스트 토요일까지 껄로 했나?')
@@ -183,6 +183,7 @@ for i in range(len(df)):
 
                 if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
                     CC='배달리스트 존재'
+
 
                 if supportmain.getdiffrentwangsung(df,(df.loc[df.index[i],'고객명'])) !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
                     BB ="불연속" +str(supportmain.getdiffrentwangsung(df,df.loc[df.index[i],'고객명']))

@@ -36,9 +36,12 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  9
-minute = 38
-aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
+hour =  0
+minute = 0
+if hour ==0 and minute==0:
+    aftersigan = datetime.datetime(2023, 1, 1)
+else:
+    aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
 sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])

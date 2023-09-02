@@ -332,23 +332,29 @@ def getdiffrentwangsung(df,ID):
     # 고객별로 그룹화
     customer_grouped = df.groupby('고객명')
 
+
     # 각 고객별로 "접수일자"별로 다시 그룹화
     result = customer_grouped.apply(
         lambda group: group.groupby('접수일자').apply(lambda sub_group: sub_group['완성일자'].max() - sub_group['완성일자'].min()))
 
-    # 시리즈에서 인덱스 추출(시리즈 안에 시리즈 있어서 2번 접근하는것임)
-    index_values = result[ID].index
-    # 첫 번째와 마지막 인덱스 선택
-    first_index = index_values[0]
-    last_index = index_values[-1]
-    # # 결과 출력
-    # print("첫 번째 인덱스:", first_index)
-    # print("마지막 인덱스:", last_index)
-    # 합까지 구하기 가능
-    data = result[ID].loc[first_index:last_index].values
-    total_days = data.astype('timedelta64[D]').sum().astype(int)
+    if len(result) !=1: #고객 한명만 있으면 이유는 모르는데 에러남.
 
-    return total_days
+        # 시리즈에서 인덱스 추출(시리즈 안에 시리즈 있어서 2번 접근하는것임)
+        index_values = result[ID].index
+        # 첫 번째와 마지막 인덱스 선택
+        first_index = index_values[0]
+        last_index = index_values[-1]
+        # # 결과 출력
+        # print("첫 번째 인덱스:", first_index)
+        # print("마지막 인덱스:", last_index)
+        # 합까지 구하기 가능
+        data = result[ID].loc[first_index:last_index].values
+        total_days = data.astype('timedelta64[D]').sum().astype(int)
+
+        return total_days
+
+    else:
+        return 0
 
 
 
