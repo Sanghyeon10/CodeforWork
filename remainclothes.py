@@ -33,53 +33,59 @@ def findingpassword(path, dict):
 
 
 
-now = datetime.datetime.now() #+ datetime.timedelta(days=3)
+now = datetime.datetime.now() + datetime.timedelta(days=3)
 print('오늘날짜',now)
 
-inputt='b' # input('비입주이면 a입력, 배달리스트 토요일까지 껄로 했나?')
 print('배달리스트 토요일까지 껄로 했나?')
-if inputt == "a":
-    A='비입주민'
-    day=5 # 월요일까지 뒤로 돌리고 여기서 5일 더 뒤로 돌려야 수요일됨
 
-else:
-    A='입주민'
-    day=2 # 월요일에서 토요일로 2일뒤로
 
+
+day=2 # 월요일에서 토요일로 2일뒤로
 week = now.weekday()+day
 
 df= pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
 
 # print(df)
-df= df[['접수일자','완성일자', '고객명','옷장번호']]
-df =df.dropna()
+
+df= supportmain.getdf2()
+# df= df[['접수일자','완성일자', '고객명','옷장번호']]
+
+df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
+#
+df['날짜차이']= df['완성일자']-df['접수일자']
+
+
+# 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
+grouped_df1 = df.groupby('고객명')['접수일자'].diff()
+grouped_df2 = df.groupby('고객명')['완성일자'].diff()
+# print(type(grouped_df))
+# 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이의 누적합 구하기
+cumulative_sum1 = grouped_df1.groupby(df['고객명']).cumsum()
+cumulative_sum2 = grouped_df2.groupby(df['고객명']).cumsum()
+
+# 모든 사람의 마지막 값 출력
+diffnumber = cumulative_sum2.groupby(df['고객명']).last().fillna(pd.Timedelta(0)) -cumulative_sum1.groupby(df['고객명']).last().fillna(pd.Timedelta(0))
+
+
+# print(df[df['고객명']=="108-2304"])
+# print(df)
+# print((diffnumber["105-1405"].days==0))
 
 
 
-df['접수일자']= df['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20'+x)
-df['완성일자']= df['완성일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20'+x)
 
-df['고객명']= df['고객명'].apply(lambda x: x.split('\n')[0])
 
-df['비입주']=df['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) != None else '입주민')
-
-df=df[df['옷장번호']==0]
-
-#비입주 조절용
+#비입주 조절용 현재는 큰 의미없음
+A='입주민'
 df=df[df['비입주']==A]
 
 
 
-df['접수일자']= df['접수일자'].apply(lambda x: datetime.datetime.strptime(x , "%Y-%m-%d"))
-df['완성일자']= df['완성일자'].apply(lambda x: datetime.datetime.strptime(x , "%Y-%m-%d"))
-df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
 
-
-df['날짜차이']= df['완성일자']-df['접수일자']
 
 pastSat= now - datetime.timedelta(days= (week))
 
-print(pastSat)
+# print(pastSat)
 
 
 df=df[df['완성일자']<=pastSat]
@@ -176,6 +182,8 @@ for i in range(len(df)):
 
                 if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
                     CC='배달리스트 존재'
+                if diffnumber.get(df.loc[df.index[i],'고객명']).days !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
+                    BB ="불연속"
 
                 if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
                     BB='전화'

@@ -252,7 +252,7 @@ def getdf4():
     df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
     # df4.to_csv('testtest.csv')
     item_count = df4.groupby('고객명')['상품명'].count()
-    diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
+    # diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
 
 
     # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
