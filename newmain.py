@@ -36,7 +36,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  1+12
+hour =  9
 minute = 38
 aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
@@ -430,7 +430,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(['107-1704']) #전화 일시적 예외 적는칸
+exceptset=set([]) #전화 일시적 예외 적는칸
 
 if s2 == set():#빈집합이면 예약 비포함
     A= "예약은 비포함"

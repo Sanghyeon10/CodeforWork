@@ -49,6 +49,13 @@ def checkingtime(df2,pricesum):
 
         else:
             X='없음'
+    if weekday == 1: # 화요일
+        if hour <12:
+
+            X='옷걸이 박스 개수 세기'
+
+        else:
+            X='없음'
 
 
     elif weekday == 2: # 수요일
