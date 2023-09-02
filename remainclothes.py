@@ -204,7 +204,7 @@ for i in range(len(df)):
                 pass
         #number 값 획득
 
-        print(df.loc[df.index[i], '고객명'], df.loc[df.index[i], '날짜차이'].days, number,'개수:',remainings ,BB,CC)
+        print(df.loc[df.index[i], '고객명'], number,'개수:',remainings ,df.loc[df.index[i], '날짜차이'].days ,BB,CC)
 
 
 
@@ -229,7 +229,7 @@ print()
 
 jungbokcheck=[]
 forprintdf=pd.Series(dtype='object')
-notpirnt=["110-2202"] #출력하지 않을 동호수
+notpirnt=[] #출력하지 않을 동호수
 
 B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
 if B=='0':
@@ -264,7 +264,7 @@ else:
                 # forprintdf.append(numberlist[i][0])
 
 
-with open('checkpoint.txt', 'r', encoding='utf-8') as f:
+with open('checkpoint.txt', 'r', encoding='utf-8') as f: #010전화번호 csv로 출력하는 코드
     for line in f:
         if "010" in line:
             forprintdf= pd.concat([forprintdf, pd.Series(line.rstrip("\n"))])
