@@ -86,7 +86,7 @@ df=df[df['비입주']==A]
 
 pastSat= now - datetime.timedelta(days= (week))
 
-# print(pastSat)
+print(pastSat)
 
 
 df=df[df['완성일자']<=pastSat]
@@ -186,7 +186,7 @@ for i in range(len(df)):
 
 
                 if supportmain.getdiffrentwangsung(df,(df.loc[df.index[i],'고객명'])) !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
-                    BB ="불연속" +str(supportmain.getdiffrentwangsung(df,df.loc[df.index[i],'고객명']))
+                    BB ="불" +str(supportmain.getdiffrentwangsung(df,df.loc[df.index[i],'고객명']))
 
                 # if diffnumber.get(df.loc[df.index[i],'고객명']).days !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
                 #     BB ="불연속"

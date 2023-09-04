@@ -22,7 +22,7 @@ result = customer_grouped.apply(lambda group: group.groupby('접수일자').appl
 # print(type(result))
 # print(result)
 # print(result.index)
-ID='고객3'
+ID='고객1'
 print((result[ID]))
 
 # 시리즈에서 인덱스 추출
@@ -39,4 +39,7 @@ data = result[ID].loc[first_index:last_index].values
 # total_days = data.astype('timedelta64[D]').sum()
 total_days = data.astype('timedelta64[D]').sum().astype(int)
 print((total_days))
+last_date = result.loc[ :(ID, last_index)].values
+timedelta_value = result.loc[(ID, last_index)]
+print("마지막 날짜:", type(timedelta_value))
 # print( result.loc[('고객1', '2023-08-01'):('고객1', '2023-08-02')].values)
