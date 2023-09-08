@@ -230,6 +230,8 @@ print()
 jungbokcheck=[]
 forprintdf=pd.Series(dtype='object')
 notpirnt=[] #출력하지 않을 동호수
+notpirnt= notpirnt+baedallist
+print(notpirnt)
 
 B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
 if B=='0':
@@ -238,7 +240,7 @@ if B=='0':
 
 elif B=='1':
     for i in range(len(numberlist)):
-        if numberlist[i][1]==1 and not makejungbok(jungbokcheck,numberlist[i][0]):
+        if numberlist[i][1]==1 and not makejungbok(jungbokcheck,numberlist[i][0]) and numberlist[i][3] not in notpirnt:
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
@@ -247,7 +249,7 @@ elif B=='1':
 
 elif B=='2':
     for i in range(len(numberlist)):
-        if numberlist[i][1]>=2 and not makejungbok(jungbokcheck,numberlist[i][0]):
+        if numberlist[i][1]>=2 and not makejungbok(jungbokcheck,numberlist[i][0])and numberlist[i][3] not in notpirnt :
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
@@ -256,7 +258,7 @@ elif B=='2':
 
 else:
     for i in range(len(numberlist)):
-        if not makejungbok(jungbokcheck,numberlist[i][0]):
+        if not makejungbok(jungbokcheck,numberlist[i][0]) and numberlist[i][3] not in notpirnt:
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt: #재고개수와 완성개수가 같다면 프린트목록에 해당.
