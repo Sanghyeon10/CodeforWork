@@ -37,7 +37,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  12+1
-minute = 51
+minute = 43
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -309,7 +309,7 @@ for l in range(k+1): #모든 리스트 돌리기
                         else: #배달이면 신발 줄수도 있다는뜻.
                             AA = AA +"+" #신발 잘 주는집이라는 표시.
                     else:
-                        AA=AA+ text.get(globals()['get'+str(l)][i][1],'')
+                        AA=AA+" "+ text.get(globals()['get'+str(l)][i][1],'')
 
                 if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
                     if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,
@@ -433,7 +433,8 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(["103-1304"]) #전화 일시적 예외 적는칸
+exceptset=set([]) #전화 일시적 예외 적는칸
+print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함
     A= "예약은 비포함"
