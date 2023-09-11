@@ -412,12 +412,13 @@ newlist = np.array(newlist, dtype=object)[:,:3] #슬라이싱해서 뒤에꺼 �
 
 print(newlist)
 
-print(supportmain.checkingtime(df2,price_sum))
-# print(supportmain.checkingtime(df2,price_sum))
+
+dashboradprint, nonharington=supportmain.checkingtime(df2,price_sum)
+print(dashboradprint)
 s1=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
 ss=set(lastSatdf.values.flatten().tolist()) #지난주 동수일치
 sss=set(lastlastSatdf.values.flatten().tolist()) ##지지난주 동수일치
-jusotoset= set(jusodf.values.flatten().tolist())
+jusotoset= set(jusodf.values.flatten().tolist()) | set(nonharington) #전화배달중 금액큰 비입주도 포함
 # print(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
 calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화 , 지지난주 동수일치
 fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten().tolist()) #지난주 풀 리스트

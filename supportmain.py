@@ -38,6 +38,10 @@ def checkingtime(df2,pricesum):
     df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
+    df2['접수금액'] = df2['접수금액'].apply(lambda x: float(x))
+    df2 = df2[df2['접수금액']>30]
+    df2 =df2['고객명']
+    # print(df2.values)
 
     if weekday == 0: # 월요일
         if hour <12:
@@ -82,7 +86,7 @@ def checkingtime(df2,pricesum):
     else:
         X='없음'
 
-    return X +':비입주는 '+Y
+    return X +':비입주는 '+Y , df2.values #df2.value는 특정 금액대 이상의 비입주
 
 
 def findingpassword(path, dict):
