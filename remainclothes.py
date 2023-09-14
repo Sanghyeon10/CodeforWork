@@ -262,7 +262,7 @@ else:
             print(numberlist[i][0])
             print()
             if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt: #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                pass
+                pass  
                 # forprintdf.append(numberlist[i][0])
 
 

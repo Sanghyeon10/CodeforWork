@@ -36,8 +36,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  12+1
-minute = 43
+hour =  0
+minute = 0
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -418,7 +418,7 @@ print(dashboradprint)
 s1=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
 ss=set(lastSatdf.values.flatten().tolist()) #지난주 동수일치
 sss=set(lastlastSatdf.values.flatten().tolist()) ##지지난주 동수일치
-jusotoset= set(jusodf.values.flatten().tolist()) | set(nonharington) #전화배달중 금액큰 비입주도 포함
+junhaToset= set(jusodf.values.flatten().tolist()) | set(nonharington) #전화배달중 금액큰 비입주도 포함
 # print(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
 calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화 , 지지난주 동수일치
 fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten().tolist()) #지난주 풀 리스트
@@ -454,7 +454,7 @@ print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_s
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset))) #지지난주것도 표현하면 너무 김.
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset)))
-print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,jusotoset.difference(s1|s2|exceptset)))
+print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,junhaToset.difference(s1|s2|exceptset)))
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset)))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"),fridayTodo )
 
