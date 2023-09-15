@@ -32,6 +32,17 @@ def findingpassword(path, dict):
             dict[name] = text
 
 
+isprintcheck=pd.Series(dtype='object')
+#데이터 프레임 만들것이라면 input 출력
+with open('checkpoint.txt', 'r', encoding='utf-8') as f: #010전화번호 csv로 출력하는 코드
+    for line in f:
+        if "010" in line:
+            isprintcheck= pd.concat([isprintcheck, pd.Series(line.rstrip("\n"))])
+
+if len(isprintcheck)!=0:# 출력할게 있다면
+    input("0.0번칸 확인 1.후예약 확인 2.물건확인과 메모확인")
+
+
 
 now = datetime.datetime.now() #+ datetime.timedelta(days=3)
 print('오늘날짜',now)
@@ -56,30 +67,10 @@ df['날짜차이']= df['완성일자']-df['접수일자']
 
 
 
-# # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
-# grouped_df1 = df.groupby('고객명')['접수일자'].diff()
-# grouped_df2 = df.groupby('고객명')['완성일자'].diff()
-# # print(type(grouped_df))
-# # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이의 누적합 구하기
-# cumulative_sum1 = grouped_df1.groupby(df['고객명']).cumsum()
-# cumulative_sum2 = grouped_df2.groupby(df['고객명']).cumsum()
-#
-# # 모든 사람의 마지막 값 출력
-# diffnumber = cumulative_sum2.groupby(df['고객명']).last().fillna(pd.Timedelta(0)) -cumulative_sum1.groupby(df['고객명']).last().fillna(pd.Timedelta(0))
-
-
-# print(df[df['고객명']=="108-2304"])
-# print(df)
-# print((diffnumber["105-1405"].days==0))
-
-
-
-
 
 #비입주 조절용 현재는 큰 의미없음
 A='입주민'
 df=df[df['비입주']==A]
-
 
 
 

@@ -36,8 +36,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  0
-minute = 0
+hour =  12+1
+minute = 43
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -74,9 +74,9 @@ df2 = supportmain.getdf2()
 lastSatdf , lastlastSatdf, calllist , fulllist ,allofalllist = supportmain.getpastSat(df,df2)
 
 #주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
-jusodf=pd.read_csv('juso.txt',sep=" ")
-jusodf= jusodf[jusodf['고객명'].isin(df2['고객명'])]
-# print(jusodf)
+junhadf=pd.read_csv('junha.txt',sep=" ")
+junhadf= junhadf[junhadf['고객명'].isin(df2['고객명'])]
+# print(junhadf)
 
 
 item_count,gita_count, shoe_count , bedding_count, diffnumber , price_sum = supportmain.getdf4()
@@ -418,7 +418,7 @@ print(dashboradprint)
 s1=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
 ss=set(lastSatdf.values.flatten().tolist()) #지난주 동수일치
 sss=set(lastlastSatdf.values.flatten().tolist()) ##지지난주 동수일치
-junhaToset= set(jusodf.values.flatten().tolist()) | set(nonharington) #전화배달중 금액큰 비입주도 포함
+junhaToset= set(junhadf.values.flatten().tolist()) | set(nonharington) #전화배달중 금액큰 비입주도 포함
 # print(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())
 calllisttoset = set(calllist.drop_duplicates(subset='고객명').values.flatten().tolist())#중복제거후 리스트화 , 지지난주 동수일치
 fullllisttoset= set(fulllist.drop_duplicates(subset='고객명').values.flatten().tolist()) #지난주 풀 리스트

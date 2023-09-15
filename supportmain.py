@@ -363,5 +363,5 @@ def getdiffrentwangsung(df,ID):
 if __name__ =="__main__":
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드
     df =getdf3()
-    df[df['전화여부']==True]['고객명'].to_csv('juso.txt',index=False)
+    df[df['전화여부']==True]['고객명'].to_csv('junha.txt',index=False)
     # print(df)

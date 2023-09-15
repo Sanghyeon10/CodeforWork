@@ -192,7 +192,7 @@ lastlastSatdf=lastlastSatdf[['고객명']]
 # print(lastlastSatdf)
 
 #주소 특이사항에 전화라고 적힌 사람 리스트중 완성된게 있다면 표시
-jusodf=pd.read_csv('juso.txt',sep=" ")
+jusodf=pd.read_csv('junha.txt', sep=" ")
 jusodf= jusodf[jusodf['고객명'].isin(df2['고객명'])]
 # print(jusodf)
 
