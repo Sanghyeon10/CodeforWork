@@ -358,6 +358,40 @@ def getdiffrentwangsung(df,ID):
         return 0
 
 
+def GetNonharingtonMemo(input_string):
+
+    # 문자열에서 8자리 연속된 숫자 추출
+    date_strings = re.findall(r'\d{8}', input_string)
+
+    # 현재 날짜 가져오기
+    current_date = datetime.datetime.now()
+
+    returndata = ""
+
+    for date_str in date_strings:
+        # 8자리 숫자를 날짜로 변환
+        try:
+            date = datetime.datetime.strptime(date_str, '%Y%m%d')
+
+            # 현재 날짜와의 차이 계산
+            delta = current_date - date
+
+            # 입력 문자열에서 추출된 날짜 부분을 빈 문자열로 대체하여 출력
+            input_string = input_string.replace(date_str, '')
+
+            returndata = str(delta.days)+"days" + input_string
+
+        except ValueError:
+            # print(f"잘못된 날짜 형식: {date_str}")
+
+            returndata =f"잘못된 날짜 형식: {date_str}"
+
+
+
+    return  returndata
+
+
+
 
 
 if __name__ =="__main__":

@@ -30,7 +30,10 @@ switch=False # 개수와 택번호 표시 여부
 time = datetime.datetime.now()
 nowhour = time.hour
 if nowhour<16 : #오후 12~4시라면 필요한기능
-    switch=True
+        if time.weekday()!=5:
+            switch=True
+        else:
+            pass
     # pass
 # switch=True
 
@@ -435,7 +438,7 @@ s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
 exceptset=set([]) #전화 일시적 예외 적는칸
-print('exceptset',exceptset)
+# print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함
     A= "예약은 비포함"
@@ -448,7 +451,7 @@ else:
     fridayTodo = ''
 
 #자기자신과 중복은 제외할것
-print(A)
+print(A,"exceptset",exceptset, "비입주 메모사항",supportmain.GetNonharingtonMemo(text.get('비입주')))
 print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_sum,sss.difference(s1|s2|exceptset) ))
 print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset)))
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
