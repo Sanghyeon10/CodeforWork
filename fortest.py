@@ -1,39 +1,36 @@
 import re
 import datetime
 
+def ReplaceDatesWithDateDifferences(input_string):
+    try:
+        # 현재 날짜 가져오기
+        current_date = datetime.datetime.now()
 
-def extract_dates_and_delta(input_string):
+        # 문자열에서 8자리 연속된 숫자 추출
+        date_strings = re.findall(r'\d{8}', input_string)
 
-    # 문자열에서 8자리 연속된 숫자 추출
-    date_strings = re.findall(r'\d{8}', input_string)
+        for date_str in date_strings:
+            try:
+                # 8자리 숫자를 날짜로 변환
+                date = datetime.datetime.strptime(date_str, '%Y%m%d')
 
-    # 현재 날짜 가져오기
-    current_date = datetime.datetime.now()
+                # 현재 날짜와의 차이 계산
+                delta = current_date - date
 
-    for date_str in date_strings:
-        # 8자리 숫자를 날짜로 변환
-        try:
-            date = datetime.datetime.strptime(date_str, '%Y%m%d')
+                # 새로운 문자열로 8자리 숫자 대체
+                input_string = input_string.replace(date_str, f'{delta.days} days ago')
 
-            # 현재 날짜와의 차이 계산
-            delta = current_date - date
+            except ValueError:
+                # 날짜 형식이 잘못된 경우 무시
+                pass
 
-            # 결과 출력
-            print(f"날짜 문자열: {date_str}")
-            print(f"날짜: {date.strftime('%Y-%m-%d')}")
-            print(f"Delta 시간: {delta}")
+    except Exception as e:
+        # 예외 처리 (원하는 방식으로 처리)
+        print(f"에러 발생: {str(e)}")
 
-            # 입력 문자열에서 추출된 날짜 부분을 빈 문자열로 대체하여 출력
-            input_string = input_string.replace(date_str, '')
-        except ValueError:
-            print(f"잘못된 날짜 형식: {date_str}")
+    return input_string
 
-    # 나머지 문자열 출력
-    print("나머지 문자열:", input_string)
-
-
-# 테스트 문자열
-input_string = "오늘은 20230916 날짜입니다. "
-
-# 함수 호출
-extract_dates_and_delta(input_string)
+# 테스트
+input_string = "This is a sample string with a datand another date 200001014."
+result = ReplaceDatesWithDateDifferences(input_string)
+print(result)

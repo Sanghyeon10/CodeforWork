@@ -39,8 +39,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  12+1
-minute = 43
+hour =  0
+minute = 0
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -291,7 +291,7 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(shoe_count.keys())
                 # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
                 # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
-                if globals()['get'+str(l)][i][0] == '배달' and globals()['get'+str(l)][i][1] in gita_count.keys() : #배달이면서 재고가 0개라도 표시가능한 경우에
+                if globals()['get'+str(l)][i][0] != '수거' and globals()['get'+str(l)][i][1] in gita_count.keys() : #배달,수거배달이면서 재고가 0개라도 표시가능한 경우에
                     if int(shoe_count[globals()['get'+str(l)][i][1]])>0:#  운동화개수가 0 이상이면
                         AA = AA + '운동화'+str(shoe_count[globals()['get'+str(l)][i][1]])
 
@@ -451,7 +451,7 @@ else:
     fridayTodo = ''
 
 #자기자신과 중복은 제외할것
-print(A,"exceptset",exceptset, "비입주 메모사항",supportmain.GetNonharingtonMemo(text.get('비입주')))
+print(A,"exceptset",exceptset, "비입주 메모(문자는 월화에)",supportmain.GetNonharingtonMemo(text.get('비입주')))
 print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_sum,sss.difference(s1|s2|exceptset) ))
 print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset)))
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?

@@ -359,42 +359,72 @@ def getdiffrentwangsung(df,ID):
 
 
 def GetNonharingtonMemo(input_string):
-
-    try:  #애초에 숫자추출이 가능한 경우 여야함. 아니면 복붙출력
-        # 문자열에서 8자리 연속된 숫자 추출
-        date_strings = re.findall(r'\d{8}', input_string)
-
+    try:
         # 현재 날짜 가져오기
         current_date = datetime.datetime.now()
 
-        returndata = ""
+        # 문자열에서 8자리 연속된 숫자 추출
+        date_strings = re.findall(r'\d{8}', input_string)
 
-        if len(date_strings)!=0: #8자리 숫자가 있어야 진행 없으면 복붙출력
-            for date_str in date_strings:
+        for date_str in date_strings:
+            try:
                 # 8자리 숫자를 날짜로 변환
-                try:
-                    date = datetime.datetime.strptime(date_str, '%Y%m%d')
+                date = datetime.datetime.strptime(date_str, '%Y%m%d')
 
-                    # 현재 날짜와의 차이 계산
-                    delta = current_date - date
+                # 현재 날짜와의 차이 계산
+                delta = current_date - date
 
-                    # 입력 문자열에서 추출된 날짜 부분을 빈 문자열로 대체하여 출력
-                    input_string = input_string.replace(date_str, '')
+                # 새로운 문자열로 8자리 숫자 대체
+                input_string = input_string.replace(date_str, f'{delta.days} days ago')
 
-                    returndata = str(delta.days)+"days " + input_string
+            except ValueError:
+                # 날짜 형식이 잘못된 경우 무시
+                pass
 
-                except ValueError:
-                    # print(f"잘못된 날짜 형식: {date_str}")
+    except Exception as e:
+        # 예외 처리 (원하는 방식으로 처리)
+        print(f"에러 발생: {str(e)}")
 
-                    returndata =f"잘못된 날짜 형식: {date_str}"
+    return input_string
 
-        else:
-            returndata = input_string
 
-    except:
-        returndata = input_string
-
-    return  returndata
+# def GetNonharingtonMemo(input_string):
+#
+#     try:  #애초에 숫자추출이 가능한 경우 여야함. 아니면 복붙출력
+#         # 문자열에서 8자리 연속된 숫자 추출
+#         date_strings = re.findall(r'\d{8}', input_string)
+#
+#         # 현재 날짜 가져오기
+#         current_date = datetime.datetime.now()
+#
+#         returndata = ""
+#
+#         if len(date_strings)!=0: #8자리 숫자가 있어야 진행 없으면 복붙출력
+#             for date_str in date_strings:
+#                 # 8자리 숫자를 날짜로 변환
+#                 try:
+#                     date = datetime.datetime.strptime(date_str, '%Y%m%d')
+#
+#                     # 현재 날짜와의 차이 계산
+#                     delta = current_date - date
+#
+#                     # 입력 문자열에서 추출된 날짜 부분을 빈 문자열로 대체하여 출력
+#                     input_string = input_string.replace(date_str, '')
+#
+#                     returndata = str(delta.days)+"days " + input_string
+#
+#                 except ValueError:
+#                     # print(f"잘못된 날짜 형식: {date_str}")
+#
+#                     returndata =f"잘못된 날짜 형식: {date_str}"
+#
+#         else:
+#             returndata = input_string
+#
+#     except:
+#         returndata = input_string
+#
+#     return  returndata
 
 
 
