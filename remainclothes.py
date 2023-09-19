@@ -3,33 +3,6 @@ import datetime
 import re
 import supportmain
 
-def contains_korean(text):
-    #한글자라도 한글이 있는가?
-    return re.search("[가-힣]+",text) #맞으면 값이 있고 없으면 NONE
-
-def makejungbok(listt,X):
-    if X in listt: #값이 있다.
-        return True#중복임
-
-    else:
-        listt.append(X)
-        return False #값이 없으니까 중복아님
-
-def findingpassword(path, dict):
-    # path = 'data.txt'
-
-    with open(path, 'r', encoding='utf-8') as f:
-        for line in f:
-
-            name= line.split(" ",1)[0]
-
-            text = line.split(" ",1)[1]
-            text = text.rstrip('\n')
-            # fields = line.strip().split()  # 공백을기준으로 분리해 기억
-
-            # name, text= fields
-
-            dict[name] = text
 
 
 isprintcheck=pd.Series(dtype='object')
@@ -91,11 +64,11 @@ df=df[df['완성일자']<=pastSat] #앞에서 최신 완성일과 오늘날자�
 #전화번호,전화여부 뽑기
 dff= pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
 
-dff= dff[['고객명','휴대폰','체류','주소','특이사항']]
+dff= dff[['고객명','휴대폰','체류']]#,'주소','특이사항']]
 
 dff['고객명']= dff['고객명'].apply(lambda x: x.split('\n')[0])
 dff.fillna('',inplace=True)
-dff['전화여부'] = dff[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
+# dff['전화여부'] = dff[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
 
 
 
@@ -128,7 +101,7 @@ item_count= df4.groupby('고객명')['상품명'].count()
 # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
 tempdf= df4['상품명'].copy()
 df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
-shoe_count= df4.groupby('고객명')['상품명'].count()
+gita_count= df4.groupby('고객명')['상품명'].count()
 df4['상품명'] = tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트").apply(
     lambda x: x if x == True else None)
 bedding_count = df4.groupby('고객명')['상품명'].count()
@@ -138,7 +111,7 @@ bedding_count = df4.groupby('고객명')['상품명'].count()
 
 #기타사항 가져오기
 dictt={}
-gita= findingpassword('gita.txt',dictt)
+gita= supportmain.findingpassword('gita.txt',dictt)
 
 
 numberlist=[]
@@ -152,72 +125,64 @@ tempremaining=""
 
 
 # print(df)
-for i in range(len(df)):
+for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
+    #전화여부와 불연속 여부도 표현할 이유가 없음.
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
     number=df.index[i] #오류방지용 순서넣기
 
-    if not makejungbok(jungbokcheck, df.loc[df.index[i],'고객명']): #중복이 아니면실행
-        if df.loc[df.index[i],'몇주째']== gijun:
-            pass
-        else:
-            gijun = df.loc[df.index[i], '몇주째'] #기준 업
-            print() #\n누르기
-
-
-        for j in range(len(dff)): #dff고객정보 의미
-            if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
-                number = dff.loc[dff.index[j],'휴대폰']
-                if dff.loc[dff.index[j],'체류']!=item_count[dff.loc[dff.index[j],'고객명']]:
-                    tempremaining='XXX'
-                else:
-                    tempremaining=""
-
-                remainings = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(shoe_count[dff.loc[dff.index[j],'고객명']]) + ')'+tempremaining
-                totalremaining = int(dff.loc[dff.index[j],'체류'])
-                inventories= int(item_count[dff.loc[dff.index[j],'고객명']])
-                # print(dff.loc[dff.index[j],'체류']==item_count[dff.loc[dff.index[j],'고객명']])
-
-
-                if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
-                    CC='배달리스트 존재'
-
-
-                if supportmain.getdiffrentwangsung(df,(df.loc[df.index[i],'고객명'])) !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
-                    BB ="불" +str(supportmain.getdiffrentwangsung(df,df.loc[df.index[i],'고객명']))
-
-                # if diffnumber.get(df.loc[df.index[i],'고객명']).days !=0 : # 완성날짜와 접수날짜의 차이의 합이 0이 아니라면 완성날짜가 다른게 있음
-                #     BB ="불연속"
-
-                if dff.loc[dff.index[j],'전화여부'] ==True: # 전화해야하는지 정보 확인
-                    BB='전화'
-                # print(int(bedding_count[dff.loc[dff.index[j],'고객명']]))
-                if int(bedding_count[dff.loc[dff.index[j],'고객명']])>0: #이불이 있으면 그건 따로 글자로 표현
-                    BB= BB+"이불"+str(bedding_count[dff.loc[dff.index[j],'고객명']])
-
-                if dictt.get(dff.loc[dff.index[j],'고객명'],'a')!='a' : #주어진 고객명을 검색했는데 기타텍본에 내용이 있다면
-                    BB= BB + dictt.get(dff.loc[dff.index[j],'고객명'],'a')
-
-            else:
-                pass
-        #number 값 획득
-
-        print(df.loc[df.index[i], '고객명'], number,'개수:',remainings ,df.loc[df.index[i], '오늘차이'].days ,BB,CC)
-
-
-
-        numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명']))
-        # if df.loc[df.index[i],'고객명'] == '107-1304':
-        #     print('평일 늦은 저녁에나 가능')
-
-        jungbokcheck.append(df.loc[df.index[i],'고객명'])
-        number= 'end' #number 초기화
-        remaining = 0
-        totalremainings = ''
-        inventories=""
-        CC=""
-        BB=''
-    else:
+    if df.loc[df.index[i],'몇주째']== gijun:
         pass
+    else:
+        gijun = df.loc[df.index[i], '몇주째'] #기준 업
+        print() #\n누르기
+
+
+    for j in range(len(dff)): #dff고객정보 의미
+        if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
+            number = dff.loc[dff.index[j],'휴대폰']
+            if dff.loc[dff.index[j],'체류']!=item_count[dff.loc[dff.index[j],'고객명']]:
+                tempremaining='XXX'
+            else:
+                tempremaining=""
+
+            remainings = str(dff.loc[dff.index[j],'체류'])+','+str(item_count[dff.loc[dff.index[j],'고객명']])+'('+str(gita_count[dff.loc[dff.index[j],'고객명']]) + ')'+tempremaining
+            totalremaining = int(dff.loc[dff.index[j],'체류'])
+            inventories= int(item_count[dff.loc[dff.index[j],'고객명']])
+            # print(dff.loc[dff.index[j],'체류']==item_count[dff.loc[dff.index[j],'고객명']])
+
+
+            if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
+                CC='배달리스트 존재'
+
+
+            # print(int(bedding_count[dff.loc[dff.index[j],'고객명']]))
+
+            if int(bedding_count[dff.loc[dff.index[j],'고객명']])>0: #이불이 있으면 그건 따로 글자로 표현
+                BB= BB+"이불"+str(bedding_count[dff.loc[dff.index[j],'고객명']])
+
+            if dictt.get(dff.loc[dff.index[j],'고객명'],'a')!='a' : #주어진 고객명을 검색했는데 기타텍본에 내용이 있다면
+                BB= BB + dictt.get(dff.loc[dff.index[j],'고객명'],'a')
+
+        else:
+            pass
+    #number 값 획득
+
+    print(df.loc[df.index[i], '고객명'], number,'개수:',remainings ,df.loc[df.index[i], '오늘차이'].days ,BB,CC)
+
+
+
+    numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명']))
+    # if df.loc[df.index[i],'고객명'] == '107-1304':
+    #     print('평일 늦은 저녁에나 가능')
+
+    jungbokcheck.append(df.loc[df.index[i],'고객명'])
+    number= 'end' #number 초기화
+    remaining = 0
+    totalremainings = ''
+    inventories=""
+    CC=""
+    BB=''
+
 
 
 print()
@@ -230,6 +195,8 @@ notpirnt=[] #출력하지 않을 동호수
 notpirnt= notpirnt+baedallist
 print(notpirnt)
 
+
+# print(numberlist)
 B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
 if B=='0':
     pass
@@ -237,30 +204,24 @@ if B=='0':
 
 elif B=='1':
     for i in range(len(numberlist)):
-        if numberlist[i][1]==1 and not makejungbok(jungbokcheck,numberlist[i][0]) and numberlist[i][3] not in notpirnt:
+        if numberlist[i][1]==1 and numberlist[i][3] not in notpirnt:
             print(numberlist[i][0])
             print()
-            if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                pass
-                # forprintdf.append(numberlist[i][0])
+
 
 elif B=='2':
     for i in range(len(numberlist)):
-        if numberlist[i][1]>=2 and not makejungbok(jungbokcheck,numberlist[i][0])and numberlist[i][3] not in notpirnt :
+        if numberlist[i][1]>=2 and numberlist[i][3] not in notpirnt :
             print(numberlist[i][0])
             print()
-            if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt : #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                pass
-                # forprintdf.append(numberlist[i][0])
+
 
 else:
     for i in range(len(numberlist)):
-        if not makejungbok(jungbokcheck,numberlist[i][0]) and numberlist[i][3] not in notpirnt:
+        if numberlist[i][3] not in notpirnt:
             print(numberlist[i][0])
             print()
-            if numberlist[i][1] == numberlist[i][2] and numberlist[i][3] not in notpirnt: #재고개수와 완성개수가 같다면 프린트목록에 해당.
-                pass  
-                # forprintdf.append(numberlist[i][0])
+
 
 
 with open('checkpoint.txt', 'r', encoding='utf-8') as f: #010전화번호 csv로 출력하는 코드
