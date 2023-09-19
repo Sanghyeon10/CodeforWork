@@ -39,8 +39,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  0
-minute = 0
+hour =  12+1
+minute = 22
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -71,6 +71,8 @@ sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통
 
 
 df2 = supportmain.getdf2()
+df2 = df2.sort_values(by='날짜차이', ascending=True).drop_duplicates(subset='고객명', keep='first').sort_values(by='접수일자', ascending=True)  # 가장 최신 완성일만 남기기
+
 # print(df2)
 
 ## 지난주 토요일날까지 완성된것 리스트 중 오늘 배달갈곳의 동수가 일치되는지 구하는 것.
