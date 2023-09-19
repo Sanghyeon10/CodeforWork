@@ -84,7 +84,7 @@ junhadf= junhadf[junhadf['고객명'].isin(df2['고객명'])]
 # print(junhadf)
 
 
-item_count,gita_count, shoe_count , bedding_count, diffnumber , price_sum = supportmain.getdf4()
+item_count,gita_count, shoe_count , bedding_count, diffnumber ,susun_count, price_sum = supportmain.getdf4()
 
 
 # df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
@@ -331,7 +331,10 @@ for l in range(k+1): #모든 리스트 돌리기
                     # print(globals()['get' + str(l)][i][1], diffnumber[globals()['get'+str(l)][i][1]])
                     if int(item_count[globals()['get'+str(l)][i][1]]) !=0: #재고가 1개 이상이면서
                         if int(item_count[globals()['get'+str(l)][i][1]]) != int(diffnumber[globals()['get'+str(l)][i][1]]) +1 : #재고개수 = 택차이의 합+1이면 연속된 번호임
-                            AA= AA+' 불'+str(item_count[globals()['get' + str(l)][i][1]])
+                            AA = AA + ' 불'+str(item_count[globals()['get' + str(l)][i][1]])
+
+                        if susun_count[globals()['get'+str(l)][i][1]] !=0: #수선이라고 적혀있는 것이 1개 이상이라면
+                            AA = AA + " 수"+str(susun_count[globals()['get' + str(l)][i][1]])
 
                 print(f"{globals()['get' + str(l)][i][:3]}{AA}", tagnumber, tempnumber)
                 # print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )

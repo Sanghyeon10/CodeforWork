@@ -167,7 +167,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
             pass
     #number 값 획득
 
-    print(df.loc[df.index[i], '고객명'], number,'개수:',remainings ,df.loc[df.index[i], '오늘차이'].days ,BB,CC)
+    print(df.loc[df.index[i], '고객명'], number,remainings ,df.loc[df.index[i], '오늘차이'].days ,BB,CC)
 
 
 
