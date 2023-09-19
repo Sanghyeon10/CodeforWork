@@ -64,8 +64,11 @@ df= supportmain.getdf2()
 df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
 #
 df['날짜차이']= df['완성일자']-df['접수일자']
+df['오늘차이']= datetime.datetime.now()- df['완성일자']
 
+df = df.sort_values(by='오늘차이', ascending=True).drop_duplicates(subset='고객명', keep='first').sort_values(by='접수일자', ascending=True)  # 가장 최신 완성일만 남기기
 
+# print(df)
 
 
 #비입주 조절용 현재는 큰 의미없음
@@ -80,7 +83,8 @@ pastSat= now - datetime.timedelta(days= (week))
 print(pastSat)
 
 
-df=df[df['완성일자']<=pastSat]
+df=df[df['완성일자']<=pastSat] #앞에서 최신 완성일과 오늘날자의 차이를 구하고, 최신완성일 기준으로 중복을 제거하므로,
+#최근 완성날짜거가 지난주 토요일까지 완성되야지 살아남음.
 
 # print(df)
 
@@ -145,6 +149,8 @@ CC=''
 gijun=df.loc[df.index[0],'몇주째']
 tempremaining=""
 
+
+
 # print(df)
 for i in range(len(df)):
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
@@ -195,7 +201,7 @@ for i in range(len(df)):
                 pass
         #number 값 획득
 
-        print(df.loc[df.index[i], '고객명'], number,'개수:',remainings ,df.loc[df.index[i], '날짜차이'].days ,BB,CC)
+        print(df.loc[df.index[i], '고객명'], number,'개수:',remainings ,df.loc[df.index[i], '오늘차이'].days ,BB,CC)
 
 
 
