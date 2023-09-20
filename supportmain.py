@@ -380,7 +380,7 @@ def GetNonharingtonMemo(input_string):
                 delta = current_date - date
 
                 # 새로운 문자열로 8자리 숫자 대체
-                input_string = input_string.replace(date_str, f'{delta.days} days ago')
+                input_string = input_string.replace(date_str, f'{delta.days} days')
 
             except ValueError:
                 # 날짜 형식이 잘못된 경우 무시

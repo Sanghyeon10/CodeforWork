@@ -456,7 +456,7 @@ else:
     fridayTodo = ''
 
 #자기자신과 중복은 제외할것
-print(A,"exceptset",exceptset, "비입주 메모(문자는 월화에)",supportmain.GetNonharingtonMemo(text.get('비입주')))
+print(A,"exceptset",exceptset, "비입주 메모(문자 월화)",supportmain.GetNonharingtonMemo(text.get('비입주')))
 print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_sum,sss.difference(s1|s2|exceptset) ))
 print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset)))
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset)))  # 지지난주껏도 중복제거할까?
