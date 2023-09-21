@@ -84,7 +84,7 @@ junhadf= junhadf[junhadf['고객명'].isin(df2['고객명'])]
 # print(junhadf)
 
 
-item_count,gita_count, shoe_count , bedding_count, diffnumber ,susun_count, price_sum = supportmain.getdf4()
+item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum = supportmain.getdf4()
 
 
 # df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
@@ -252,9 +252,9 @@ tagnumber=""
 #총미수금 알아낼 정보 얻기
 df3= supportmain.getdf3()
 df3.set_index('고객명', inplace= True)
-df3=df3[["총미수금"]]
+df3=df3[["총미수금","체류"]]
 df3['총미수금']=df3['총미수금'].apply(lambda x: int(x.replace("," ,"")) )
-# print(df3)
+# print(df3.loc['111-2005',"체류"])
 
 
 for h in range(k+1): #배달 수거 합치기 + 끝호수 1~5 정렬해주기
@@ -335,6 +335,16 @@ for l in range(k+1): #모든 리스트 돌리기
 
                         if susun_count[globals()['get'+str(l)][i][1]] !=0: #수선이라고 적혀있는 것이 1개 이상이라면
                             AA = AA + " 수"+str(susun_count[globals()['get' + str(l)][i][1]])
+
+                        if long_count[globals()['get'+str(l)][i][1]] !=0: #긴것이 1개 이상이면
+                            AA = AA + " 긴" + str(long_count[globals()['get' + str(l)][i][1]])
+
+                        if df3.loc[globals()['get'+str(l)][i][1],'체류'] != item_count[globals()['get'+str(l)][i][1]]:# 완성개수와 재고재수가 불일치하면
+                            if df3.loc[globals()['get'+str(l)][i][1],'총미수금']>0: #그러면서 미수금이 있어야 의미가 있음. 0이면 다 선불
+                                AA = AA + " 선?"
+
+                        # print(df3.loc[globals()['get'+str(l)][i][1],'체류'] ,3333)
+
 
                 print(f"{globals()['get' + str(l)][i][:3]}{AA}", tagnumber, tempnumber)
                 # print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )
