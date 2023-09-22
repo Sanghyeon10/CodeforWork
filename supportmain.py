@@ -145,7 +145,7 @@ def getorder(price_sum,set):
 
     return A
 
-def getorderwithprice( price_sum,set):
+def getorderwithprice( price_sum,set, df3,item_count):
     # 미수금을 기준으로 내림차순으로 정렬된 리스트 생성
     price_sum = sorted(price_sum.items(), key=lambda x: x[1], reverse=True)
 
@@ -155,8 +155,10 @@ def getorderwithprice( price_sum,set):
     # 결과 리스트에 이름과 미수금 정보 추가
     for name, debt in price_sum:
         if name in set and debt > 0.0:
-            result_list.append(f'{name}({debt})')
-
+            if (df3.loc[name,'체류'])!= item_count[name]:# 불일치 하면 +표시
+                result_list.append(f'{name}({debt})+')
+            else:
+                result_list.append(f'{name}({debt})')
     return  result_list
 
 def getdf1():
