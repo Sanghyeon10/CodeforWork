@@ -23,7 +23,7 @@ sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104'
 sunsucheck = False # False면 오름차순, True면 내림차순
 # sunsucheck = True
 #조절하는 기능
-sunsu = sorted(sunsu, reverse=sunsucheck)
+# sunsu = sorted(sunsu, reverse=sunsucheck)
 # print(sunsu)
 
 switch=False # 개수와 택번호 표시 여부
@@ -39,8 +39,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  0
-minute = 0
+hour =  12+1
+minute = 30
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -191,14 +191,6 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
-k= k+1
-
-for i in range(len(df)):
-    if df.loc[df.index[i], '요청일자'][0:2] in afternoon:
-        if df.loc[df.index[i],'시']=='18' and df.loc[df.index[i],'분']=='50' and df.index[i] not in get_index :
-            # 6시 50분 즉 7시전까지 가야할것들
-
-            printtingf(df, get_index, i, k)
 
 k = k+1
 
@@ -318,7 +310,13 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
                     if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,
-                        AA = AA + " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
+
+                        if (df3.loc[globals()['get' + str(l)][i][1],'체류'] == item_count[globals()['get' + str(l)][i][1]])and (price_sum[globals()['get' + str(l)][i][1]] !=df3.loc[globals()['get' + str(l)][i][1],'총미수금']/1000) :# 재고 체류 개수가 같은데도
+                            AA = AA + " 진"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금']/1000)
+
+                        else:
+                            AA = AA + " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
+
                         if (globals()['get' + str(l)][i][2][-2:]) == '10': #만일 문앞에 두는건데 선불이 아니면 미수인지 체크
                             AA = AA +" 미수?"
 
