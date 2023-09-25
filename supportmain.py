@@ -11,12 +11,13 @@ def contains_korean(text):
 
 
 
-def checkingtime(df2,pricesum):
+def checkingtime(df2,price_sum,df3,item_count):
     time= datetime.datetime.now()
 
     hour = time.hour
     weekday = time.weekday()
 
+    # print(item_count.keys())
 
     df2 = df2[df2['옷장번호'] == 0]
     df2 = df2[df2['비입주'] != '입주민']
@@ -26,7 +27,9 @@ def checkingtime(df2,pricesum):
     #정렬을 위해 정수화해주기
     # df2['접수금액'] = df2['접수금액']
     for l in range(len(df2)): #칼럼추가해주기
-        df2.loc[df2.index[l],'접수금액']= str(pricesum[df2.loc[df2.index[l],'고객명']])
+        if df3.loc[df2.loc[df2.index[l],'고객명'], '체류']== item_count[df2.loc[df2.index[l],'고객명']]:#개수 같으면,일부 미완성은 무시
+            df2.loc[df2.index[l],'접수금액']= str(price_sum[df2.loc[df2.index[l],'고객명']])
+        # print(df2.loc[df2.index[l],'고객명'])
 
     # print(df2.values.flatten().tolist())
     df2 = df2.sort_values(by='완성일자', ascending=False).drop_duplicates(subset='고객명', keep='first') #가장 최신날짜만 남기기
@@ -36,6 +39,7 @@ def checkingtime(df2,pricesum):
 
     #정렬후에는 문자열 합치기를 위해서 다시 문자열화
     df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
+
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
     df2['접수금액'] = df2['접수금액'].apply(lambda x: float(x))
@@ -87,6 +91,7 @@ def checkingtime(df2,pricesum):
         X='없음'
 
     return X +':비입주는 '+Y , df2.values #df2.value는 특정 금액대 이상의 비입주
+
 
 
 def findingpassword(path, dict):
@@ -275,7 +280,7 @@ def getdf4():
 
     tempdf= df4['상품명'].copy()
 
-    df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트|카페트").apply(
+    df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트|카페트|커텐").apply(
         lambda x: x if x == True else None)
     gita_count= df4.groupby('고객명')['상품명'].count()
 
@@ -283,7 +288,7 @@ def getdf4():
         lambda x: x if x == True else None)
     shoe_count = df4.groupby('고객명')['상품명'].count()
 
-    df4['상품명'] =  tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트").apply(
+    df4['상품명'] =  tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트|커텐").apply(
         lambda x: x if x == True else None)
     bedding_count= df4.groupby('고객명')['상품명'].count()
 
@@ -291,7 +296,7 @@ def getdf4():
         lambda x: x if x == True else None)
     susun_count = df4.groupby('고객명')['상품명'].count()
 
-    df4['상품명'] = tempdf.str.contains("원피스|코트").apply(
+    df4['상품명'] = tempdf.str.contains("원피스|코트|한복").apply(
         lambda x: x if x == True else None)
     long_count = df4.groupby('고객명')['상품명'].count()
 

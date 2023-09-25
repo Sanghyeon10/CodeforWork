@@ -40,7 +40,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  12+1
-minute = 30
+minute = 49
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -246,6 +246,7 @@ df3= supportmain.getdf3()
 df3.set_index('고객명', inplace= True)
 df3=df3[["총미수금","체류"]]
 df3['총미수금']=df3['총미수금'].apply(lambda x: int(x.replace("," ,"")) )
+df3['체류'] =df3['체류'].apply(lambda x: int(x) )
 # print(df3.loc['111-2005',"체류"])
 
 
@@ -429,7 +430,7 @@ newlist = np.array(newlist, dtype=object)[:,:3] #슬라이싱해서 뒤에꺼 �
 print(newlist)
 
 
-dashboradprint, nonharington=supportmain.checkingtime(df2,price_sum)
+dashboradprint, nonharington=supportmain.checkingtime(df2,price_sum,df3,item_count)
 print(dashboradprint)
 s1=set(df['고객명']) #오늘 배달리스트의 있는 고객명들
 ss=set(lastSatdf.values.flatten().tolist()) #지난주 동수일치
