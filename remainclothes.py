@@ -21,54 +21,28 @@ now = datetime.datetime.now() #+ datetime.timedelta(days=3)
 print('오늘날짜',now)
 
 print('배달리스트 토요일까지 껄로 했나?')
-
-
-
 day=2 # 월요일에서 토요일로 2일뒤로
 week = now.weekday()+day
-
-df= pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-
-# print(df)
-
-df= supportmain.getdf2()
-# df= df[['접수일자','완성일자', '고객명','옷장번호']]
-
-df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
-
-
-
-df = df.sort_values(by='날짜차이', ascending=True).drop_duplicates(subset='고객명', keep='first').sort_values(by='접수일자', ascending=True)  # 가장 최신 완성일만 남기기
-
-# print(df)
-
-
-#비입주 조절용 현재는 큰 의미없음
-A='입주민'
-df=df[df['비입주']==A]
-
-
-
-
-pastSat= now - datetime.timedelta(days= (week))
-
+pastSat= now - datetime.timedelta(days= (week) ,hours= now.hour-23)
 print(pastSat)
 
 
+
+df= supportmain.getdf2() #옷장조회
+# df= df[['접수일자','완성일자', '고객명','옷장번호']]
+df['몇주째']= df['완성일자'].apply(lambda x: x.strftime("%U"))
+df = df.sort_values(by='날짜차이', ascending=True).drop_duplicates(subset='고객명', keep='first').sort_values(by='접수일자', ascending=True)  # 가장 최신 완성일만 남기기
+# print(df)
+#비입주 조절용 현재는 큰 의미없음
+df=df[df['비입주']=='입주민']
 df=df[df['완성일자']<=pastSat] #앞에서 최신 완성일과 오늘날자의 차이를 구하고, 최신완성일 기준으로 중복을 제거하므로,
 #최근 완성날짜거가 지난주 토요일까지 완성되야지 살아남음.
 
 # print(df)
 
+
 #전화번호,전화여부 뽑기
-dff= pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
-
-dff= dff[['고객명','휴대폰','체류']]#,'주소','특이사항']]
-
-dff['고객명']= dff['고객명'].apply(lambda x: x.split('\n')[0])
-dff.fillna('',inplace=True)
-# dff['전화여부'] = dff[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
-
+dff= supportmain.getdf3()
 
 
 ####
@@ -89,22 +63,23 @@ baedallist= df5 + df2
 # print(baedallist)
 
 #운동화개수, 그냥개수 구하기
-df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-df4=df4.fillna(method='ffill')
+# df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
+# df4=df4.fillna(method='ffill')
+#
+# df4= df4.drop_duplicates(subset='택번호')
+# df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
+# df4= df4[['고객명','상품명']]
+# item_count= df4.groupby('고객명')['상품명'].count()
+#
+# # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
+# tempdf= df4['상품명'].copy()
+# df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
+# gita_count= df4.groupby('고객명')['상품명'].count()
+# df4['상품명'] = tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트").apply(
+#     lambda x: x if x == True else None)
+# bedding_count = df4.groupby('고객명')['상품명'].count()
 
-df4= df4.drop_duplicates(subset='택번호')
-df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
-df4= df4[['고객명','상품명']]
-item_count= df4.groupby('고객명')['상품명'].count()
-
-# print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
-tempdf= df4['상품명'].copy()
-df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
-gita_count= df4.groupby('고객명')['상품명'].count()
-df4['상품명'] = tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트").apply(
-    lambda x: x if x == True else None)
-bedding_count = df4.groupby('고객명')['상품명'].count()
-
+item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum= supportmain.getdf4()
 
 
 

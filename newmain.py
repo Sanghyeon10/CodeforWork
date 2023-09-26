@@ -112,10 +112,6 @@ junhadf= junhadf[junhadf['고객명'].isin(df2['고객명'])]
 item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum = supportmain.getdf4()
 
 
-# df3 = pd.read_excel(r'C:\Users\user\Desktop\고객정보.xls')
-# df3= df3[['고객명','체류']]
-# df3= df3.dropna(axis=0)
-# df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
 
 # 미리예약여부로 중복 일일이 확인 x하기
 df5 = supportmain.getdf5()
@@ -277,8 +273,7 @@ tagnumber=""
 df3= supportmain.getdf3()
 df3.set_index('고객명', inplace= True)
 df3=df3[["총미수금","체류"]]
-df3['총미수금']=df3['총미수금'].apply(lambda x: int(x.replace("," ,"")) )
-df3['체류'] =df3['체류'].apply(lambda x: int(x) )
+
 # print(df3.loc['111-2005',"체류"])
 
 
@@ -377,11 +372,10 @@ for l in range(k+1): #모든 리스트 돌리기
                             if df3.loc[globals()['get'+str(l)][i][1],'총미수금']>0: #그러면서 미수금이 있어야 의미가 있음. 0이면 다 선불
                                 AA = AA + " 선?"
 
-                        # print(df3.loc[globals()['get'+str(l)][i][1],'체류'] ,3333)
+                        
 
 
                 print(f"{globals()['get' + str(l)][i][:3]}{AA}", tagnumber, tempnumber)
-                # print(globals()['get'+str(l)][i][:3] ,AA, tagnumber,tempnumber )
 
                 BB=''
                 AA=''
@@ -395,9 +389,6 @@ for l in range(k+1): #모든 리스트 돌리기
                 else:
                     countingnumber= countingnumber+1
 
-
-                # if (globals()['get'+str(l)][i][1]=='110-1504'):
-                #     print('호출금지')
 
                 # print(c)
                 if globals()['get' + str(l)][i][1] in c : #중복1개당 1발언

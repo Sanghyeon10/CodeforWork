@@ -39,7 +39,8 @@ def checkingtime(df2,price_sum,df3,item_count):
 
     #정렬후에는 문자열 합치기를 위해서 다시 문자열화
     df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
-
+    df2= df2.dropna() #item_count와 체류개수가 다르면 가격이 None이라 drop해서 날려야함.
+    # print(df2)
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
     df2['접수금액'] = df2['접수금액'].apply(lambda x: float(x))
@@ -310,6 +311,8 @@ def getdf3():
     df3= df3[['고객명','휴대폰','체류','주소','특이사항',"총미수금"]]
     df3.fillna('',inplace=True)
     # df3= df3.dropna(axis=0)
+    df3['총미수금'] = df3['총미수금'].apply(lambda x: int(x.replace(",", "")))
+    df3['체류'] = df3['체류'].apply(lambda x: int(x))
     df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
     df3['전화여부'] = df3[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
 
