@@ -40,7 +40,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  12+1
-minute = 49
+minute = 7
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -49,6 +49,31 @@ else:
 # print(aftersigan)
 sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
+
+
+Sixfirst=[]
+Sixafter=[]
+
+sevenfirst=[]
+sevenafter=[]
+
+sevenhalffirst=[]
+sevenhalfafter=[]
+
+eightfirst=[]
+eightafter=[]
+
+Sixfirst=supportmain.makecorrestdongsu(Sixfirst)
+Sixafter=supportmain.makecorrestdongsu(Sixafter)
+sevenfirst=supportmain.makecorrestdongsu(sevenfirst)
+sevenafter=supportmain.makecorrestdongsu(sevenafter)
+sevenhalffirst=supportmain.makecorrestdongsu(sevenhalffirst)
+sevenhalfafter=supportmain.makecorrestdongsu(sevenhalfafter)
+eightfirst=supportmain.makecorrestdongsu(eightfirst)
+eightafter=supportmain.makecorrestdongsu(eightafter)
+
+
+arrayforsunsu= [[Sixfirst,Sixafter], [sevenfirst,sevenafter], [sevenhalffirst,sevenhalfafter], [eightfirst,eightafter] ]
 
 
 
@@ -96,7 +121,7 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 df5 = supportmain.getdf5()
 
 
-
+remembergetlocation=[]
 get_index=[]
 
 
@@ -191,6 +216,7 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
+remembergetlocation.append(k)
 
 k = k+1
 
@@ -199,6 +225,8 @@ for i in range(len(df)):
         if df.loc[df.index[i],'시']=='19' and df.loc[df.index[i],'분']!='30' and df.index[i] not in get_index:
             printtingf(df, get_index, i, k)
 
+remembergetlocation.append(k)
+
 k = k+1
 
 for i in range(len(df)):
@@ -206,12 +234,16 @@ for i in range(len(df)):
         if df.loc[df.index[i],'시']=='19' and df.loc[df.index[i],'분']=='30'  and df.index[i] not in get_index:
             printtingf(df, get_index, i, k)
 
+remembergetlocation.append(k)
+
 k = k+1
 
 for i in range(len(df)):
     if df.loc[df.index[i], '요청일자'][0:2] in afternoon:
         if df.loc[df.index[i],'시']=='20' and df.loc[df.index[i],'분']=='00'  and df.index[i] not in get_index:
             printtingf(df, get_index, i, k)
+
+remembergetlocation.append(k)
 
 
 k = k+1
@@ -258,10 +290,13 @@ for h in range(k+1): #배달 수거 합치기 + 끝호수 1~5 정렬해주기
 
 for l in range(k+1): #모든 리스트 돌리기
     # print(globals()['get'+str(l)],l)
-    for j in range(len(sunsu)):
+
+    resunsu = supportmain.BeforegetResuns(sunsu,l,arrayforsunsu,remembergetlocation)
+    # print(resunsu,l)
+    for j in range(len(resunsu)):
         for i in range(len(globals()['get'+str(l)])):
 
-            if globals()['get'+str(l)][i][3] == sunsu[j]: #동호수를꺼내서 15동부터 해당되는거 꺼내기
+            if globals()['get'+str(l)][i][3] == resunsu[j]: #동호수를꺼내서 15동부터 해당되는거 꺼내기
 
                 if switch == True:#정해진 시간대라면,
                     for p in range(len(df2)) :#옷장에 있는거 택번호 가져올 정보
