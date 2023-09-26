@@ -43,7 +43,7 @@ def checkingtime(df2,price_sum,df3,item_count):
     Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
     df2['접수금액'] = df2['접수금액'].apply(lambda x: float(x))
-    df2 = df2[df2['접수금액']>30]
+    df2 = df2[df2['접수금액']>=30]
     df2 =df2['고객명']
     # print(df2.values)
 
@@ -280,7 +280,7 @@ def getdf4():
 
     tempdf= df4['상품명'].copy()
 
-    df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트|카페트|커텐").apply(
+    df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트|카페트|커텐|커튼").apply(
         lambda x: x if x == True else None)
     gita_count= df4.groupby('고객명')['상품명'].count()
 
@@ -288,7 +288,7 @@ def getdf4():
         lambda x: x if x == True else None)
     shoe_count = df4.groupby('고객명')['상품명'].count()
 
-    df4['상품명'] =  tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트|커텐").apply(
+    df4['상품명'] =  tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트|커텐|커튼").apply(
         lambda x: x if x == True else None)
     bedding_count= df4.groupby('고객명')['상품명'].count()
 

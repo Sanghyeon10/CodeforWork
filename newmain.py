@@ -23,7 +23,7 @@ sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104'
 sunsucheck = False # False면 오름차순, True면 내림차순
 # sunsucheck = True
 #조절하는 기능
-# sunsu = sorted(sunsu, reverse=sunsucheck)
+sunsu = sorted(sunsu, reverse=sunsucheck)
 # print(sunsu)
 
 switch=False # 개수와 택번호 표시 여부
