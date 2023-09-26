@@ -403,44 +403,26 @@ def GetNonharingtonMemo(input_string):
     return input_string
 
 
-# def GetNonharingtonMemo(input_string):
-#
-#     try:  #애초에 숫자추출이 가능한 경우 여야함. 아니면 복붙출력
-#         # 문자열에서 8자리 연속된 숫자 추출
-#         date_strings = re.findall(r'\d{8}', input_string)
-#
-#         # 현재 날짜 가져오기
-#         current_date = datetime.datetime.now()
-#
-#         returndata = ""
-#
-#         if len(date_strings)!=0: #8자리 숫자가 있어야 진행 없으면 복붙출력
-#             for date_str in date_strings:
-#                 # 8자리 숫자를 날짜로 변환
-#                 try:
-#                     date = datetime.datetime.strptime(date_str, '%Y%m%d')
-#
-#                     # 현재 날짜와의 차이 계산
-#                     delta = current_date - date
-#
-#                     # 입력 문자열에서 추출된 날짜 부분을 빈 문자열로 대체하여 출력
-#                     input_string = input_string.replace(date_str, '')
-#
-#                     returndata = str(delta.days)+"days " + input_string
-#
-#                 except ValueError:
-#                     # print(f"잘못된 날짜 형식: {date_str}")
-#
-#                     returndata =f"잘못된 날짜 형식: {date_str}"
-#
-#         else:
-#             returndata = input_string
-#
-#     except:
-#         returndata = input_string
-#
-#     return  returndata
+def BeforegetResuns(sunsu,l,array,remembergetlocation):
+    if l in remembergetlocation:# 순서재조정할 k가 맞다면
+        m= remembergetlocation.index(l)
 
+        newsunsu = array[m][0] +[x for x in sunsu if x not in array[m][0]+array[m][1] ] +array[m][1] #리스트 중복없애고 앞뒤로 붙히기
+
+        return newsunsu
+
+    else: #아니면 그대로 출력
+        return sunsu
+
+
+def makecorrestdongsu(list):
+    for i in range(len(list)):
+        if isinstance(list[i], int): #ex. 숫자7
+            list[i]= str(100+list[i])
+        else:
+            pass
+
+    return list
 
 
 
