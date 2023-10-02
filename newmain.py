@@ -14,10 +14,8 @@ def printtingf(df, get_index, i, k):
 
 df= supportmain.getdf1()
 
-noon=['09','10']
-noon1=['11','12']
+
 afternoon =['17','18','19','20']
-early=['10']
 sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104','103','102','101']
 
 sunsucheck = False # False면 오름차순, True면 내림차순
@@ -247,8 +245,7 @@ k = k+1
 for i in range(len(df)): #남은게 있다면 출력 (잘못된 시간대일경우 대비)
     if  df.index[i] not in get_index:
         printtingf(df, get_index, i, k)
-        # print('???')
-        # print(k)
+
 
 
 
@@ -312,7 +309,7 @@ for l in range(k+1): #모든 리스트 돌리기
                 if (globals()['get'+str(l)][i][2][-2:])=='50':
                     AA= AA + '늦지말기'
 
-                # print(shoe_count.keys())
+
                 # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
                 # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
                 if globals()['get'+str(l)][i][0] != '수거' and globals()['get'+str(l)][i][1] in gita_count.keys() : #배달,수거배달이면서 재고가 0개라도 표시가능한 경우에
@@ -331,7 +328,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 if text.get(globals()['get'+str(l)][i][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
                     if text.get(globals()['get'+str(l)][i][1],'a').count('?')>=2 : #물음표가 2개 이상이고
-                        if globals()['get'+str(l)][i][0] == '수거' or globals()['get'+str(l)][i][0] == '수거배달':  #수거라면,
+                        if globals()['get'+str(l)][i][0] != '배달':  #수거라면,(수거, 배달, 수거배달 중 배달만 아님)
                             AA = AA + text.get(globals()['get' + str(l)][i][1], '')
                         else: #배달이면 신발 줄수도 있다는뜻.
                             AA = AA +"+" #신발 잘 주는집이라는 표시.
