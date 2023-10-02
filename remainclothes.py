@@ -62,23 +62,8 @@ df5= supportmain.getdf5()
 baedallist= df5 + df2
 # print(baedallist)
 
-#운동화개수, 그냥개수 구하기
-# df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
-# df4=df4.fillna(method='ffill')
-#
-# df4= df4.drop_duplicates(subset='택번호')
-# df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
-# df4= df4[['고객명','상품명']]
-# item_count= df4.groupby('고객명')['상품명'].count()
-#
-# # print( df4['상품명'].str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백") )
-# tempdf= df4['상품명'].copy()
-# df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트").apply(lambda x : x if x == True else None)
-# gita_count= df4.groupby('고객명')['상품명'].count()
-# df4['상품명'] = tempdf.str.contains("이불|커버|담요|시트|인형|매트|카페트").apply(
-#     lambda x: x if x == True else None)
-# bedding_count = df4.groupby('고객명')['상품명'].count()
 
+#count 구하기
 item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum= supportmain.getdf4()
 
 

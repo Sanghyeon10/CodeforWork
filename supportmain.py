@@ -145,12 +145,6 @@ def mergeforget(list):
 
     return newlist
 
-def getorder(price_sum,set):
-
-    A = sorted( set, key= lambda x: price_sum[x],reverse=True)
-
-    return A
-
 def getorderwithprice( price_sum,set, df3,item_count):
     # 미수금을 기준으로 내림차순으로 정렬된 리스트 생성
     price_sum = sorted(price_sum.items(), key=lambda x: x[1], reverse=True)

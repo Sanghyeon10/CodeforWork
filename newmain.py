@@ -40,7 +40,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  12+1
-minute = 7
+minute = 21
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -92,7 +92,6 @@ for o in range(len(df)): #문자이름 뽑아내기
 
 sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통 가게라서 먼저가기 때문)
 # print(sunsu)
-# df= df[['순번', '등록일자', '요청일자', '수거/배달', '등록위치', '전화번호', '고객명', '주소', '상태', '수정']]
 
 
 df2 = supportmain.getdf2()
@@ -491,7 +490,7 @@ else:
     fridayTodo = ''
 
 #자기자신과 중복은 제외할것
-print(A,"exceptset",exceptset, "비입주 메모(문자 월화)",supportmain.GetNonharingtonMemo(text.get('비입주')))
+print(A,"exceptset",exceptset, "비입주 메모",supportmain.GetNonharingtonMemo(text.get('비입주')))
 print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_sum,sss.difference(s1|s2|exceptset),df3,item_count ))
 print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset),df3,item_count ))
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset) ,df3,item_count))  # 지지난주껏도 중복제거할까?
