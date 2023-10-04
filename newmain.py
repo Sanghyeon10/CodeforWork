@@ -38,7 +38,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour =  12+1
-minute = 21
+minute = 27
 if hour ==0 and minute==0:
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
