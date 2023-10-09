@@ -100,7 +100,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
         if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
             number = dff.loc[dff.index[j],'휴대폰']
             if dff.loc[dff.index[j],'체류']!=item_count[dff.loc[dff.index[j],'고객명']]:
-                tempremaining='XXX'
+                tempremaining='불일치'
             else:
                 tempremaining=""
 

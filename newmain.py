@@ -37,15 +37,16 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour =  12+1
-minute = 27
-if hour ==0 and minute==0:
+hour = 0
+minute = 0
+if (hour ==0 and minute==0) or time.weekday()==5 : #토요일이면 array형태로 표시해주는게 좋음.
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
     aftersigan= datetime.datetime.combine(today,datetime.datetime.strptime(f'{hour}:{minute}', "%H:%M").time())
 
 # print(aftersigan)
 sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
+
 
 
 
@@ -61,6 +62,26 @@ sevenhalfafter=[]
 eightfirst=[]
 eightafter=[]
 
+
+
+
+
+tenfirst=[]
+tenafter=[]
+
+elevenfirst=[]
+elevenafter=[]
+
+elevenhalffirst=[]
+elevenhalfafter=[]
+
+twelvefirst=[]
+twelveafter=[]
+
+
+
+
+
 Sixfirst=supportmain.makecorrestdongsu(Sixfirst)
 Sixafter=supportmain.makecorrestdongsu(Sixafter)
 sevenfirst=supportmain.makecorrestdongsu(sevenfirst)
@@ -70,8 +91,19 @@ sevenhalfafter=supportmain.makecorrestdongsu(sevenhalfafter)
 eightfirst=supportmain.makecorrestdongsu(eightfirst)
 eightafter=supportmain.makecorrestdongsu(eightafter)
 
+tenfirst=supportmain.makecorrestdongsu(tenfirst)
+tenafter=supportmain.makecorrestdongsu(tenafter)
+elevenfirst=supportmain.makecorrestdongsu(elevenfirst)
+elevenafter=supportmain.makecorrestdongsu(elevenafter)
+elevenhalffirst=supportmain.makecorrestdongsu(elevenhalffirst)
+elevenhalfafter=supportmain.makecorrestdongsu(elevenhalfafter)
+twelvefirst=supportmain.makecorrestdongsu(twelvefirst)
+twelveafter=supportmain.makecorrestdongsu(twelveafter)
 
-arrayforsunsu= [[Sixfirst,Sixafter], [sevenfirst,sevenafter], [sevenhalffirst,sevenhalfafter], [eightfirst,eightafter] ]
+
+
+
+arrayforsunsu= [[tenfirst,tenafter], [elevenfirst,elevenafter], [elevenhalffirst,elevenhalfafter],[twelvefirst, twelveafter], [Sixfirst,Sixafter], [sevenfirst,sevenafter], [sevenhalffirst,sevenhalfafter], [eightfirst,eightafter] ]
 
 
 
@@ -153,7 +185,7 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
-
+remembergetlocation.append(k)
 
 k= k+1
 
@@ -164,6 +196,8 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
+remembergetlocation.append(k)
+
 
 k= k+1
 
@@ -173,6 +207,8 @@ for i in range(len(df)):
             #오전 걸러내기
 
             printtingf(df, get_index, i, k)
+
+remembergetlocation.append(k)
 
 
 
@@ -185,8 +221,12 @@ for i in range(len(df)):
 
             printtingf(df, get_index, i, k)
 
-k= k+1
 
+
+remembergetlocation.append(k)
+
+
+k= k+1
 
 ##오후
 
@@ -327,7 +367,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
                 if text.get(globals()['get'+str(l)][i][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
-                    if text.get(globals()['get'+str(l)][i][1],'a').count('?')>=2 : #물음표가 2개 이상이고
+                    if text.get(globals()['get'+str(l)][i][1],'a').count('?')>=1 : #물음표가 1개 이상이고
                         if globals()['get'+str(l)][i][0] != '배달':  #수거라면,(수거, 배달, 수거배달 중 배달만 아님)
                             AA = AA + text.get(globals()['get' + str(l)][i][1], '')
                         else: #배달이면 신발 줄수도 있다는뜻.
