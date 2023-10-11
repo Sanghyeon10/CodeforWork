@@ -9,7 +9,7 @@ isprintcheck=pd.Series(dtype='object')
 #데이터 프레임 만들것이라면 input 출력
 with open('checkpoint.txt', 'r', encoding='utf-8') as f: #010전화번호 csv로 출력하는 코드
     for line in f:
-        if "010" in line:
+        if "010-" in line:
             isprintcheck= pd.concat([isprintcheck, pd.Series(line.rstrip("\n"))])
 
 if len(isprintcheck)!=0:# 출력할게 있다면
@@ -185,7 +185,7 @@ else:
 
 with open('checkpoint.txt', 'r', encoding='utf-8') as f: #010전화번호 csv로 출력하는 코드
     for line in f:
-        if "010" in line:
+        if "010-" in line:
             forprintdf= pd.concat([forprintdf, pd.Series(line.rstrip("\n"))])
 
 

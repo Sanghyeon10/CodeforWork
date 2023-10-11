@@ -37,8 +37,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour = 0
-minute = 0
+hour = 12+2
+minute = 35
 if (hour ==0 and minute==0) or time.weekday()==5 : #토요일이면 array형태로 표시해주는게 좋음.
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -50,7 +50,7 @@ sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
 
-Sixfirst=[]
+Sixfirst=[3]
 Sixafter=[]
 
 sevenfirst=[]
@@ -378,8 +378,8 @@ for l in range(k+1): #모든 리스트 돌리기
                 if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
                     if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,
 
-                        if (df3.loc[globals()['get' + str(l)][i][1],'체류'] == item_count[globals()['get' + str(l)][i][1]])and (price_sum[globals()['get' + str(l)][i][1]] !=df3.loc[globals()['get' + str(l)][i][1],'총미수금']/1000) :# 재고 체류 개수가 같은데도
-                            AA = AA + " 진"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금']/1000)
+                        if (df3.loc[globals()['get' + str(l)][i][1],'체류'] == item_count[globals()['get' + str(l)][i][1]])and (price_sum[globals()['get' + str(l)][i][1]] !=df3.loc[globals()['get' + str(l)][i][1],'총미수금']) :# 재고 체류 개수가 같은데도
+                            AA = AA + " 진"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])
 
                         else:
                             AA = AA + " "+ str(price_sum[globals()['get' + str(l)][i][1]]) #빈칸하나 넣고 가격 표시
@@ -389,6 +389,13 @@ for l in range(k+1): #모든 리스트 돌리기
 
                     else: #총미수금이 0이면,선불이므로 개수와 선불표시하기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
+
+
+                if globals()['get'+str(l)][i][1] not in price_sum.keys() and df3.loc[globals()['get' + str(l)][i][1],'총미수금']>0:
+                    #접수금액표시 불가능한데(완성재고는 없는데) 미수금만 있다면
+                    AA= AA +" 미수금?"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])
+
+
 
 
 
@@ -513,7 +520,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set([]) #전화 일시적 예외 적는칸
+exceptset=set(['우성5동102호', '103-1304'] ) #전화 일시적 예외 적는칸
 # print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함
@@ -533,7 +540,7 @@ print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_s
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset) ,df3,item_count))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset) ,df3,item_count)) #지지난주것도 표현하면 너무 김.
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
-print('전화 배달 리스트', supportmain.getorderwithprice(price_sum,junhaToset.difference(s1|s2|exceptset) ,df3,item_count))
+print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,junhaToset.difference(s1|s2|exceptset) ,df3,item_count),"\033[0m")
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset) ,df3,item_count))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"),fridayTodo )
 

@@ -306,6 +306,7 @@ def getdf3():
     df3.fillna('',inplace=True)
     # df3= df3.dropna(axis=0)
     df3['총미수금'] = df3['총미수금'].apply(lambda x: int(x.replace(",", "")))
+    df3['총미수금'] = df3['총미수금']/1000
     df3['체류'] = df3['체류'].apply(lambda x: int(x))
     df3['고객명'] = df3['고객명'].apply(lambda x: x.split('\n')[0])
     df3['전화여부'] = df3[['주소','특이사항']].apply(lambda x:'전화' in ''.join(x),axis=1)
