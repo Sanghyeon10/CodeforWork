@@ -37,8 +37,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour = 12+2
-minute = 35
+hour = 10
+minute = 30
 if (hour ==0 and minute==0) or time.weekday()==5 : #토요일이면 array형태로 표시해주는게 좋음.
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -50,7 +50,7 @@ sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
 
-Sixfirst=[3]
+Sixfirst=[]
 Sixafter=[]
 
 sevenfirst=[]
@@ -393,7 +393,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 if globals()['get'+str(l)][i][1] not in price_sum.keys() and df3.loc[globals()['get' + str(l)][i][1],'총미수금']>0:
                     #접수금액표시 불가능한데(완성재고는 없는데) 미수금만 있다면
-                    AA= AA +" 미수금?"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])
+                    AA= AA +" 미수금"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])+"?"
 
 
 
@@ -520,7 +520,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(['우성5동102호', '103-1304'] ) #전화 일시적 예외 적는칸
+exceptset=set(["103-1304","108-2504"] ) #전화 일시적 예외 적는칸
 # print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함
