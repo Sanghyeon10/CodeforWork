@@ -37,8 +37,8 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 
 today= datetime.datetime.now().date()
-hour = 10
-minute = 30
+hour = 12+1
+minute = 37
 if (hour ==0 and minute==0) or time.weekday()==5 : #토요일이면 array형태로 표시해주는게 좋음.
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -66,7 +66,7 @@ eightafter=[]
 
 
 
-tenfirst=[]
+tenfirst=[6]
 tenafter=[]
 
 elevenfirst=[]
@@ -520,7 +520,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(["103-1304","108-2504"] ) #전화 일시적 예외 적는칸
+exceptset=set(["108-2504"] ) #전화 일시적 예외 적는칸
 # print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함
