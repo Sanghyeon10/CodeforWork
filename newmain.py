@@ -38,7 +38,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 today= datetime.datetime.now().date()
 hour = 12+1
-minute = 37
+minute = 27
 if (hour ==0 and minute==0) or time.weekday()==5 : #토요일이면 array형태로 표시해주는게 좋음.
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -50,8 +50,8 @@ sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
 
-Sixfirst=[]
-Sixafter=[]
+Sixfirst=[10,3,2,5,8]
+Sixafter=[12,11,9]
 
 sevenfirst=[]
 sevenafter=[]
@@ -66,7 +66,7 @@ eightafter=[]
 
 
 
-tenfirst=[6]
+tenfirst=[]
 tenafter=[]
 
 elevenfirst=[]

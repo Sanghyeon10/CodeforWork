@@ -1,5 +1,5 @@
 import re
-input_string = "4-1 홍길동 김철수 김영희 나도현/// 김영희 아픔."
+input_string = "새신자 홍길동 김철수 김영희 나도현 ///김영희 아픔."
 
 # 결과를 저장할 딕셔너리들
 students_dict = {}
