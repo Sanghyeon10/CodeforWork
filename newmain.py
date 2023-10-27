@@ -4,7 +4,7 @@ import re
 import copy
 import supportmain
 import numpy as np
-
+import afternoontime
 
 def printtingf(df, get_index, i, k):
     a = (df.loc[df.index[i], '수거/배달'], df.loc[df.index[i], '고객명'], df.loc[df.index[i], '요청일자'],df.loc[df.index[i], '동호수'], supportmain.lastpiece(df.loc[df.index[i], '고객명']) )
@@ -20,6 +20,9 @@ sunsu=['115','114','113','112','111','110','109', '108', '107','106','105','104'
 
 sunsucheck = False # False면 오름차순, True면 내림차순
 # sunsucheck = True
+
+sunsucheck =afternoontime.sunsucheck
+
 #조절하는 기능
 sunsu = sorted(sunsu, reverse=sunsucheck)
 # print(sunsu)
@@ -34,11 +37,12 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
             pass
     # pass
 # switch=True
+switch=afternoontime.switch
 
 
 today= datetime.datetime.now().date()
-hour = 12+1
-minute = 27
+hour = afternoontime.hour
+minute = afternoontime.minute
 if (hour ==0 and minute==0) or time.weekday()==5 : #토요일이면 array형태로 표시해주는게 좋음.
     aftersigan = datetime.datetime(2023, 1, 1)
 else:
@@ -50,33 +54,33 @@ sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
 
-Sixfirst=[10,3,2,5,8]
-Sixafter=[12,11,9]
+Sixfirst=afternoontime.Sixfirst
+Sixafter=afternoontime.Sixafter
 
-sevenfirst=[]
-sevenafter=[]
+sevenfirst=afternoontime.sevenfirst
+sevenafter=afternoontime.sevenafter
 
-sevenhalffirst=[]
-sevenhalfafter=[]
+sevenhalffirst=afternoontime.sevenhalffirst
+sevenhalfafter=afternoontime.sevenhalfafter
 
-eightfirst=[]
-eightafter=[]
-
-
+eightfirst=afternoontime.eightfirst
+eightafter=afternoontime.eightafter
 
 
 
-tenfirst=[]
-tenafter=[]
 
-elevenfirst=[]
-elevenafter=[]
 
-elevenhalffirst=[]
-elevenhalfafter=[]
+tenfirst=afternoontime.tenfirst
+tenafter=afternoontime.tenafter
 
-twelvefirst=[]
-twelveafter=[]
+elevenfirst=afternoontime.elevenfirst
+elevenafter=afternoontime.elevenafter
+
+elevenhalffirst=afternoontime.elevenhalffirst
+elevenhalfafter=afternoontime.elevenhalfafter
+
+twelvefirst=afternoontime.twelvefirst
+twelveafter=afternoontime.twelveafter
 
 
 
@@ -520,7 +524,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(["108-2504"] ) #전화 일시적 예외 적는칸
+exceptset=set(["103-1304","108-2504"] ) #전화 일시적 예외 적는칸
 # print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함

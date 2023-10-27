@@ -335,12 +335,22 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
                 if df3.loc[globals()['get' + str(l)][i][1],'체류']!=0:
                     AA = " 체류"+str(df3.loc[globals()['get' + str(l)][i][1],'체류'])
+
+                else:
+                    AA = AA+ "    "
+
                 if df3.loc[globals()['get' + str(l)][i][1],'총미수금']!=0:
                     AA = AA+ " 총미수금" +str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])
 
+                else:
+                    AA =AA+ "              "
 
                 if globals()['get'+str(l)][i][1] in price_sum.keys():
-                    AA =AA+ " 재고에는" +str(price_sum[globals()['get' + str(l)][i][1]]) +str(item_count[globals()['get' + str(l)][i][1]])
+                    AA =AA+ " 재고에는" +str(price_sum[globals()['get' + str(l)][i][1]]) +"("+str(item_count[globals()['get' + str(l)][i][1]])+ ")"
+                    #
+                    # if int(shoe_count[globals()['get'+str(l)][i][1]])>0:#  운동화개수가 0 이상이면
+                    #     AA = AA + '운동화'+str(shoe_count[globals()['get'+str(l)][i][1]])
+
 
                 print(f"{globals()['get' + str(l)][i][:3]}{AA}")
 
