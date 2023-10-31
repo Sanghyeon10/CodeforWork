@@ -1,10 +1,10 @@
 import datetime
 hour = 12+2
-minute = 7
+minute = 13
 
 
 
-Sixfirst=[11]
+Sixfirst=[]
 Sixafter=[]
 
 sevenfirst=[]
@@ -19,7 +19,7 @@ eightafter=[]
 
 
 tenfirst=[]
-tenafter=[3]
+tenafter=[]
 
 elevenfirst=[]
 elevenafter=[]
