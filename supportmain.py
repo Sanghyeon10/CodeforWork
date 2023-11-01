@@ -35,18 +35,23 @@ def checkingtime(df2,price_sum,df3,item_count):
     df2 = df2.sort_values(by='완성일자', ascending=False).drop_duplicates(subset='고객명', keep='first') #가장 최신날짜만 남기기
     # df2 = df2.drop_duplicates(subset='고객명',keep='last')
     df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기 그러면 가장 늦은 완성일기준으로 몇일 지난지 표시해주는것임.
-    df2 = df2[['고객명', '날짜차이','접수금액']]
+    # print(len(df2))
+    if len(df2)!=0: #남아있는 비입주 재고있을때에만
+        df2 = df2[['고객명', '날짜차이','접수금액']]
 
-    #정렬후에는 문자열 합치기를 위해서 다시 문자열화
-    df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
-    df2= df2.dropna() #item_count와 체류개수가 다르면 가격이 None이라 drop해서 날려야함.
-    # print(df2)
-    Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
+        #정렬후에는 문자열 합치기를 위해서 다시 문자열화
+        df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
+        df2= df2.dropna() #item_count와 체류개수가 다르면 가격이 None이라 drop해서 날려야함.
+        # print(df2)
+        Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
-    df2['접수금액'] = df2['접수금액'].apply(lambda x: float(x))
-    df2 = df2[df2['접수금액']>=30]
-    df2 =df2['고객명']
-    # print(df2.values)
+        df2['접수금액'] = df2['접수금액'].apply(lambda x: float(x))
+        df2 = df2[df2['접수금액']>=30]
+        df2 =df2['고객명']
+        # print(df2.values)
+    else:
+        df2=pd.DataFrame()
+        Y=""
 
     if weekday == 0: # 월요일
         if hour <12:
