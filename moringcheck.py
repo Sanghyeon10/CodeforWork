@@ -345,7 +345,9 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 if df3.loc[globals()['get' + str(l)][i][1],'총미수금']!=0:
                     AA = AA+ " 총미수금" +str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])
-                    CC.append(globals()['get' + str(l)][i][1])
+                    if df3.loc[globals()['get' + str(l)][i][1],'체류']==0:
+                        #체류가 0인데 미수가 있으면 명백한 미수의 경우의수
+                        CC.append(globals()['get' + str(l)][i][1])
 
                 else:
                     AA =AA+ "              "
@@ -380,5 +382,5 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(l)
     print()
 
-print("체류",BB, "미수",CC)
+print("체류",len(BB),BB, "미수",len(CC),CC)
 
