@@ -524,7 +524,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(["103-1304","108-2504"] ) #전화 일시적 예외 적는칸
+exceptset=set(["103-1304"] ) #전화 일시적 예외 적는칸
 # print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함

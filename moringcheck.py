@@ -296,9 +296,9 @@ text={} # 체크 포인트 담는용
 supportmain.findingpassword('data.txt',dict)
 supportmain.findingpassword('checkpoint.txt',text)
 
-BB=''
+BB=[]
 AA=''
-CC=''
+CC=[]
 tempnumber=""
 tagnumber=""
 #택번호와 개수 표시?
@@ -333,14 +333,19 @@ for l in range(k+1): #모든 리스트 돌리기
 
                 # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
                 # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
+
+
+
                 if df3.loc[globals()['get' + str(l)][i][1],'체류']!=0:
                     AA = " 체류"+str(df3.loc[globals()['get' + str(l)][i][1],'체류'])
+                    BB.append(globals()['get' + str(l)][i][1])
 
                 else:
                     AA = AA+ "    "
 
                 if df3.loc[globals()['get' + str(l)][i][1],'총미수금']!=0:
                     AA = AA+ " 총미수금" +str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])
+                    CC.append(globals()['get' + str(l)][i][1])
 
                 else:
                     AA =AA+ "              "
@@ -352,19 +357,16 @@ for l in range(k+1): #모든 리스트 돌리기
                     #     AA = AA + '운동화'+str(shoe_count[globals()['get'+str(l)][i][1]])
 
 
-                print(f"{globals()['get' + str(l)][i][:3]}{AA}")
 
-                BB=''
+                if globals()['get' + str(l)][i][0]=='배달'and df3.loc[globals()['get' + str(l)][i][1],'총미수금']==0 and df3.loc[globals()['get' + str(l)][i][1],'체류']==0:
+                    #배달이면서, 미수금이0이면 의미없어서 프린트 안함
+                    pass
+                else:
+                    print(f"{globals()['get' + str(l)][i][:3]}{AA}")
+
                 AA=''
-                CC=''
                 tagnumber =''
                 tempnumber =""
-
-
-                if (globals()['get'+str(l)][i][0]) =='수거배달': #2개합친거면
-                    countingnumber = countingnumber +2
-                else:
-                    countingnumber= countingnumber+1
 
 
                 # print(c)
@@ -378,5 +380,5 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(l)
     print()
 
-
+print("체류",BB, "미수",CC)
 
