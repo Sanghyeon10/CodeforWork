@@ -81,6 +81,7 @@ CC=''
 gijun=df.loc[df.index[0],'몇주째']
 tempremaining=""
 
+junhadf=pd.read_csv('junha.txt',sep=" ").values.flatten()#.tolist()
 
 
 # print(df)
@@ -112,6 +113,11 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
 
             if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
                 CC='배달리스트 존재'
+
+            # print(junhadf)
+            if (df.loc[df.index[i],'고객명']) in junhadf:
+                CC= "전화"
+
 
 
             # print(int(bedding_count[dff.loc[dff.index[j],'고객명']]))

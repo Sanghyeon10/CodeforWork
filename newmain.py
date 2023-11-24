@@ -524,7 +524,7 @@ allofalllistset= set(allofalllist.drop_duplicates(subset='고객명').values.fla
 s2= set(df5) #미래예약 파일 집합화
 # print(s2)
 
-exceptset=set(["103-1304"] ) #전화 일시적 예외 적는칸
+exceptset=set([] ) #전화 일시적 예외 적는칸
 # print('exceptset',exceptset)
 
 if s2 == set():#빈집합이면 예약 비포함
@@ -544,7 +544,7 @@ print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_s
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset) ,df3,item_count))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset) ,df3,item_count)) #지지난주것도 표현하면 너무 김.
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
-print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,junhaToset.difference(s1|s2|exceptset) ,df3,item_count),"\033[0m")
+print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,(junhaToset|set(["원주영(원약국)"])).difference(s1|s2|exceptset|set(["103-1304"])) ,df3,item_count),"\033[0m")
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset) ,df3,item_count))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"),fridayTodo )
 
