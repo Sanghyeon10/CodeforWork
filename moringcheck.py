@@ -371,9 +371,11 @@ for l in range(k+1): #모든 리스트 돌리기
                 tempnumber =""
 
 
-                # print(c)
+                # print(c ,globals()['get' + str(l)][i][1] )
                 if globals()['get' + str(l)][i][1] in c : #중복1개당 1발언
-                    print('중복존재')
+                    pass # 중복존재여부 체크하더라도 바로 밑에 안나와서 큰 의미 없음.
+
+                # print(c)
                 c.append(globals()['get' + str(l)][i][1]) #배달수거 + 동호수
 
 

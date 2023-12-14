@@ -113,8 +113,10 @@ def findingpassword(path, dict):
             # fields = line.strip().split()  # 공백을기준으로 분리해 기억
 
             # name, text= fields
-
-            dict[name] = text
+            if name not in dict.keys(): #혹시 2개의 키가 중복될때 쓰이는 부분
+                dict[name] = text
+            else:
+                dict[name] = dict[name] +"+" + text
 
 
 def printtingf(df, get_index, i, k):
