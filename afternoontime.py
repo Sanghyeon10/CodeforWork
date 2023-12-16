@@ -1,9 +1,9 @@
 import datetime
 hour =12+2
-minute = 29
+minute = 7
 
 
-Sixfirst=[]
+Sixfirst=[3,1,2,6]
 Sixafter=[]
 
 sevenfirst=[]

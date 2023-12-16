@@ -8,6 +8,11 @@ def contains_korean(text):
     #한글자라도 한글이 있는가?
     return re.search("[가-힣]+",text) #맞으면 값이 있고 없으면 NONE
 
+def check_words_in_string(word_list, input_string):
+    #실제가 아닌것들0
+    # print(any(word in input_string for word in word_list) )
+    # print(input_string)
+    return any(word in input_string for word in word_list) #맞으면 값이 있고 false
 
 
 
