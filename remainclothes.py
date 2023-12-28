@@ -118,7 +118,8 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
             if (df.loc[df.index[i],'고객명']) in junhadf:
                 CC= "전화"
 
-
+            if long_count[df.loc[df.index[i],'고객명']]>0: #코트 원피스같은게 있으면
+                CC= "긴"+str(long_count[df.loc[df.index[i],'고객명']])
 
             # print(int(bedding_count[dff.loc[dff.index[j],'고객명']]))
 
