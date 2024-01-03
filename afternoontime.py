@@ -3,7 +3,7 @@ hour =11
 minute = 0
 
 
-Sixfirst=[]
+Sixfirst=[1,2,5]
 Sixafter=[]
 
 sevenfirst=[]

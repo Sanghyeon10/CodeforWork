@@ -395,10 +395,12 @@ for l in range(k+1): #모든 리스트 돌리기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
 
 
-                if globals()['get'+str(l)][i][1] not in price_sum.keys() and df3.loc[globals()['get' + str(l)][i][1],'총미수금']>0:
-                    #접수금액표시 불가능한데(완성재고는 없는데) 미수금만 있다면
-                    AA= AA +" 미수금"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])+"?"
-
+                if globals()['get'+str(l)][i][1] not in price_sum.keys():
+                    if df3.loc[globals()['get' + str(l)][i][1],'총미수금']>0:
+                        #접수금액표시 불가능한데(완성재고는 없는데) 미수금만 있다면
+                        AA = AA +" 미수금"+str(df3.loc[globals()['get' + str(l)][i][1],'총미수금'])+"?"
+                    if df3.loc[globals()['get' + str(l)][i][1],'총미수금']==0 and df3.loc[globals()['get' + str(l)][i][1],'체류'] >0 :
+                        AA = AA +str(df3.loc[globals()['get' + str(l)][i][1],'체류'])+"선불" +" 미완성"
 
 
 
@@ -544,8 +546,8 @@ print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_s
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset) ,df3,item_count))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset) ,df3,item_count)) #지지난주것도 표현하면 너무 김.
 print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
-print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,(junhaToset|set(["원주영(원약국)"])).difference(s1|s2|exceptset|set(["103-1304"])) ,df3,item_count),"\033[0m")
+print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,(junhaToset|set(["원주영(원약국)"])).difference(s1|s2|exceptset|set(["103-1304"])) ,df3,item_count),fridayTodo ,"\033[0m")
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset) ,df3,item_count))
-print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A"),fridayTodo )
+print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A") )
 
 
