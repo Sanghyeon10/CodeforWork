@@ -375,7 +375,7 @@ for l in range(k+1): #모든 리스트 돌리기
                         if globals()['get'+str(l)][i][0] != '배달':  #수거라면,(수거, 배달, 수거배달 중 배달만 아님)
                             AA = AA + text.get(globals()['get' + str(l)][i][1], '')
                         else: #배달이면 신발 줄수도 있다는뜻.
-                            AA = AA +"+" #신발 잘 주는집이라는 표시.
+                            AA = AA +"+" +text.get(globals()['get' + str(l)][i][1], '').split('?',1)[1]#신발 잘 주는집이라는 표시.+ ?기준 뒤에거만 살려서 프린트
                     else:
                         AA=AA+" "+ text.get(globals()['get'+str(l)][i][1],'')
 

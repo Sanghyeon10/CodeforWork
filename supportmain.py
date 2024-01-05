@@ -121,7 +121,7 @@ def findingpassword(path, dict):
             if name not in dict.keys(): #혹시 2개의 키가 중복될때 쓰이는 부분
                 dict[name] = text
             else:
-                dict[name] = dict[name] +"+" + text
+                dict[name] = dict[name] +"," + text
 
 
 def printtingf(df, get_index, i, k):
