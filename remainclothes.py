@@ -89,13 +89,16 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
     #전화여부와 불연속 여부도 표현할 이유가 없음.
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
     number=df.index[i] #오류방지용 순서넣기
+    if i==0:
+        print(df.loc[df.index[i], '몇주째'])
+
 
     if df.loc[df.index[i],'몇주째']== gijun:
         pass
     else:
         gijun = df.loc[df.index[i], '몇주째'] #기준 업
-        print() #\n누르기
-
+        print(df.loc[df.index[i], '몇주째']) #\n누르기+주차표시
+        # print(df.loc[:, '몇주째'])
 
     for j in range(len(dff)): #dff고객정보 의미
         if dff.loc[dff.index[j],'고객명'] == df.loc[df.index[i],'고객명']: #찾는것을 찾으면 정보 붙히기
@@ -137,7 +140,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
 
 
 
-    numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명']))
+    numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명'],int(df.loc[df.index[i], '몇주째'])))
     # if df.loc[df.index[i],'고객명'] == '107-1304':
     #     print('평일 늦은 저녁에나 가능')
 
@@ -163,30 +166,37 @@ print(notpirnt)
 
 
 # print(numberlist)
-B = input('전화 번호 리스트 출력이면 0,1,2 or 전부')
-if B=='0':
-    pass
+B = int(input('전화 번호 리스트 출력기준 주차'))
+
+for i in range(len(numberlist)):
+    if numberlist[i][3] not in notpirnt and numberlist[i][4]<=B:
+        print(numberlist[i][0])
+        print()
 
 
-elif B=='1':
-    for i in range(len(numberlist)):
-        if numberlist[i][1]==1 and numberlist[i][3] not in notpirnt:
-            print(numberlist[i][0])
-            print()
-
-
-elif B=='2':
-    for i in range(len(numberlist)):
-        if numberlist[i][1]>=2 and numberlist[i][3] not in notpirnt :
-            print(numberlist[i][0])
-            print()
-
-
-else:
-    for i in range(len(numberlist)):
-        if numberlist[i][3] not in notpirnt:
-            print(numberlist[i][0])
-            print()
+# if B=='0':
+#     pass
+#
+#
+# elif B=='1':
+#     for i in range(len(numberlist)):
+#         if numberlist[i][1]==1 and numberlist[i][3] not in notpirnt:
+#             print(numberlist[i][0])
+#             print()
+#
+#
+# elif B=='2':
+#     for i in range(len(numberlist)):
+#         if numberlist[i][1]>=2 and numberlist[i][3] not in notpirnt :
+#             print(numberlist[i][0])
+#             print()
+#
+#
+# else:
+#     for i in range(len(numberlist)):
+#         if numberlist[i][3] not in notpirnt:
+#             print(numberlist[i][0])
+#             print()
 
 
 
