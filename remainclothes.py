@@ -89,15 +89,16 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
     #전화여부와 불연속 여부도 표현할 이유가 없음.
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
     number=df.index[i] #오류방지용 순서넣기
+    juchacounting=int(datetime.datetime.now().strftime("%U"))- int(df.loc[df.index[i], '완성일자'].strftime("%U"))
     if i==0:
-        print(df.loc[df.index[i], '몇주째'])
+        print(juchacounting)
 
 
     if df.loc[df.index[i],'몇주째']== gijun:
         pass
     else:
         gijun = df.loc[df.index[i], '몇주째'] #기준 업
-        print(df.loc[df.index[i], '몇주째']) #\n누르기+주차표시
+        print(juchacounting)#\n누르기+주차표시
         # print(df.loc[:, '몇주째'])
 
     for j in range(len(dff)): #dff고객정보 의미
@@ -140,7 +141,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
 
 
 
-    numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명'],int(df.loc[df.index[i], '몇주째'])))
+    numberlist.append((number,totalremaining,inventories,df.loc[df.index[i], '고객명'],juchacounting))
     # if df.loc[df.index[i],'고객명'] == '107-1304':
     #     print('평일 늦은 저녁에나 가능')
 
