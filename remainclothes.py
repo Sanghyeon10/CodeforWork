@@ -89,7 +89,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
     #전화여부와 불연속 여부도 표현할 이유가 없음.
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
     number=df.index[i] #오류방지용 순서넣기
-    juchacounting=int(datetime.datetime.now().strftime("%U"))- int(df.loc[df.index[i], '완성일자'].strftime("%U"))
+    juchacounting= supportmain.calculate_weeks_since_start(datetime.datetime.now(), df.loc[df.index[i], '완성일자']  )
     if i==0:
         print(juchacounting)
 
@@ -116,14 +116,14 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
 
 
             if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
-                CC='배달리스트 존재'
+                CC='배달리스트'
 
             # print(junhadf)
             if (df.loc[df.index[i],'고객명']) in junhadf:
-                CC= "전화"
+                CC= CC+ "전화"
 
             if long_count[df.loc[df.index[i],'고객명']]>0: #코트 원피스같은게 있으면
-                CC= "긴"+str(long_count[df.loc[df.index[i],'고객명']])
+                CC= CC+ "긴"+str(long_count[df.loc[df.index[i],'고객명']])
 
             # print(int(bedding_count[dff.loc[dff.index[j],'고객명']]))
 
