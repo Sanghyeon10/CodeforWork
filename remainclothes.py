@@ -167,7 +167,7 @@ print(notpirnt)
 
 
 # print(numberlist)
-B = int(input('전화 번호 리스트 출력기준 주차'))
+B = -int(input('전화 번호 리스트 출력기준 주차 - 역전'))
 
 for i in range(len(numberlist)):
     if numberlist[i][3] not in notpirnt and numberlist[i][4]<=B:

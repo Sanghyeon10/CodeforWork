@@ -32,8 +32,10 @@ def checkingtime(df2,price_sum,df3,item_count):
     #정렬을 위해 정수화해주기
     # df2['접수금액'] = df2['접수금액']
     for l in range(len(df2)): #칼럼추가해주기
-        if df3.loc[df2.loc[df2.index[l],'고객명'], '체류']== item_count[df2.loc[df2.index[l],'고객명']]:#개수 같으면,일부 미완성은 무시
+        if df3.loc[df2.loc[df2.index[l],'고객명'], '체류']== item_count[df2.loc[df2.index[l],'고객명']]:#개수 같으면 문자열로 숫자입력 부분완성은 -1
             df2.loc[df2.index[l],'접수금액']= str(price_sum[df2.loc[df2.index[l],'고객명']])
+        else:
+            df2.loc[df2.index[l], '접수금액'] = str(-1)
         # print(df2.loc[df2.index[l],'고객명'])
 
     # print(df2.values.flatten().tolist())
@@ -42,6 +44,7 @@ def checkingtime(df2,price_sum,df3,item_count):
     df2 = df2.sort_values(by="날짜차이",ascending=False) # 오래된거 기준으로 정렬해주기 그러면 가장 늦은 완성일기준으로 몇일 지난지 표시해주는것임.
     # print(len(df2))
     if len(df2)!=0: #남아있는 비입주 재고있을때에만
+        # print(df2)
         df2 = df2[['고객명', '날짜차이','접수금액']]
 
         #정렬후에는 문자열 합치기를 위해서 다시 문자열화
