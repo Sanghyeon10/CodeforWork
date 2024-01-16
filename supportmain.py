@@ -49,7 +49,8 @@ def checkingtime(df2,price_sum,df3,item_count):
 
         #정렬후에는 문자열 합치기를 위해서 다시 문자열화
         df2['날짜차이'] = df2['날짜차이'].apply(lambda x: str(x))
-        df2= df2.dropna() #item_count와 체류개수가 다르면 가격이 None이라 drop해서 날려야함.
+        df2=df2[df2['접수금액']!=str(-1)] #접수금액이 -1이면 일부 미완성이라 drop해서 날리기
+
         # print(df2)
         Y= ', '.join(df2.values.flatten().tolist()) #리스트로 만든후에 문자열화
 
