@@ -68,6 +68,14 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 
 
 
+# 비출력 구하기
+jungbokcheck=[]
+forprintdf=pd.Series(dtype='object')
+notpirnt=["109-702",'106-1506'] #출력하지 않을 동호수
+notpirnt= notpirnt+baedallist
+print(notpirnt)
+
+
 #기타사항 가져오기
 dictt={}
 gita= supportmain.findingpassword('gita.txt',dictt)
@@ -118,6 +126,9 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
             if (df.loc[df.index[i],'고객명']) in baedallist : # (df2.loc[df2.index[l],'고객명']): #찾는게 있다면, df2에는 배달만 살려놓아서 명단에 있으면 배달임.
                 CC='배달리스트'
 
+            if  (df.loc[df.index[i],'고객명'])  in notpirnt: #프린트하지말것이라면
+                CC= CC + "제외"
+
             # print(junhadf)
             if (df.loc[df.index[i],'고객명']) in junhadf:
                 CC= CC+ "전화"
@@ -159,11 +170,11 @@ print()
 print()
 
 
-jungbokcheck=[]
-forprintdf=pd.Series(dtype='object')
-notpirnt=[] #출력하지 않을 동호수
-notpirnt= notpirnt+baedallist
-print(notpirnt)
+# jungbokcheck=[]
+# forprintdf=pd.Series(dtype='object')
+# notpirnt=["109-702",'106-1506'] #출력하지 않을 동호수
+# notpirnt= notpirnt+baedallist
+# print(notpirnt)
 
 
 # print(numberlist)
