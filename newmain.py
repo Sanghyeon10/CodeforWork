@@ -142,7 +142,7 @@ junhadf= junhadf[junhadf['고객명'].isin(df2['고객명'])]
 # print(junhadf)
 
 
-item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum = supportmain.getdf4()
+item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum ,shoulcheck_count = supportmain.getdf4()
 
 
 
@@ -416,6 +416,9 @@ for l in range(k+1): #모든 리스트 돌리기
 
                         if long_count[globals()['get'+str(l)][i][1]] !=0: #긴것이 1개 이상이면
                             AA = AA + " 긴" + str(long_count[globals()['get' + str(l)][i][1]])
+
+                        if shoulcheck_count[globals()['get'+str(l)][i][1]] !=0: #보류 재작업 세탁불가 있으면
+                            AA = AA + " 체크" + str(shoulcheck_count[globals()['get' + str(l)][i][1]])
 
                         if df3.loc[globals()['get'+str(l)][i][1],'체류'] != item_count[globals()['get'+str(l)][i][1]]:# 완성개수와 재고재수가 불일치하면
                             if df3.loc[globals()['get'+str(l)][i][1],'총미수금']>0: #그러면서 미수금이 있어야 의미가 있음. 0이면 다 선불

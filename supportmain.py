@@ -311,8 +311,12 @@ def getdf4():
         lambda x: x if x == True else None)
     long_count = df4.groupby('고객명')['상품명'].count()
 
+    df4['상품명'] = tempdf.str.contains("보류|재작업|세탁불가").apply(
+        lambda x: x if x == True else None)
+    shoulcheck_count = df4.groupby('고객명')['상품명'].count()
 
-    return item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum
+
+    return item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum ,shoulcheck_count
 
 
 def getdf3():

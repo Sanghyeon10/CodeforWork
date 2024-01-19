@@ -138,7 +138,7 @@ junhadf= junhadf[junhadf['고객명'].isin(df2['고객명'])]
 # print(junhadf)
 
 
-item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum = supportmain.getdf4()
+item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_count,  price_sum ,shoulcheck_count= supportmain.getdf4()
 
 
 
