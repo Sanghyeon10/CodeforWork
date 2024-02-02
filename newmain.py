@@ -376,8 +376,18 @@ for l in range(k+1): #모든 리스트 돌리기
                             AA = AA + text.get(globals()['get' + str(l)][i][1], '')
                         else: #배달이면 신발 줄수도 있다는뜻.
                             AA = AA +"+" +text.get(globals()['get' + str(l)][i][1], '').split('?',1)[1]#신발 잘 주는집이라는 표시.+ ?기준 뒤에거만 살려서 프린트
+
+                    elif text.get(globals()['get'+str(l)][i][1],'a').count('!')>=1 : #느낌표가 1개 이상이고
+                        if globals()['get'+str(l)][i][0] != '수거':  #배달이라면,(수거, 배달, 수거배달 중 수거만 아님)
+                            AA = AA + text.get(globals()['get' + str(l)][i][1], '')
+                        else:
+                            pass # 배달일때만 필요한건 일반적으로 필요없음.
+
                     else:
                         AA=AA+" "+ text.get(globals()['get'+str(l)][i][1],'')
+
+
+
 
                 if globals()['get'+str(l)][i][1] in price_sum.keys(): #접수 금액 표시 가능하다면(=완성재고가 있다)
                     if (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])>0: #미수금이 있다면,

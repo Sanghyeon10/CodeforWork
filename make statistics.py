@@ -11,7 +11,7 @@ df= df.fillna(method='ffill')
 
 df['접수금액'] = df['접수금액'].apply(lambda x: int(x.replace(",", "")))
 df['고객명'] = df['고객명'].apply(lambda x: x.split('\n')[0])
-df['비입주'] = df['고객명'].apply(lambda x: "ex" if supportmain.check_words_in_string(["태강"], x) == True else 'in')
+df['비입주'] = df['고객명'].apply(lambda x: "ex" if supportmain.check_words_in_string(["해마루"], x) == True else 'in')
 
 df['접수일자'] = df['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
 df['접수일자'] = df['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))

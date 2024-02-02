@@ -50,8 +50,8 @@ sigandf= copy.deepcopy(df[df['등록일자']>aftersigan])
 
 
 
-Sixfirst=[10,3,2,5,8]
-Sixafter=[12,11,9]
+Sixfirst=[]
+Sixafter=[]
 
 sevenfirst=[]
 sevenafter=[]

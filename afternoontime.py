@@ -6,7 +6,7 @@ minute = 0
 Sixfirst=[]
 Sixafter=[]
 
-sevenfirst=[]
+sevenfirst=[11]
 sevenafter=[]
 
 sevenhalffirst=[]
