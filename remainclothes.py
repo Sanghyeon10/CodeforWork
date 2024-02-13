@@ -71,7 +71,7 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 # 비출력 구하기
 jungbokcheck=[]
 forprintdf=pd.Series(dtype='object')
-notpirnt=["109-702",'106-1506'] #출력하지 않을 동호수
+notpirnt=[] #출력하지 않을 동호수
 notpirnt= notpirnt+baedallist
 print(notpirnt)
 
@@ -93,6 +93,7 @@ junhadf=pd.read_csv('junha.txt',sep=" ").values.flatten()#.tolist()
 
 
 # print(df)
+df= df.sort_values(by='완성일자')
 for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
     #전화여부와 불연속 여부도 표현할 이유가 없음.
     # print(df.loc[dff.index[i],'고객명'],df.loc[df.index[i],'날짜차이'].days)
@@ -181,7 +182,7 @@ print()
 B = -int(input('전화 번호 리스트 출력기준 주차 - 역전'))
 
 for i in range(len(numberlist)):
-    if numberlist[i][3] not in notpirnt and numberlist[i][4]<=B:
+    if numberlist[i][3] not in notpirnt and numberlist[i][4]<=B:#음수라 방향반대
         print(numberlist[i][0])
         print()
 
