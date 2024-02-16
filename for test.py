@@ -1,21 +1,23 @@
 from datetime import datetime, timedelta
 
 
-def calculate_weeks_since_start(reference_date, target_date):
-    # 년도와 주차 계산
-    reference_year, reference_week, _ = reference_date.isocalendar()
-    target_year, target_week, _ = target_date.isocalendar()
+def remove_question_and_exclamation(text, status):
+    result = ""
 
-    weeks_since_start = (target_year - reference_year) * 52 + target_week - reference_week
+    if status != "배달" and '?' in text:  # 수거일 때
+        text = text.replace("?", "")
+    elif status != "수거" and '!' in text:  # 배달일 때
+        text = text.replace("!", "")
 
-    return weeks_since_start
+    result += text
+    return result
 
+def process_and_join_strings(text, status):
+    parts = text.split(',')
+    cleaned_parts = [remove_question_and_exclamation(part, status) for part in parts]
+    return ','.join(cleaned_parts)
 
-# 특정일
-specific_date = datetime(2024, 1, 2)  # 예시로 2024년 1월 15일로 설정
-
-# 토요일을 기준으로 주차 계산
-reference_date = datetime.now()  # 5는 토요일의 weekday 값
-weeks_since_start = calculate_weeks_since_start( specific_date,reference_date)
-
-print(f"{specific_date}로부터 {weeks_since_start} 주가 지났습니다.")
+# 테스트
+input_string = "안녕하세요!, 오늘!은! 어떤 날씨인가요? 좋은 하루 되세요!"
+output_string = process_and_join_strings(input_string, "수거")
+print(output_string)

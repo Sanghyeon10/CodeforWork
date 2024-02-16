@@ -452,6 +452,28 @@ def calculate_weeks_since_start(reference_date, target_date):
 
     return weeks_since_start
 
+def remove_question_and_exclamation(text, status):
+    result = ""
+    # print(text)
+    if status != "배달" and '?' in text:  # 수거일 때
+        text = text.replace("?", "")
+    elif status != "배달" and '!' in text:  # 수거일 때
+        text = ""
+
+    elif status != "수거" and '!' in text:  # 배달일 때
+        text = text.replace("!", "")
+    elif status != "수거" and '?' in text:  # 배달일 때
+        text =""
+
+    result += text
+    # print(result)
+    return result
+
+def process_and_join_strings(text, status):
+    parts = text.split(',')
+    cleaned_parts = [remove_question_and_exclamation(part, status) for part in parts if remove_question_and_exclamation(part, status)!=""]
+    return ','.join(cleaned_parts)
+
 
 if __name__ =="__main__":
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드
