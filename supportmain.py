@@ -422,8 +422,16 @@ def GetNonharingtonMemo(input_string):
 
 
 def BeforegetResuns(sunsu,l,array,remembergetlocation):
+
     if l in remembergetlocation:# 순서재조정할 k가 맞다면
+
         m= remembergetlocation.index(l)
+        # print(array[m][0]+array[m][1])
+        my_list=array[m][0]+array[m][1]
+        if len(my_list) != len(set(my_list)): #중복여부 체크
+            print('순서중에 중복이 존재.', [item for item in set(my_list) if my_list.count(item) > 1])
+        else:
+            pass
 
         newsunsu = array[m][0] +[x for x in sunsu if x not in array[m][0]+array[m][1] ] +array[m][1] #리스트 중복없애고 앞뒤로 붙히기
 
@@ -456,6 +464,7 @@ def remove_question_and_exclamation(text, status):
     result = ""
     # print(text)
     if status != "배달" and '?' in text:  # 수거일 때
+        # print(text)
         text = text.replace("?", "")
     elif status != "배달" and '!' in text:  # 수거일 때
         text = ""
