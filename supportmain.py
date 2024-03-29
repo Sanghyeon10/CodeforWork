@@ -148,16 +148,19 @@ def mergeforget(list):
     # print(list)
     # print(newlist)
     for j in range(len(list)):
-        A = list[j][1]  # 기준이 될 고객명 j번째
-        B = list[j][0]  # 배달수거 문자열 저장된것
-        for i in range(len(list)): #전체를 검사한다 그리고 그것을 전체 반복할것
-            if A == list[i][1] and B!= list[i][0]: #이름은 같되 배달 수거가 다른것이 있다면 새로운것으로 재탄생
-                temp = ('수거배달', list[i][1],list[i][2],list[i][3], list[i][4] ) #개수 5개로 맞춰주기
-                if temp not in newlist: #고객명이 안들어있으면
-                    newlist.append(temp)
-                    newlist.remove(list[j])
-                    newlist.remove(list[i])
-
+        try:
+            A = list[j][1]  # 기준이 될 고객명 j번째
+            B = list[j][0]  # 배달수거 문자열 저장된것
+            for i in range(len(list)): #전체를 검사한다 그리고 그것을 전체 반복할것
+                if A == list[i][1] and B!= list[i][0]: #이름은 같되 배달 수거가 다른것이 있다면 새로운것으로 재탄생
+                    temp = ('수거배달', list[i][1],list[i][2],list[i][3], list[i][4] ) #개수 5개로 맞춰주기
+                    if temp not in newlist: #고객명이 안들어있으면
+                        newlist.append(temp)
+                        newlist.remove(list[j])
+                        newlist.remove(list[i])
+                        #만약 10분 부분이 불일치하면, 그 동호수 수거배달이 2개가 됨.
+        except Exception as e:
+            print("An error occurred:", e, list[j])
 
     return newlist
 
@@ -291,11 +294,11 @@ def getdf4():
 
     tempdf= df4['상품명'].copy()
 
-    df4['상품명'] = tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트|카페트|커텐|커튼").apply(
+    df4['상품명'] = tempdf.str.contains("어그|운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백|이불|커버|담요|시트|인형|매트|카페트|커텐|커튼").apply(
         lambda x: x if x == True else None)
     gita_count= df4.groupby('고객명')['상품명'].count()
 
-    df4['상품명'] =  tempdf.str.contains("운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(
+    df4['상품명'] =  tempdf.str.contains("어그|운동화|골프화|신발|아동화|등산화|가방|구두|부츠|에코백").apply(
         lambda x: x if x == True else None)
     shoe_count = df4.groupby('고객명')['상품명'].count()
 

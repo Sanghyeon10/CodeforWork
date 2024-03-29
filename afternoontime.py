@@ -1,6 +1,6 @@
 import datetime
-hour =12+1
-minute = 44
+hour =12+2
+minute = 0
 
 
 Sixfirst=[]
@@ -10,7 +10,7 @@ sevenfirst=[]
 sevenafter=[]
 
 sevenhalffirst=[]
-sevenhalfafter=[]
+sevenhalfafter=["나도훈"]
 
 eightfirst=[]
 eightafter=[]
