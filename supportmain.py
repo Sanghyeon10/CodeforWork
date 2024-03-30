@@ -463,7 +463,7 @@ def calculate_weeks_since_start(reference_date, target_date):
 
     return weeks_since_start
 
-def remove_question_and_exclamation(text, status):
+def remove_question_and_exclamation(text, status,misu):
     result = ""
     # print(text)
     if status != "배달" and '?' in text:  # 수거일 때
@@ -471,6 +471,9 @@ def remove_question_and_exclamation(text, status):
         text = text.replace("?", "")
     elif status != "배달" and '!' in text:  # 수거일 때
         text = ""
+
+    elif status != "수거" and '@' in text and misu == 0:  # 배달이면서 선불일때 미수표기 필요없음.
+        text=""
 
     elif status != "수거" and '!' in text:  # 배달일 때
         text = text.replace("!", "")
@@ -481,9 +484,9 @@ def remove_question_and_exclamation(text, status):
     # print(result)
     return result
 
-def process_and_join_strings(text, status):
+def process_and_join_strings(text, status,misu):
     parts = text.split(',')
-    cleaned_parts = [remove_question_and_exclamation(part, status) for part in parts if remove_question_and_exclamation(part, status)!=""]
+    cleaned_parts = [remove_question_and_exclamation(part, status,misu) for part in parts if remove_question_and_exclamation(part, status,misu)!=""]
     return ','.join(cleaned_parts)
 
 

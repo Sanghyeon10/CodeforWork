@@ -10,7 +10,7 @@ sevenfirst=[]
 sevenafter=[]
 
 sevenhalffirst=[]
-sevenhalfafter=["나도훈"]
+sevenhalfafter=[]
 
 eightfirst=[]
 eightafter=[]
