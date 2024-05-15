@@ -124,8 +124,9 @@ for o in range(len(df)): #문자이름 뽑아내기
     if df.loc[df.index[o],'문자이름'] == True:
         plussunsu.append(df.loc[df.index[o],'고객명'])
 
-sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통 가게라서 먼저가기 때문)
+sunsu = [item for item in set(plussunsu) ] + sunsu #기존 순서문자열 앞에 추가해주기( 보통 가게라서 먼저가기 때문)
 # print(sunsu)
+# 외부인 배달수거 있으면 2개로 찍혀서 중복프린트 되어서 하나만 살려야함.
 
 
 df2 = supportmain.getdf2()

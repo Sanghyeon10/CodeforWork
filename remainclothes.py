@@ -149,7 +149,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
             pass
     #number 값 획득
 
-    print(df.loc[df.index[i], '고객명'], number,remainings ,df.loc[df.index[i], '날짜차이'].days ,BB,CC)
+    print(df.loc[df.index[i], '고객명'], number,remainings ,df.loc[df.index[i], '날짜차이'].days ,price_sum[df.loc[df.index[i], '고객명']] ,BB,CC,df.loc[df.index[i], '완성일자'].day,"일")
 
 
 

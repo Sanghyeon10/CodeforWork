@@ -161,7 +161,7 @@ def mergeforget(list):
                         #만약 10분 부분이 불일치하면, 그 동호수 수거배달이 2개가 됨.
         except Exception as e:
             print("An error occurred:", e, list[j])
-
+    # print(newlist)
     return newlist
 
 def getorderwithprice( price_sum,set, df3,item_count):
@@ -267,7 +267,16 @@ def getdf4():
     price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
     # print('price',price_sum)
 
-    df4 = df4.drop_duplicates(subset='택번호')
+    condition = df4['택번호'].str.contains('사용안함')
+    new_df = df4[condition].copy()
+
+    df4 = df4[df4['택번호']!='사용안함'].drop_duplicates(subset='택번호')
+    # print(new_df)
+    # print(df4)
+
+    df4 = pd.concat([df4, new_df])
+    # 사용안함택인경우에 중복제거에 전부 다 날라가서 계산에 오류있음. 사용안함택은 별도로 분리해서 다시 합쳐줘야 문제없음.
+    # print(df4)
 
     df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
     #-이 없으면 사용안함문자열이므로 None 결측치 처리하기
@@ -275,7 +284,7 @@ def getdf4():
     # df4.to_csv('testtest.csv')
     item_count = df4.groupby('고객명')['상품명'].count()
     # diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
-
+    # print(item_count["권정현"])
 
     # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기
     grouped_df = df4.groupby('고객명')['택숫자'].diff()
@@ -473,6 +482,10 @@ def remove_question_and_exclamation(text, status,misu):
         text = ""
 
     elif status != "수거" and '@' in text and misu == 0:  # 배달이면서 선불일때 미수표기 필요없음.
+        text=""
+    elif status != "수거" and '@' in text and misu != 0:  # 배달이면서 선불 아니면 미수표기
+        text = text.replace("@", "")
+    elif status != "배달" and '@' in text :  # 수거일때는 당연히 미수표기 필요 없음.
         text=""
 
     elif status != "수거" and '!' in text:  # 배달일 때
