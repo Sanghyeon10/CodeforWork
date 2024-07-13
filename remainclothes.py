@@ -72,8 +72,9 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 jungbokcheck=[]
 forprintdf=pd.Series(dtype='object')
 notpirnt=[] #출력하지 않을 동호수
-notpirnt= notpirnt+baedallist
 print(notpirnt)
+notpirnt= notpirnt+baedallist
+# print(notpirnt)
 
 
 #기타사항 가져오기
@@ -149,7 +150,7 @@ for i in range(len(df)):#중복이 제거된 df라 그냥 돌리면됨.
             pass
     #number 값 획득
 
-    print(df.loc[df.index[i], '고객명'], number,remainings ,df.loc[df.index[i], '날짜차이'].days ,price_sum[df.loc[df.index[i], '고객명']] ,BB,CC,df.loc[df.index[i], '완성일자'].day,"일")
+    print(df.loc[df.index[i], '고객명'], number,remainings ,df.loc[df.index[i], '날짜차이'].days ,price_sum[df.loc[df.index[i], '고객명']] ,BB,CC, )#df.loc[df.index[i], '완성일자'].day,"일")
 
 
 

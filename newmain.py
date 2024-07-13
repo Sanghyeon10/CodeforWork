@@ -390,6 +390,9 @@ for l in range(k+1): #모든 리스트 돌리기
                         if (globals()['get' + str(l)][i][2][-2:]) == '10': #만일 문앞에 두는건데 선불이 아니면 미수인지 체크
                             AA = AA +" 미수?"
 
+                        if (globals()['get'+str(l)][i][0]) == '수거': #만일 수거인데 완성재고가 있다면 챙겨야함
+                            AA = AA +" 옷챙기기"
+
                     else: #총미수금이 0이면,선불이므로 개수와 선불표시하기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
 
@@ -547,9 +550,10 @@ print('지지난주이전 동수 일치', supportmain.getorderwithprice(price_su
 print('지지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,calllisttoset.difference(s1|s2|sss|exceptset),df3,item_count ))
 print('지난주 동수 일치',supportmain.getorderwithprice(price_sum,ss.difference(s1|s2|calllisttoset|exceptset) ,df3,item_count))  # 지지난주껏도 중복제거할까?
 print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum, fullllisttoset.difference(s1|s2|calllisttoset|ss|exceptset) ,df3,item_count)) #지지난주것도 표현하면 너무 김.
-print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
+# print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
 print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,(junhaToset|set(["원주영(원약국)"])).difference(s1|s2|exceptset|set(["103-1304"])) ,df3,item_count),fridayTodo ,"\033[0m")
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset) ,df3,item_count))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A") )
+print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
 
 
