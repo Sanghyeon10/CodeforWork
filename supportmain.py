@@ -348,19 +348,35 @@ def getdf3():
 
 def getdf5(): # 미래에 예약된거 찾아보기
     df5= pd.read_excel(r'C:\Users\user\Desktop\후예약.xls')
-    df5 = df5[['수거/배달', '고객명','요청일자']]
-    df5['고객명'] = df5['고객명'].apply(lambda x: x.split(' ')[-1])
-    df5['요청일자'] = pd.to_datetime( df5['요청일자'].apply(lambda x: "20"+x.split('\n')[0] +" " + x.split('\n')[-1][1:6] )) #datetime형태로 시간저장
+    if '수거/배달' in df5.columns: #수거배달 미래치인 경우
+        df5 = df5[['수거/배달', '고객명','요청일자']]
+        df5['고객명'] = df5['고객명'].apply(lambda x: x.split(' ')[-1])
+        df5['요청일자'] = pd.to_datetime( df5['요청일자'].apply(lambda x: "20"+x.split('\n')[0] +" " + x.split('\n')[-1][1:6] )) #datetime형태로 시간저장
 
-    today = datetime.datetime.now()
-    if df5.loc[df5.index[0],'요청일자'].date()== today.date() :# 첫번째 정보가 오늘날짜와 같다면 비업데이트는 아님.
-        df5= df5[df5['수거/배달']=='배달'] #배달예약만 의미있음.
-        df5= df5[['고객명']] #이것만 살리기
-        df5= df5.values.flatten().tolist()
+        today = datetime.datetime.now()
+        if df5.loc[df5.index[0],'요청일자'].date()== today.date() :# 첫번째 정보가 오늘날짜와 같다면 비업데이트는 아님.
+            df5= df5[df5['수거/배달']=='배달'] #배달예약만 의미있음.
+            df5= df5[['고객명']] #이것만 살리기
+            df5= df5.values.flatten().tolist()
 
-    else:
+        else:
 
-        df5=[] #업데이트 안된 파일이므로 쓸모없는 정보임.
+            df5=[] #업데이트 안된 파일이므로 쓸모없는 정보임.
+            # print('됸')
+    else:# 접수목록리스트인경우
+        df5 = df5[['접수일자', '고객명',  '택번호', '상품명']]
+
+        # df5 = df5.dropna()
+        df5 = df5.fillna(method='ffill')
+        df5 = df5.drop_duplicates(subset='택번호')
+        df5['고객명'] = df5['고객명'].apply(lambda x: x.split('\n')[0])
+
+        df5['접수일자'] = df5['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
+        df5['접수일자'] = df5['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
+
+        print(df5)
+        print('ee')
+
 
     return df5
 

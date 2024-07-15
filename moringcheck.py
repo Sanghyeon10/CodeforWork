@@ -142,7 +142,7 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 
 
 
-# 미리예약여부로 중복 일일이 확인 x하기
+# 접수리스트로 활용하기
 df5 = supportmain.getdf5()
 
 
@@ -302,7 +302,7 @@ CC=[]
 tempnumber=""
 tagnumber=""
 #택번호와 개수 표시?
-
+gettotalnumber=0
 
 
 #총미수금 알아낼 정보 얻기
@@ -320,7 +320,8 @@ for h in range(k+1): #배달 수거 합치기 + 끝호수 1~5 정렬해주기
 
 
 for l in range(k+1): #모든 리스트 돌리기
-    # print(globals()['get'+str(l)],l)
+    # print((globals()['get'+str(l)]),l)
+    gettotalnumber= gettotalnumber + len(globals()['get'+str(l)])
 
     resunsu = supportmain.BeforegetResuns(sunsu,l,arrayforsunsu,remembergetlocation)
     # print(resunsu,l)
@@ -328,8 +329,6 @@ for l in range(k+1): #모든 리스트 돌리기
         for i in range(len(globals()['get'+str(l)])):
 
             if globals()['get'+str(l)][i][3] == resunsu[j]: #동호수를꺼내서 15동부터 해당되는거 꺼내기
-
-
 
                 # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
                 # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
@@ -379,10 +378,18 @@ for l in range(k+1): #모든 리스트 돌리기
                 c.append(globals()['get' + str(l)][i][1]) #배달수거 + 동호수
 
 
-
-
                 # print(l)
+                for m in range(len(df5)):
+
+                    # print(globals()['get' + str(l)][i][1], df5.loc[df5.index[m],'고객명'])
+                    if globals()['get' + str(l)][i][1] == df5.loc[df5.index[m], '고객명']:
+                        print(df5.loc[df5.index[m], '고객명'], df5.loc[df5.index[m], '상품명'])
+
+
+                print()
     print()
 
-print("체류",len(BB),BB, "미수",len(CC),CC)
 
+
+print("체류",len(BB),BB, "미수",len(CC),CC)
+print('전체개수',gettotalnumber)
