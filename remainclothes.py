@@ -58,6 +58,8 @@ df2= df2.tolist()
 # print(df2)
 # 후예약 가져오기
 df5= supportmain.getdf5()
+if '수거/배달' not in df5.columns: #수거배달이 없으면
+    df5=[]
 
 baedallist= df5 + df2
 # print(baedallist)

@@ -149,6 +149,9 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 
 # 미리예약여부로 중복 일일이 확인 x하기
 df5 = supportmain.getdf5()
+if '수거/배달' not in df5.columns: #수거배달이 없으면
+    df5=[]
+    print('ee')
 
 
 remembergetlocation=[]

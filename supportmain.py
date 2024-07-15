@@ -359,10 +359,14 @@ def getdf5(): # 미래에 예약된거 찾아보기
             df5= df5[['고객명']] #이것만 살리기
             df5= df5.values.flatten().tolist()
 
+
         else:
 
             df5=[] #업데이트 안된 파일이므로 쓸모없는 정보임.
             # print('됸')
+
+        print('후예약')
+
     else:# 접수목록리스트인경우
         df5 = df5[['접수일자', '고객명',  '택번호', '상품명']]
 
@@ -374,8 +378,8 @@ def getdf5(): # 미래에 예약된거 찾아보기
         df5['접수일자'] = df5['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
         df5['접수일자'] = df5['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 
-        print(df5)
-        print('ee')
+        # print(df5)
+        print('접수목록 리스트')
 
 
     return df5
