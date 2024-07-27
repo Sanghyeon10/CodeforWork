@@ -58,8 +58,11 @@ df2= df2.tolist()
 # print(df2)
 # 후예약 가져오기
 df5= supportmain.getdf5()
-if '수거/배달' not in df5.columns: #수거배달이 없으면
+if isinstance(df5, pd.DataFrame): #데이터프레임인 경우는 접수목록보여줄때
     df5=[]
+else:#리스트인경우는 후예약인경우
+    pass
+
 
 baedallist= df5 + df2
 # print(baedallist)
@@ -77,6 +80,7 @@ notpirnt=[] #출력하지 않을 동호수
 print(notpirnt)
 notpirnt= notpirnt+baedallist
 # print(notpirnt)
+print(datetime.datetime.now())
 
 
 #기타사항 가져오기

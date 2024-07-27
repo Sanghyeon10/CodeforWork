@@ -120,7 +120,7 @@ for o in range(len(df)): #문자이름 뽑아내기
     if df.loc[df.index[o],'문자이름'] == True:
         plussunsu.append(df.loc[df.index[o],'고객명'])
 
-sunsu = plussunsu + sunsu #기존 순서문자열 앞에 추가해주기( 보통 가게라서 먼저가기 때문)
+sunsu = [item for item in set(plussunsu) ] + sunsu #기존 순서문자열 앞에 추가해주기( 보통 가게라서 먼저가기 때문)
 # print(sunsu)
 
 
@@ -321,7 +321,8 @@ for h in range(k+1): #배달 수거 합치기 + 끝호수 1~5 정렬해주기
 
 for l in range(k+1): #모든 리스트 돌리기
     # print((globals()['get'+str(l)]),l)
-    gettotalnumber= gettotalnumber + len(globals()['get'+str(l)])
+    if l>=5: #5시50분부터 저녁임.
+        gettotalnumber= gettotalnumber + len(globals()['get'+str(l)])
 
     resunsu = supportmain.BeforegetResuns(sunsu,l,arrayforsunsu,remembergetlocation)
     # print(resunsu,l)

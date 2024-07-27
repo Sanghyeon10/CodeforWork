@@ -149,10 +149,11 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 
 # 미리예약여부로 중복 일일이 확인 x하기
 df5 = supportmain.getdf5()
-if '수거/배달' not in df5.columns: #수거배달이 없으면
+# print(type(df5))
+if isinstance(df5, pd.DataFrame): #데이터프레임인 경우는 접수목록보여줄때
     df5=[]
-    print('ee')
-
+else:#리스트인경우는 후예약인경우
+    pass
 
 remembergetlocation=[]
 get_index=[]
@@ -372,6 +373,9 @@ for l in range(k+1): #모든 리스트 돌리기
                         #기타 개수가 있고 재고자산보다 모자르면, 도 추가해주기
                         AA= AA + '도'
 
+                if supportmain.contains_korean(globals()['get'+str(l)][i][1]) !=None:
+                    AA= AA + '가방'
+                    # 한글이 있으면 값이 있고 없으면 None임. none이 아니라면 비입주임.
 
 
                 if text.get(globals()['get'+str(l)][i][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
@@ -544,6 +548,8 @@ else:
 
 if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
     fridayTodo='내일꺼 찾기'
+elif datetime.datetime.today().strftime("%A")=="Saturday" :
+    fridayTodo='무인함 확인'
 else:
     fridayTodo = ''
 
