@@ -368,18 +368,32 @@ def getdf5(): # 미래에 예약된거 찾아보기
         print('후예약')
 
     else:# 접수목록리스트인경우
-        df5 = df5[['접수일자', '고객명',  '택번호', '상품명']]
+        df5 = df5[['접수일자', '고객명',  '택번호', '상품명','진행']]
 
         # df5 = df5.dropna()
         df5 = df5.fillna(method='ffill')
         df5 = df5.drop_duplicates(subset='택번호')
+        df5 = df5[df5['진행']==0] # 4출고 3 완성 0 접수
+
         df5['고객명'] = df5['고객명'].apply(lambda x: x.split('\n')[0])
 
         df5['접수일자'] = df5['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
         df5['접수일자'] = df5['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 
         # print(df5)
-        print('접수목록 리스트')
+        # print(type(datetime.datetime.now().date()))
+        today= datetime.datetime.now().date()
+
+        if df5.empty:
+            df5=pd.DataFrame()
+
+        else:
+            checkpoint = (df5.loc[df5.index[-1],'접수일자']).date()
+            if (today-checkpoint).days !=0: # 오늘 날짜 포함이 아니면 예전것 빈것으로 만들기
+                df5=pd.DataFrame()
+
+        print('접수목록 리스트' ,len(df5))
+        # print(df5)
 
 
     return df5
