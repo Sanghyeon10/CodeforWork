@@ -46,3 +46,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 
 sunsucheck = False # False면 오름차순, True면 내림차순
 # sunsucheck = True
+
+#Flase면 기본, True일때만 접수 목록 리스트 강제로 적용하기
+jubsulist= False
+# jubsulist= True

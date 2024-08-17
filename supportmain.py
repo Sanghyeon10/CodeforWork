@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import copy
 import datetime
-
+import afternoontime
 
 def contains_korean(text):
     #한글자라도 한글이 있는가?
@@ -389,8 +389,12 @@ def getdf5(): # 미래에 예약된거 찾아보기
 
         else:
             checkpoint = (df5.loc[df5.index[-1],'접수일자']).date()
-            if (today-checkpoint).days !=0: # 오늘 날짜 포함이 아니면 예전것 빈것으로 만들기
-                df5=pd.DataFrame()
+
+            if (today-checkpoint).days !=0  : # 오늘 날짜 포함, 살릴지 여부 설정으로 판단
+                if afternoontime.jubsulist == True:
+                    pass
+                else:
+                    df5=pd.DataFrame()
 
         print('접수목록 리스트' ,len(df5))
         # print(df5)
