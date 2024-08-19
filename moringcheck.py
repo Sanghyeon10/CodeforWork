@@ -302,7 +302,8 @@ CC=[]
 tempnumber=""
 tagnumber=""
 #택번호와 개수 표시?
-gettotalnumber=0
+getnoonnumber=0
+getafternumber=0
 
 
 #총미수금 알아낼 정보 얻기
@@ -321,8 +322,13 @@ for h in range(k+1): #배달 수거 합치기 + 끝호수 1~5 정렬해주기
 
 for l in range(k+1): #모든 리스트 돌리기
     # print((globals()['get'+str(l)]),l)
+
+
     if l>=5: #5시50분부터 저녁임.
-        gettotalnumber= gettotalnumber + len(globals()['get'+str(l)])
+        getafternumber= getafternumber + len(globals()['get'+str(l)])
+    else:
+        getnoonnumber = getnoonnumber + len(globals()['get'+str(l)])
+
 
     resunsu = supportmain.BeforegetResuns(sunsu,l,arrayforsunsu,remembergetlocation)
     # print(resunsu,l)
@@ -393,4 +399,4 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
 print("체류",len(BB),BB, "미수",len(CC),CC)
-print('전체개수',gettotalnumber)
+print('오후개수',getafternumber,'오전개수',getnoonnumber)
