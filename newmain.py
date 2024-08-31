@@ -312,6 +312,7 @@ tempnumber=""
 tagnumber=""
 #택번호와 개수 표시?
 
+jandoncheck=0
 
 
 #총미수금 알아낼 정보 얻기
@@ -400,6 +401,11 @@ for l in range(k+1): #모든 리스트 돌리기
                         if (globals()['get'+str(l)][i][0]) == '수거': #만일 수거인데 완성재고가 있다면 챙겨야함
                             AA = AA +" 옷챙기기"
 
+                        jandoncheck = jandoncheck + (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])
+                        #재고가 있고 미수금이 있는 경우에만 잔돈체크 카운팅, 수거인데 미수금?인경우는 재고일가능성이 높음.
+
+
+
                     else: #총미수금이 0이면,선불이므로 개수와 선불표시하기
                         AA = AA + " "+ str(item_count[globals()['get' + str(l)][i][1]])+"선불"
 
@@ -462,6 +468,9 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(l)
     print()
 
+if jandoncheck == 0 :#잔돈줄 필요가 없는 경우
+    print('가방 필요 없는듯?')
+
 
 
 # print(sigandf)
@@ -515,7 +524,8 @@ newlist = supportmain.remove_duplicates_preserve_order(newlist)
 newlist = np.array(newlist, dtype=object)[:,:3] #슬라이싱해서 뒤에꺼 날리기
 
 print(newlist)
-
+print()
+print()
 
 dashboradprint, nonharington=supportmain.checkingtime(df2,price_sum,df3,item_count)
 print(dashboradprint)

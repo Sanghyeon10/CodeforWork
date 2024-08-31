@@ -17,7 +17,7 @@ eightafter=[]
 
 
 
-tenfirst=[1,8]
+tenfirst=[]
 tenafter=[]
 
 elevenfirst=[]
