@@ -144,6 +144,7 @@ item_count,gita_count, shoe_count , bedding_count,diffnumber , susun_count,long_
 
 # 접수리스트로 활용하기
 df5 = supportmain.getdf5()
+# print(df5)
 
 
 remembergetlocation=[]
@@ -387,11 +388,12 @@ for l in range(k+1): #모든 리스트 돌리기
 
 
                 # print(l)
-                for m in range(len(df5)):
+                if isinstance(df5, pd.DataFrame): #후예약인경우에는 리스트라 오류남
+                    for m in range(len(df5)):
 
-                    # print(globals()['get' + str(l)][i][1], df5.loc[df5.index[m],'고객명'])
-                    if globals()['get' + str(l)][i][1] == df5.loc[df5.index[m], '고객명']:
-                        print(df5.loc[df5.index[m], '고객명'], df5.loc[df5.index[m], '상품명'])
+                        # print(globals()['get' + str(l)][i][1], df5.loc[df5.index[m],'고객명'])
+                        if globals()['get' + str(l)][i][1] == df5.loc[df5.index[m], '고객명']:
+                            print(df5.loc[df5.index[m], '고객명'], df5.loc[df5.index[m], '상품명'])
 
 
                 print()
