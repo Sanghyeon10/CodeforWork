@@ -383,6 +383,7 @@ def getdf5(): # 미래에 예약된거 찾아보기
         # print(df5)
         # print(type(datetime.datetime.now().date()))
         today= datetime.datetime.now().date()
+        df5['날짜차이'] = datetime.datetime.now() - df5['접수일자']
 
         if df5.empty:
             df5=pd.DataFrame()

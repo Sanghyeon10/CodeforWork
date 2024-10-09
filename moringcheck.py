@@ -393,7 +393,7 @@ for l in range(k+1): #모든 리스트 돌리기
 
                         # print(globals()['get' + str(l)][i][1], df5.loc[df5.index[m],'고객명'])
                         if globals()['get' + str(l)][i][1] == df5.loc[df5.index[m], '고객명']:
-                            print(df5.loc[df5.index[m], '고객명'], df5.loc[df5.index[m], '상품명'])
+                            print(df5.loc[df5.index[m], '고객명'], df5.loc[df5.index[m], '상품명'],df5.loc[df5.index[m],'날짜차이'].days)
 
 
                 print()
