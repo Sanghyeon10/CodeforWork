@@ -312,7 +312,8 @@ tempnumber=""
 tagnumber=""
 #택번호와 개수 표시?
 
-jandoncheck=0
+jandoncheck1=0 #오전, 오후 구분
+jandoncheck2=0
 
 
 #총미수금 알아낼 정보 얻기
@@ -401,8 +402,14 @@ for l in range(k+1): #모든 리스트 돌리기
                         if (globals()['get'+str(l)][i][0]) == '수거': #만일 수거인데 완성재고가 있다면 챙겨야함
                             AA = AA +" 옷챙기기"
 
-                        jandoncheck = jandoncheck + (df3.loc[globals()['get'+str(l)][i][1],'총미수금'])
-                        #재고가 있고 미수금이 있는 경우에만 잔돈체크 카운팅, 수거인데 미수금?인경우는 재고일가능성이 높음.
+                        if (globals()['get' + str(l)][i][2][-2:]) != '10':
+                        # 재고가 있고 미수금이 있고 문앞이 아닌경우에 잔돈체크 카운팅, 수거인데 미수금?인경우는 재고일가능성이 높음.
+                            if l >= 5:  # 5시50분부터 저녁임.
+                                jandoncheck2 = jandoncheck2 + (df3.loc[globals()['get' + str(l)][i][1], '총미수금'])
+                            else:
+                                jandoncheck1 = jandoncheck1 + (df3.loc[globals()['get' + str(l)][i][1], '총미수금'])
+
+
 
 
 
@@ -468,8 +475,10 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(l)
     print()
 
-if jandoncheck == 0 :#잔돈줄 필요가 없는 경우
-    print('가방 필요 없는듯?')
+if jandoncheck1 == 0 :# 잔돈줄 필요가 없는 경우
+    print('오전가방 필요 없는듯?')
+if jandoncheck2 == 0:  # 잔돈줄 필요가 없는 경우
+    print('오후가방 필요 없는듯?')
 
 
 
