@@ -180,11 +180,27 @@ def getorderwithprice( price_sum,set, df3,item_count):
                 result_list.append(f'{name}({debt})')
     return  result_list
 
+def getPotentialBaedalList( df2,set ):
+    # 결과를 저장할 리스트 초기화
+    result_list = []
+
+    for name in set: #각이름에 대하여 택숫자 가져오기
+        for i in range(len(df2)):
+            if df2.loc[df2.index[i],'고객명']== name:
+                result_list.append(df2.loc[df2.index[i],'택번호'])
+                break
+
+
+    return  result_list
+
+
 def getdf1():
     df = pd.read_excel(r'C:\Users\user\Desktop\수거배달.xls')
 
     df = df[['수거/배달', '고객명', '요청일자','등록일자']]
     df['고객명'] = df['고객명'].apply(lambda x: x.split(' ')[-1])
+
+    df['요청일자일자'] = pd.to_datetime( df['요청일자'].apply(lambda x: "20"+x.split('\n')[0] +" " + x.split('\n')[-1][1:6] ))
     df['요청일자'] = df['요청일자'].apply(lambda x: x.split('\n')[-1]).apply(lambda x: x[1:6])
     df['등록일자'] = pd.to_datetime( df['등록일자'].apply(lambda x: "20"+x.split('\n')[0] +" " + x.split('\n')[-1][1:6] )) #datetime형태로 시간저장
 
@@ -541,6 +557,17 @@ def process_and_join_strings(text, status,misu):
     cleaned_parts = [remove_question_and_exclamation(part, status,misu) for part in parts if remove_question_and_exclamation(part, status,misu)!=""]
     return ','.join(cleaned_parts)
 
+
+def dividedf(df,munja):
+
+    dfs_by_date = {date: group for date, group in df.groupby(df[munja].dt.date)}
+    # 각 날짜별 데이터프레임 확인
+    # for date, df_date in dfs_by_date.items():
+        # print(f"Date: {date}")
+        # print(df_date)
+        # print()
+
+    return dfs_by_date
 
 if __name__ =="__main__":
     #주소 특이사항에 전화있는 사람 목록 뽑는 코드

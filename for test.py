@@ -1,23 +1,24 @@
 from datetime import datetime, timedelta
 
 
-def remove_question_and_exclamation(text, status):
-    result = ""
+import pandas as pd
 
-    if status != "배달" and '?' in text:  # 수거일 때
-        text = text.replace("?", "")
-    elif status != "수거" and '!' in text:  # 배달일 때
-        text = text.replace("!", "")
+# 예제 데이터프레임 생성
+data = {
+    'date': ['2023-01-01', '2023-01-02', '2023-01-02', '2023-01-03',
+             '2023-02-01', '2023-03-02', '2023-03-01', '2023-03-02'],
+    'value': [10, 20, 15, 30, 40, 25, 35, 45]
+}
+df = pd.DataFrame(data)
 
-    result += text
-    return result
+# 날짜열을 datetime 형식으로 변환
+df['date'] = pd.to_datetime(df['date'])
 
-def process_and_join_strings(text, status):
-    parts = text.split(',')
-    cleaned_parts = [remove_question_and_exclamation(part, status) for part in parts]
-    return ','.join(cleaned_parts)
+# 날짜별로 데이터프레임을 나누기
+dfs_by_date = {date: group for date, group in df.groupby(df['date'].dt.date)}
 
-# 테스트
-input_string = "안녕하세요!, 오늘!은! 어떤 날씨인가요? 좋은 하루 되세요!"
-output_string = process_and_join_strings(input_string, "수거")
-print(output_string)
+# 각 날짜별 데이터프레임 확인
+for date, df_date in dfs_by_date.items():
+    print(f"Date: {date}")
+    print(df_date)
+    print()

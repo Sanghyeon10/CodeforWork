@@ -375,9 +375,10 @@ for l in range(k+1): #모든 리스트 돌리기
                         #기타 개수가 있고 재고자산보다 모자르면, 도 추가해주기
                         AA= AA + '도'
 
-                if supportmain.contains_korean(globals()['get'+str(l)][i][1]) !=None:
+                if supportmain.contains_korean(globals()['get'+str(l)][i][1]) !=None and df3.loc[globals()['get' + str(l)][i][1],'총미수금']!=0:
                     AA= AA + '가방'
                     # 한글이 있으면 값이 있고 없으면 None임. none이 아니라면 비입주임.
+                    # 미수금이 있고 비입주라면 프린트
 
 
                 if text.get(globals()['get'+str(l)][i][1],'a')!='a' : #주어진 동호수를 꺼냈는데 체크포인트에 내용이 있다면
@@ -475,9 +476,9 @@ for l in range(k+1): #모든 리스트 돌리기
                 # print(l)
     print()
 
-if jandoncheck1 == 0 :# 잔돈줄 필요가 없는 경우
+if jandoncheck1 == 0 and nowhour<13:# 잔돈줄 필요가 없는 경우
     print('오전가방 필요 없는듯?')
-if jandoncheck2 == 0:  # 잔돈줄 필요가 없는 경우
+if jandoncheck2 == 0 and nowhour>=13 :  # 잔돈줄 필요가 없는 경우
     print('오후가방 필요 없는듯?')
 
 
@@ -496,6 +497,7 @@ for i in range(len(sigandf)):
         for j in range(len(df2)):
             if df2.loc[df2.index[j],'고객명']== sigandf.loc[sigandf.index[i],'고객명'] :#찾고있는 고객명이 일치한다면,
                 templist.append(df2.loc[df2.index[j],'택번호'])
+                # print(df2)
                 break
         if len(templist)!=2: #택번호 안찍힌경우임 
             templist.append("0번호부재")
@@ -582,6 +584,5 @@ print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,
 print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,(junhaToset|set(["원주영(원약국)"])).difference(s1|s2|exceptset|set(["103-1304"])) ,df3,item_count),fridayTodo ,"\033[0m")
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset) ,df3,item_count))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A") )
-print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ))
-
+print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ), supportmain.getPotentialBaedalList(df2, potentail_beadaldf))
 
