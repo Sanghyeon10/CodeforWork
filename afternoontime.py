@@ -1,6 +1,6 @@
 import datetime
 hour =12+1
-minute = 30
+minute = 31
 
 
 Sixfirst=[]

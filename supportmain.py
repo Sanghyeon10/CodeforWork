@@ -389,10 +389,13 @@ def getdf5(): # 미래에 예약된거 찾아보기
         # df5 = df5.dropna()
         df5 = df5.fillna(method='ffill')
         df5 = df5.drop_duplicates(subset='택번호')
-        df5 = df5[df5['진행']==0] # 4출고 3 완성 0 접수
+        df5['진행'] = df5['진행'].apply(lambda x: int(x))
+        df5 = df5[df5['진행']!=4] # 4출고 3 완성 0 접수
+
 
         df5['고객명'] = df5['고객명'].apply(lambda x: x.split('\n')[0])
 
+        df5['상품명'] = df5['상품명'].where(df5['진행'] != 3,  df5['상품명'] + '(완성)')
         df5['접수일자'] = df5['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
         df5['접수일자'] = df5['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 

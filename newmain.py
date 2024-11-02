@@ -481,6 +481,14 @@ if jandoncheck1 == 0 and nowhour<13:# 잔돈줄 필요가 없는 경우
 if jandoncheck2 == 0 and nowhour>=13 :  # 잔돈줄 필요가 없는 경우
     print('오후가방 필요 없는듯?')
 
+if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
+    fridayTodo='내일꺼 찾기, 모든 수거 전달하기'
+elif datetime.datetime.today().strftime("%A")=="Saturday" :
+    fridayTodo='무인함 확인'
+else:
+    fridayTodo = ''
+print(fridayTodo)
+
 
 
 # print(sigandf)
@@ -567,12 +575,7 @@ if s2 == set():#빈집합이면 예약 비포함
 else:
     A="후예약 포함되어있음"
 
-if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
-    fridayTodo='내일꺼 찾기'
-elif datetime.datetime.today().strftime("%A")=="Saturday" :
-    fridayTodo='무인함 확인'
-else:
-    fridayTodo = ''
+
 
 #자기자신과 중복은 제외할것
 print(A,"exceptset",exceptset, "비입주 메모",supportmain.GetNonharingtonMemo(text.get('비입주')))
@@ -584,5 +587,5 @@ print('지난주 것 전체 리스트', supportmain.getorderwithprice(price_sum,
 print('\033[1m\033[3m전화 배달 리스트', supportmain.getorderwithprice(price_sum,(junhaToset|set(["원주영(원약국)"])).difference(s1|s2|exceptset|set(["103-1304"])) ,df3,item_count),fridayTodo ,"\033[0m")
 # print('전체 리스트',supportmain.getorderwithprice(price_sum,allofalllistset.difference(s1|s2|exceptset|calllisttoset|fullllisttoset) ,df3,item_count))
 print(countingnumber== len(df.index), len(df.index) , datetime.datetime.today().strftime("%A") )
-print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ), supportmain.getPotentialBaedalList(df2, potentail_beadaldf))
+print('잠재적 배달 리스트',supportmain.getorderwithprice(price_sum,potentail_beadaldf.difference(s1|s2|exceptset),df3,item_count ), supportmain.getPotentialBaedalList(df2, potentail_beadaldf.difference(s1|s2|exceptset)))
 
