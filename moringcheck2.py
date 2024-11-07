@@ -314,7 +314,8 @@ for date, df_date in dfs_by_date.items():
     #택번호와 개수 표시?
     getnoonnumber=0
     getafternumber=0
-    getTruelist=[]
+    getTruelist1=[]
+    getTruelist2=[]
 
 
     #총미수금 알아낼 정보 얻기
@@ -347,7 +348,10 @@ for date, df_date in dfs_by_date.items():
             for i in range(len(globals()['get'+str(l)])):
 
                 if globals()['get'+str(l)][i][3] == resunsu[j]: #동호수를꺼내서 15동부터 해당되는거 꺼내기
-                    getTruelist.append(globals()['get'+str(l)][i][1] )
+                    if l<5:#4번까지는 오전
+                        getTruelist1.append(globals()['get'+str(l)][i][1] )
+                    else:
+                        getTruelist2.append(globals()['get' + str(l)][i][1])
                     # print(globals()['get'+str(l)][i][0][0]) #배달 수거 들어있는 정보
                     # print(shoe_count[globals()['get'+str(l)][i][0][1]]) #동호수를 넣어서 기타 개수 알아내기
 
@@ -411,7 +415,7 @@ for date, df_date in dfs_by_date.items():
 
 
     print("체류",len(BB),BB, "미수",len(CC),CC)
-    print('오후개수',getafternumber,'오전개수',getnoonnumber)
-    print(getTruelist)
+    print('오전개수',getnoonnumber,'오후개수',getafternumber)
+    print(getTruelist1, getTruelist2)
     print()
     print()

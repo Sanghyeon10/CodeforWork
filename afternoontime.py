@@ -1,6 +1,6 @@
 import datetime
-hour =12+1
-minute = 31
+hour =0
+minute = 0
 
 
 Sixfirst=[]
@@ -45,7 +45,7 @@ if nowhour<16 : #오후 12~4시라면 필요한기능
 # switch=True
 
 sunsucheck = False # False면 오름차순, True면 내림차순
-# sunsucheck = True
+sunsucheck = True
 
 #Flase면 기본, True일때만 접수 목록 리스트 강제로 적용하기
 jubsulist= False
