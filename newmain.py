@@ -484,7 +484,7 @@ if jandoncheck2 == 0 and nowhour>=13 :  # 잔돈줄 필요가 없는 경우
 if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
     fridayTodo='내일꺼 찾기, 모든 수거 전달하기'
 elif datetime.datetime.today().strftime("%A")=="Saturday" :
-    fridayTodo='무인함 확인'
+    fridayTodo='무인함 확인, 배달중 가게대기 표시하기, 단말기충전, 옷재고 파악'
 else:
     fridayTodo = ''
 print(fridayTodo)

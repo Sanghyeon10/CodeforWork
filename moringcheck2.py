@@ -6,6 +6,9 @@ import supportmain
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
+pd.set_option('display.max_rows', None)  # 모든 행 출력
+pd.set_option('display.max_columns', None)  # 모든 열 출력
+pd.set_option('display.expand_frame_repr', False)  # 가로로 스크롤 없이 출력
 
 
 def printtingf(df, get_index, i, k):
@@ -412,7 +415,7 @@ for date, df_date in dfs_by_date.items():
                     print()
         print()
 
-
+    # print(df5)
 
     print("체류",len(BB),BB, "미수",len(CC),CC)
     print('오전개수',getnoonnumber,'오후개수',getafternumber)

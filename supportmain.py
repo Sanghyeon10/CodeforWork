@@ -3,6 +3,7 @@ import re
 import copy
 import datetime
 import afternoontime
+import numpy as np
 
 def contains_korean(text):
     #한글자라도 한글이 있는가?
@@ -219,6 +220,8 @@ def getdf2():
     df2 = df2[df2['옷장번호'] == 0] #옷장번호 0번 외에것은 무시하기
     # df2 = df2.dropna()
     df2= df2.fillna(method='ffill')
+    df2['택번호'] = df2['택번호'].where(df2['택번호'] != '사용안함', df2.groupby('택번호').cumcount().add(1).map(lambda x: f"사용안함{x}"))
+
     df2 = df2.drop_duplicates(subset='택번호')
     df2['고객명'] = df2['고객명'].apply(lambda x: x.split('\n')[0])
     df2['비입주'] = df2['고객명'].apply(lambda x: x.split('-')[0] if contains_korean(x) != None else '입주민')
@@ -274,6 +277,8 @@ def getpastSat(df1,df2):
 def getdf4():
     df4 = pd.read_excel(r'C:\Users\user\Desktop\옷장조회.xls')
     df4 = df4.fillna(method='ffill')
+    df4['택번호'] = df4['택번호'].where(df4['택번호'] != '사용안함', df4.groupby('택번호').cumcount().add(1).map(lambda x: f"사용안함{x}"))
+
     df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
 
     df4 = df4[['고객명', '상품명', '접수금액','택번호']]
@@ -283,16 +288,7 @@ def getdf4():
     price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
     # print('price',price_sum)
 
-    condition = df4['택번호'].str.contains('사용안함')
-    new_df = df4[condition].copy()
 
-    df4 = df4[df4['택번호']!='사용안함'].drop_duplicates(subset='택번호')
-    # print(new_df)
-    # print(df4)
-
-    df4 = pd.concat([df4, new_df])
-    # 사용안함택인경우에 중복제거에 전부 다 날라가서 계산에 오류있음. 사용안함택은 별도로 분리해서 다시 합쳐줘야 문제없음.
-    # print(df4)
 
     df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
     #-이 없으면 사용안함문자열이므로 None 결측치 처리하기
@@ -388,14 +384,19 @@ def getdf5(): # 미래에 예약된거 찾아보기
 
         # df5 = df5.dropna()
         df5 = df5.fillna(method='ffill')
+        df5['택번호'] = df5['택번호'].where(df5['택번호'] != '사용안함', df5.groupby('택번호').cumcount().add(1).map(lambda x: f"사용안함{x}"))
         df5 = df5.drop_duplicates(subset='택번호')
         df5['진행'] = df5['진행'].apply(lambda x: int(x))
         df5 = df5[df5['진행']!=4] # 4출고 3 완성 0 접수
 
+        conditions = [(df5['진행'] == 4),(df5['진행'] == 3),(df5['진행'] == 0)]
+        choices = ['(출고)', '(완성)', '(접수)']
+
 
         df5['고객명'] = df5['고객명'].apply(lambda x: x.split('\n')[0])
 
-        df5['상품명'] = df5['상품명'].where(df5['진행'] != 3,  df5['상품명'] + '(완성)')
+        # df5['상품명'] = df5['상품명'].where(df5['진행'] != 3,  df5['상품명'] + '(완성)')
+        df5['상품명'] =  df5['상품명'] + np.select(conditions, choices, default='')
         df5['접수일자'] = df5['접수일자'].apply(lambda x: x.split('\n')[0]).apply(lambda x: '20' + x)
         df5['접수일자'] = df5['접수일자'].apply(lambda x: datetime.datetime.strptime(x, "%Y-%m-%d"))
 
