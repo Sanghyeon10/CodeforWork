@@ -4,6 +4,9 @@ import copy
 import datetime
 import afternoontime
 import numpy as np
+pd.set_option('display.max_rows', None)  # 모든 행 출력
+pd.set_option('display.max_columns', None)  # 모든 열 출력
+pd.set_option('display.expand_frame_repr', False)  # 가로로 스크롤 없이 출력
 
 def contains_korean(text):
     #한글자라도 한글이 있는가?
@@ -282,20 +285,21 @@ def getdf4():
     df4['고객명'] = df4['고객명'].apply(lambda x: x.split('\n')[0])
 
     df4 = df4[['고객명', '상품명', '접수금액','택번호']]
-
+    # print(df4)
 
     df4['접수금액'] = df4['접수금액'].apply(lambda x: int(x.replace(",", "")))
     price_sum = df4.groupby('고객명')['접수금액'].sum() / 1000
     # print('price',price_sum)
-
+    df4 = df4.drop_duplicates(subset='택번호') #가격을 다 더한후에 중복택을 날려야 개수와 가격 둘다 문제 없음
 
 
     df4['택숫자'] = df4['택번호'].apply(lambda x: int(x.replace("-", "")) if "-" in x else None)
     #-이 없으면 사용안함문자열이므로 None 결측치 처리하기
     df4['숫자차이'] = df4['택숫자'].diff().fillna(1)
     # df4.to_csv('testtest.csv')
+    # print(df4)
     item_count = df4.groupby('고객명')['상품명'].count()
-    # diffnumber= df4.groupby('고객명')['숫자차이'].apply(lambda x : x.iloc[1:].sum()) #첫행은 관련이 없으므로 제외.
+
     
 
     # 'Name'을 기준으로 그룹화한 후, 'Number' 칼럼 값의 차이 구하기

@@ -6,9 +6,9 @@ import supportmain
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
-pd.set_option('display.max_rows', None)  # 모든 행 출력
-pd.set_option('display.max_columns', None)  # 모든 열 출력
-pd.set_option('display.expand_frame_repr', False)  # 가로로 스크롤 없이 출력
+# pd.set_option('display.max_rows', None)  # 모든 행 출력
+# pd.set_option('display.max_columns', None)  # 모든 열 출력
+# pd.set_option('display.expand_frame_repr', False)  # 가로로 스크롤 없이 출력
 
 
 def printtingf(df, get_index, i, k):

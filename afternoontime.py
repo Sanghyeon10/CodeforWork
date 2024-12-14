@@ -4,7 +4,7 @@ minute = 0
 
 
 Sixfirst=[]
-Sixafter=[9,4]
+Sixafter=[]
 
 sevenfirst=[]
 sevenafter=[]
