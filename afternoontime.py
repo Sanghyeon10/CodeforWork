@@ -49,4 +49,4 @@ sunsucheck = False # False면 오름차순, True면 내림차순
 
 #Flase면 기본, True일때만 접수 목록 리스트 강제로 적용하기
 jubsulist= False
-jubsulist= True
+# jubsulist= True

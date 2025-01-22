@@ -314,6 +314,8 @@ tagnumber=""
 
 jandoncheck1=0 #오전, 오후 구분
 jandoncheck2=0
+countcounting=0
+
 
 
 #총미수금 알아낼 정보 얻기
@@ -410,7 +412,7 @@ for l in range(k+1): #모든 리스트 돌리기
                             else:
                                 jandoncheck1 = jandoncheck1 + (df3.loc[globals()['get' + str(l)][i][1], '총미수금'])
 
-
+                            countcounting +=1
 
 
 
@@ -481,10 +483,13 @@ if jandoncheck1 == 0 and nowhour<13:# 잔돈줄 필요가 없는 경우
 if jandoncheck2 == 0 and nowhour>=13 :  # 잔돈줄 필요가 없는 경우
     print('오후가방 필요 없는듯?')
 
+print('결제예정횟수'+str(countcounting))
+
+
 if datetime.datetime.today().strftime("%A")=="Friday" and 12<nowhour  :
     fridayTodo='내일꺼 찾기, 모든 수거 전달하기'
 elif datetime.datetime.today().strftime("%A")=="Saturday" :
-    fridayTodo='무인함 확인, 배달중 가게대기 표시하기, 단말기충전, 옷재고 파악'
+    fridayTodo='무인함 확인, 배달중 가게대기 표시하기, 단말기충전, (다음주 일정보고) 옷재고 파악후 예약문자'
 else:
     fridayTodo = ''
 print(fridayTodo)
