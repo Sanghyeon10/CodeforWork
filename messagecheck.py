@@ -18,12 +18,20 @@ def format_phone_number(phone_number) -> str:
     else:
         print("올바른 11자리 전화번호를 입력하세요.")
 
-df1 = pd.read_excel(r'C:\Users\WD\Downloads\ThisMonth.xlsx')
-filepath= r'C:\Users\WD\Downloads\lastMonth.xlsx'
-if os.path.exists(filepath):
-    df2= pd.read_excel(filepath)
+df1 = pd.read_excel(r'C:\Users\WD\Downloads\data1.xlsx')
+filepath1= r'C:\Users\WD\Downloads\data2.xlsx'
+filepath2= r'C:\Users\WD\Downloads\data3.xlsx'
+filepath3= r'C:\Users\WD\Downloads\data4.xlsx'
 
-    df1 = pd.concat([df1, df2], axis=0, ignore_index=True)
+for path in [filepath1,filepath2,filepath3 ]:
+    if os.path.exists(path):
+        df2= pd.read_excel(path)
+
+        df1 = pd.concat([df1, df2], axis=0, ignore_index=True)
+
+
+
+
 
 df1 = df1.sort_values(by='전송일자', ascending=False)
 
