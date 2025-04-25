@@ -22,10 +22,14 @@ df1 = pd.read_excel(r'C:\Users\WD\Downloads\data1.xlsx')
 filepath1= r'C:\Users\WD\Downloads\data2.xlsx'
 filepath2= r'C:\Users\WD\Downloads\data3.xlsx'
 filepath3= r'C:\Users\WD\Downloads\data4.xlsx'
+filepath4= r'C:\Users\WD\Downloads\data5.xlsx'
 
-for path in [filepath1,filepath2,filepath3 ]:
+for path in [filepath1,filepath2,filepath3,filepath4 ]:
     if os.path.exists(path):
         df2= pd.read_excel(path)
+
+        if "예약일자" in df2.columns:
+            df2.rename(columns={'예약일자': '전송일자'}, inplace=True)
 
         df1 = pd.concat([df1, df2], axis=0, ignore_index=True)
 
