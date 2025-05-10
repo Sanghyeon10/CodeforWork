@@ -3,6 +3,11 @@ import os
 import re
 import datetime
 
+# 행과 열 제한 해제
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', None)
 
 def format_phone_number(phone_number) -> str:
     # 전화번호를 문자열로 변환
