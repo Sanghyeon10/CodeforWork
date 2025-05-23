@@ -94,8 +94,10 @@ recent_number_diff = recent_number_diff.merge(
 recent_number_diff.drop(columns='전화번호', inplace=True)
 recent_number_diff = recent_number_diff.dropna()
 # 결과 출력
-print(recent_number_diff)
+# print(recent_number_diff)
 
+recent_number_diff = recent_number_diff.drop_duplicates(subset='이름')
+print(recent_number_diff,len(recent_number_diff))
 
 
 
@@ -130,3 +132,6 @@ for name in namelist:
             print(f"이름: {name}, 전화번호: {phone}, 날짜차이: 문자 발송 이력 없음")
     else:
         print(f"이름: {name}, 전화번호: 없음, 날짜차이: 정보 없음")
+
+
+print('김현옥 공릉아파트 현충일 이후 문자')
