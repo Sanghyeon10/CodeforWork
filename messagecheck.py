@@ -75,11 +75,11 @@ print(len(namelist))
 print()
 
 # 최근 5일 이내 문자 수신자 목록 출력
-recent_df = df1[df1['날짜차이'] >=5 ]
+recent_df = df1[df1['날짜차이'] >=0 ]
 recent_numbers = recent_df['수신번호'].unique()
 
 
-print("\n✅ 최근 5일 이후 문자 수신자 전화번호 + 날짜차이 목록:")
+print("\n✅ 최근  문자 수신자 전화번호 + 날짜차이 목록:")
 recent_number_diff = recent_df[['수신번호', '날짜차이']].drop_duplicates()
 # print(recent_number_diff)
 # 전화번호 기준으로 df3와 조인 (df3['전화번호']와 recent_number_diff['수신번호'])
@@ -97,7 +97,8 @@ recent_number_diff = recent_number_diff.dropna()
 # print(recent_number_diff)
 
 recent_number_diff = recent_number_diff.drop_duplicates(subset='이름')
-print(recent_number_diff,len(recent_number_diff))
+print(recent_number_diff)
+print(len(recent_number_diff))
 
 
 
